@@ -2,6 +2,8 @@ package test.filesystem;
 
 import main.org.fsdb.FileSystem;
 
+import java.io.File;
+
 public class TestFileSystem {
     public static void runTests() {
         String filePath = "src/test/filesystem/data.txt";
@@ -9,6 +11,8 @@ public class TestFileSystem {
         // Test FileSystem read and write methods
         if (testReadWrite(filePath)) System.out.println("[Test][FileSystem] Read/Write to file passed ✓");
         else System.out.println("[Test][FileSystem] Read/Write to file failed ❌");
+
+        new File(filePath).deleteOnExit();
     }
 
     static boolean testReadWrite(String filePath) {
