@@ -26,4 +26,10 @@ public class FileSystem {
             ex.printStackTrace();
         }
     }
+
+    public static boolean exists(String filePath) {
+        return Files.exists(Paths.get(filePath));
+    }
+
+
 }

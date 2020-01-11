@@ -1,3 +1,7 @@
+# Added test data.txt file
+src/test/filesystem/data.txt
+
+
 # Compiled class file
 *.class
 
