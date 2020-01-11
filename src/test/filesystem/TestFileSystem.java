@@ -10,8 +10,8 @@ public class TestFileSystem {
     public static void runTests() {
         String filePath = "src/test/filesystem/data.txt";
 
-        //Test create Database
-        testCreateDB("testDB");
+        //Test create Database and subDir
+        testCreateDBAndSubDir("testDB", "testDir");
 
         // Test FileSystem read and write methods
         if (testReadWrite(filePath)) System.out.println("[Test][FileSystem] Read/Write to file passed ✓");
@@ -39,11 +39,19 @@ public class TestFileSystem {
     }
 
 
-    private static void testCreateDB(String name) {
-        Database database = new Database();
-       if(database.create(name)) System.out.println("[Test][FileSystem] Database created, passed ✓");
+    private static void testCreateDBAndSubDir(String database, String subDir) {
+        Database db = new Database();
+       if(db.create(database)){
+           System.out.println("[Test][FileSystem] Database created, passed ✓");
+           if(FileSystem.createDir(database, subDir)) System.out.println("[Test][FileSystem] subDir created, passed ✓");
+           else System.out.println("[Test][FileSystem] subDir NOT created, failed ❌");
+       }
        else System.out.println("[Test][FileSystem]Database NOT created, failed ❌");
 
-       new File(name).deleteOnExit();
+       //Removes Database and subDir after creation
+       new File(database + "/" + subDir).delete();
+       new File(database).delete();
     }
+
+
 }

@@ -1,8 +1,6 @@
 package main.org.fsdb;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -41,5 +39,10 @@ public class FileSystem {
             e.printStackTrace();
         }
         return isDeleted;
+    }
+
+    public static boolean createDir(String database, String name){
+        String filePath = database + "/" + name;
+        return new File(filePath).mkdir();
     }
 }
