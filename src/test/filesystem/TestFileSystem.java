@@ -14,21 +14,15 @@ public class TestFileSystem {
         else System.out.println("[Test][FileSystem] Read/Write to file failed ❌");
 
 
-        //Test Exist before deletion of test file
+        // Test Exist before deletion of test file
         if (FileSystem.exists(filePath)) System.out.println("[Test][FileSystem] Exists is true, passed ✓");
         else System.out.println("[Test][FileSystem] Exists is false, failed ❌");
 
 
-        //Test to delete of test file.
-        if (FileSystem.delete(filePath)) System.out.println("[Test][FileSystem] File deleted, passed ✓");
+        // Test to delete of test file.
+        if (FileSystem.delete(filePath) && !FileSystem.exists(filePath))
+            System.out.println("[Test][FileSystem] File deleted, passed ✓");
         else System.out.println("[Test][FileSystem] File not deleted, failed ❌");
-
-
-        //Test Exist after file is deleted
-        if (!FileSystem.exists(filePath)) System.out.println("[Test][FileSystem] Exists is false, passed ✓");
-        else System.out.println("[Test][FileSystem] Exists is true, failed ❌");
-
-
     }
 
     private static boolean testReadWrite(String filePath) {
