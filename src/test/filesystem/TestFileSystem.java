@@ -19,7 +19,7 @@ public class TestFileSystem {
         else System.out.println("[Test][FileSystem] Exists is false, failed ❌");
 
 
-        //Test Exist before deletion of test file
+        //Test to delete of test file.
         if (FileSystem.delete(filePath)) System.out.println("[Test][FileSystem] File deleted, passed ✓");
         else System.out.println("[Test][FileSystem] File not deleted, failed ❌");
 
