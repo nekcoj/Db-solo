@@ -1,13 +1,17 @@
 package test.filesystem;
 
+import main.org.fsdb.Database;
 import main.org.fsdb.FileSystem;
 
 import java.io.File;
-import java.io.IOException;
+
 
 public class TestFileSystem {
     public static void runTests() {
         String filePath = "src/test/filesystem/data.txt";
+
+        //Test create Database
+        testCreateDB("testDB");
 
         // Test FileSystem read and write methods
         if (testReadWrite(filePath)) System.out.println("[Test][FileSystem] Read/Write to file passed ✓");
@@ -41,4 +45,11 @@ public class TestFileSystem {
     }
 
 
+    private static void testCreateDB(String name) {
+        Database database = new Database();
+       if(database.create(name)) System.out.println("[Test][FileSystem] Database created, passed ✓");
+       else System.out.println("[Test][FileSystem]Database NOT created, failed ❌");
+
+       new File(name).deleteOnExit();
+    }
 }
