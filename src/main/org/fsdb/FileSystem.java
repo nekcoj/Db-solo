@@ -27,9 +27,19 @@ public class FileSystem {
         }
     }
 
+
     public static boolean exists(String filePath) {
         return Files.exists(Paths.get(filePath));
     }
 
 
+    public static boolean delete(String filePath) {
+        boolean isDeleted = false;
+        try {
+            isDeleted = Files.deleteIfExists(Paths.get(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return isDeleted;
+    }
 }
