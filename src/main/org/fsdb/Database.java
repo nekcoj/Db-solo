@@ -1,5 +1,9 @@
 package main.org.fsdb;
 
 public class Database {
-    // TODO: Implement
+
+
+   public boolean create(String name){
+      return FileSystem.createDir(name);
+   }
 }
