@@ -1,4 +1,9 @@
-package main.org.fsdb;
+package main.org.fsdb.database;
+
+import main.org.fsdb.FileSystem;
+import main.org.fsdb.Util;
+import main.org.fsdb.database.query.Query;
+import main.org.fsdb.database.query.QueryResult;
 
 import java.util.HashMap;
 import java.util.List;
