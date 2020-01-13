@@ -21,7 +21,7 @@ public class Main {
                         "name", "Dragonforce")
                 )));
 
-        if (createResult.successful) {
+        if (createResult.success) {
             System.out.println("Created data");
             System.out.println(createResult.data);
         }
@@ -30,7 +30,7 @@ public class Main {
         var fetchResult = db.executeQuery(new Query()
                 .from("artists").where("id", "123").fetch());
 
-        if (fetchResult.successful) {
+        if (fetchResult.success) {
             System.out.println("Fetched data");
             System.out.println(fetchResult.data);
         }
@@ -41,7 +41,7 @@ public class Main {
                 .where("id", "123")
                 .update("name", "Metallica"));
 
-        if (updateResult.successful) {
+        if (updateResult.success) {
             System.out.println("Updated data");
             System.out.println(updateResult.data);
         }
@@ -50,7 +50,7 @@ public class Main {
         fetchResult = db.executeQuery(new Query()
                 .from("artists").where("id", "123").fetch());
 
-        if (fetchResult.successful) {
+        if (fetchResult.success) {
             System.out.println("Fetched data");
             System.out.println(fetchResult.data);
         }
@@ -59,7 +59,7 @@ public class Main {
         var deleteResult = db.executeQuery(new Query()
                 .from("artists").where("id", "123").delete());
 
-        if (deleteResult.successful)
+        if (deleteResult.success)
             System.out.println("Removed data");
     }
 }
