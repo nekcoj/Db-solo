@@ -1,6 +1,6 @@
 package test.filesystem;
 
-import main.org.fsdb.Database;
+import main.org.fsdb.database.Database;
 import main.org.fsdb.FileSystem;
 
 import java.io.File;

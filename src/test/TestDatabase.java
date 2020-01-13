@@ -1,9 +1,8 @@
 package test;
 
-import main.org.fsdb.Database;
-import main.org.fsdb.FileSystem;
-import main.org.fsdb.Query;
-import main.org.fsdb.QueryResult;
+import main.org.fsdb.database.Database;
+import main.org.fsdb.database.query.Query;
+import main.org.fsdb.database.query.QueryResult;
 
 public class TestDatabase {
     public static void runTests() {
