@@ -12,4 +12,9 @@ public class Database {
 
         return result;
     }
+
+
+   public boolean create(String name){
+      return FileSystem.createDir(name);
+   }
 }
