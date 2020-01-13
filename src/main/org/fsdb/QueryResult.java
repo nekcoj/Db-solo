@@ -1,16 +1,18 @@
 package main.org.fsdb;
 
+import java.util.HashMap;
+
 public class QueryResult {
     public boolean successful;
     public QueryAction action;
-    public String value;
+    public HashMap<String, String> data;
 
     @Override
     public String toString() {
         return "QueryResult{" +
                 "successful=" + successful +
                 ", action=" + action +
-                ", value='" + value + '\'' +
+                ", data='" + data + '\'' +
                 '}';
     }
 }
