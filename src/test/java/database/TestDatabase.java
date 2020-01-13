@@ -1,8 +1,8 @@
-package test;
+package database;
 
-import main.org.fsdb.database.Database;
-import main.org.fsdb.database.query.Query;
-import main.org.fsdb.database.query.QueryResult;
+import org.fsdb.database.Database;
+import org.fsdb.database.query.Query;
+import org.fsdb.database.query.QueryResult;
 
 public class TestDatabase {
     public static void runTests() {

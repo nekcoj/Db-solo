@@ -1,4 +1,4 @@
-package main.org.fsdb;
+package org.fsdb;
 
 import java.io.*;
 import java.nio.file.Files;

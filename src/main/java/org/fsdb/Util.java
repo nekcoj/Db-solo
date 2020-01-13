@@ -1,4 +1,4 @@
-package main.org.fsdb;
+package org.fsdb;
 
 import java.io.BufferedReader;
 import java.io.IOException;

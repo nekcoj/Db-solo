@@ -3,7 +3,7 @@
     <envs>
       <env name="EXAMPLE_DIR" value="example-db" />
     </envs>
-    <option name="MAIN_CLASS_NAME" value="main.org.example.Main" />
+    <option name="MAIN_CLASS_NAME" value="org.example.Main" />
     <module name="fsdb" />
     <extension name="coverage">
       <pattern>

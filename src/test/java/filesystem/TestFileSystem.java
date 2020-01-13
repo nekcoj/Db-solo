@@ -1,17 +1,19 @@
-package test.filesystem;
+package filesystem;
 
-import main.org.fsdb.database.Database;
-import main.org.fsdb.FileSystem;
+import org.fsdb.FileSystem;
+import org.fsdb.database.Database;
 
 import java.io.File;
 
 public class TestFileSystem {
     public static void runTests() {
-        String rootDir = "src/test/filesystem";
+        String dbName = System.getenv("TEST_DB");
+
+        String rootDir = "filesystem";
         String filePath = rootDir + "/data.txt";
 
         //Test create Database and subDir
-        testCreateDBAndSubDir("testDB", "testDir");
+        testCreateDBAndSubDir(dbName, "testDir");
 
         // Test FileSystem read and write methods
         if (testReadWrite(filePath)) System.out.println("[Test][FileSystem] Read/Write to file passed ✓");
