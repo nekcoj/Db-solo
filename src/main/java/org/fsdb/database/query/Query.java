@@ -1,4 +1,4 @@
-package main.org.fsdb.database.query;
+package org.fsdb.database.query;
 
 import java.util.HashMap;
 
