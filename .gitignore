@@ -1,6 +1,8 @@
 # Added test data.txt file
 src/test/filesystem/data.txt
 
+# Example database
+example-db
 
 # Compiled class file
 *.class
