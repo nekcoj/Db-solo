@@ -7,7 +7,6 @@ import org.fsdb.database.query.QueryResult;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Database {
     public boolean create(String name) {
@@ -15,13 +14,24 @@ public class Database {
     }
 
     public QueryResult executeQuery(Query query) {
-        QueryResult result = new QueryResult();
+        QueryResult result;
 
-        result.successful = true;
-        result.action = query.action;
-
-        // doesn't actually do anything at the moment (it just returns static data)
-        result.data = new HashMap<>(Map.of("id", "42", "albumId", "86", "name", "Live forever"));
+        switch (query.action) {
+            case FETCH:
+            case DELETE:
+            case CREATE: {
+                result = new QueryResult(true, query.action);
+                break;
+            }
+            case UPDATE: {
+                result = new QueryResult(true, query.action, query.values);
+                break;
+            }
+            default: {
+                result = null;
+                break;
+            }
+        }
 
         return result;
     }
