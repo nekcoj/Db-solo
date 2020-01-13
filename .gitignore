@@ -4,8 +4,6 @@ src/test/filesystem/data.txt
 # Example database
 example-db
 
-# misc.xml
-misc.xml
 
 # Compiled class file
 *.class
