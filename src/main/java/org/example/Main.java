@@ -1,10 +1,10 @@
-package main.org.example;
+package org.example;
 
-import main.org.fsdb.Database;
+import org.fsdb.database.Database;
 
 public class Main {
     public static void main(String[] args) {
-        String dbName = System.getenv("EXAMPLE_DIR");
+        String dbName = "example-db";
 
         Database db = new Database();
         db.create(dbName);
