@@ -38,8 +38,8 @@ public class Database {
                     result = null;
                     break;
                 }
-                FileSystem.delete(found.first);
-                result = new QueryResult(true, query.action);
+                boolean wasDeleted = FileSystem.delete(found.first);
+                result = new QueryResult(wasDeleted, query.action);
                 break;
             }
             case CREATE: {
