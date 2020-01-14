@@ -2,6 +2,7 @@ package org.example;
 
 import org.fsdb.database.Database;
 import org.fsdb.database.query.Query;
+import org.pojo.Album;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,10 +10,9 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
         String dbName = "example-db";
-
         Database db = new Database();
         db.create(dbName);
-
+        db.init();
         // create data
         var createResult = db.executeQuery(new Query()
                 .from("artists")
@@ -61,5 +61,7 @@ public class Main {
 
         if (deleteResult.success)
             System.out.println("Removed data");
+
+
     }
 }
