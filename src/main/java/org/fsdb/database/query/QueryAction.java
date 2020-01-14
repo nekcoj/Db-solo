@@ -1,4 +1,4 @@
-package main.org.fsdb.database.query;
+package org.fsdb.database.query;
 
 public enum QueryAction {
     CREATE,

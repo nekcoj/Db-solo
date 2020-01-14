@@ -3,8 +3,9 @@
     <envs>
       <env name="EXAMPLE_DIR" value="example-db" />
     </envs>
-    <option name="MAIN_CLASS_NAME" value="main.org.example.Main" />
+    <option name="MAIN_CLASS_NAME" value="org.example.Main" />
     <module name="fsdb" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="main.org.example.*" />
