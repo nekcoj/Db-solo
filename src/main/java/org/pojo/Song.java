@@ -25,6 +25,15 @@ public class Song {
         this.track = Integer.parseInt(queryResult.get("track"));
         this.genre = queryResult.get("genre");
     }
+    public HashMap mapObject(){
+        HashMap<String, String> convertedSong = new HashMap<>();
+        convertedSong.put("id", String.valueOf(this.id));
+        convertedSong.put("albumId", String.valueOf(this.albumId));
+        convertedSong.put("title", this.title);
+        convertedSong.put("track", String.valueOf(this.track));
+        convertedSong.put("genre", this.genre);
+        return convertedSong;
+    }
 
 
     public int getId() {

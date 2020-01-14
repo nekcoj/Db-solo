@@ -30,6 +30,15 @@ public class Album {
         this.year =  Integer.parseInt(queryResult.get("year"));
         this.songIds = parseToList(queryResult.get("&songIds"));
     }
+    public HashMap mapObject(){
+        HashMap<String, String> convertedAlbum = new HashMap<>();
+        convertedAlbum.put("id", String.valueOf(this.id));
+        convertedAlbum.put("artistId", String.valueOf(this.artistId));
+        convertedAlbum.put("name", this.name);
+        convertedAlbum.put("year", String.valueOf(this.year));
+        convertedAlbum.put("&songIds",this.songIds.toString().replaceAll("\\s+",""));
+        return convertedAlbum;
+    }
 
     private static ArrayList<Integer> parseToList(String songIds){
         songIds = songIds.substring(1, songIds.length() -1);

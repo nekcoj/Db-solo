@@ -11,6 +11,12 @@ public class Artist {
         this.id = id;
         this.name = name;
     }
+    public HashMap mapObject(){
+        HashMap<String, String> convertedArtist = new HashMap<>();
+        convertedArtist.put("id", String.valueOf(this.id));
+        convertedArtist.put("name", this.name);
+        return convertedArtist;
+    }
 
 
     public Artist(HashMap<String,String> queryResult) {
