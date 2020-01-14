@@ -1,4 +1,4 @@
-package main.org.pojo;
+package org.pojo;
 
 public class Song {
      private int id;
