@@ -1,5 +1,7 @@
 package org.pojo;
 
+import java.util.HashMap;
+
 public class Artist {
 
     private int id;
@@ -10,6 +12,11 @@ public class Artist {
         this.name = name;
     }
 
+
+    public Artist(HashMap<String,String> queryResult) {
+        this.id = Integer.parseInt(queryResult.get("id"));
+        this.name = queryResult.get("name");
+    }
 
     public int getId() {
         return id;
