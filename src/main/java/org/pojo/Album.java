@@ -1,6 +1,9 @@
 package org.pojo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Album {
 
@@ -16,6 +19,23 @@ public class Album {
         this.name = name;
         this.year = year;
         this.songIds = new ArrayList<>();
+
+
+    }
+
+    public Album(HashMap<String,String> queryResult) {
+        this.id = Integer.parseInt(queryResult.get("id")) ;
+        this.artistId = Integer.parseInt(queryResult.get("artistId"));
+        this.name = queryResult.get("name");
+        this.year =  Integer.parseInt(queryResult.get("year"));
+        this.songIds = parseToList(queryResult.get("&songIds"));
+    }
+
+    private static ArrayList<Integer> parseToList(String songIds){
+        songIds = songIds.substring(1, songIds.length() -1);
+        return (ArrayList<Integer>) Stream.of(songIds.split(","))
+                .map (elem -> Integer.parseInt(new String(elem)) )
+                .collect(Collectors.toList());
     }
 
     public int getId() {
