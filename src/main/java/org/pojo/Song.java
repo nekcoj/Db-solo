@@ -1,5 +1,7 @@
 package org.pojo;
 
+import java.util.HashMap;
+
 public class Song {
      private int id;
      private int albumId;
@@ -15,6 +17,15 @@ public class Song {
         this.track = track;
         this.genre = genre;
     }
+
+    public Song(HashMap<String,String> queryResult) {
+        this.id = Integer.parseInt(queryResult.get("id"));
+        this.albumId = Integer.parseInt(queryResult.get("albumId"));
+        this.title = queryResult.get("title");
+        this.track = Integer.parseInt(queryResult.get("track"));
+        this.genre = queryResult.get("genre");
+    }
+
 
     public int getId() {
         return id;
