@@ -19,7 +19,7 @@ public class TestDatabase {
     @Test
     public void parseData() {
         String testData = "field1=123\nfield2=test\nfield3=[3,2,1]";
-        var values = db.parseData(testData);
+        var values = db.deserializeData(testData);
 
         assertEquals(values.get("field1"), "123");
         assertEquals(values.get("field2"), "test");

@@ -25,8 +25,9 @@ public class Query {
         return this;
     }
 
-    public Query create() {
+    public Query create(HashMap<String, String> data) {
         action = QueryAction.CREATE;
+        values = data;
         return this;
     }
 
