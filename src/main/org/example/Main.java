@@ -1,6 +1,6 @@
 package main.org.example;
 
-import main.org.fsdb.Database;
+import main.org.fsdb.database.Database;
 
 public class Main {
     public static void main(String[] args) {
