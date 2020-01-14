@@ -1,6 +1,7 @@
 package org.fsdb.database;
 
 import com.github.cliftonlabs.json_simple.*;
+import org.fsdb.FileSystem;
 import org.fsdb.Util;
 import org.fsdb.database.query.Query;
 import org.fsdb.database.query.QueryResult;
@@ -16,11 +17,7 @@ import static org.fsdb.FileSystem.writeFile;
 
 import java.io.File;
 import java.util.HashMap;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-
+import java.util.Map;
 import java.util.List;
 
 
@@ -37,25 +34,61 @@ public class Database {
         dbFiles.add("" + pathList.get(0) + "/songs.json");
         dbFiles.add("" + pathList.get(0) +"/albums.json");
         dbFiles.add("" + pathList.get(0) +"/artists.json");
-        String dbDir = "" + pathList.get(0) + "/MusicLib";
+        String dbDir = "" + pathList.get(0) + "MusicLib/";
         createDatabaseDir(dbFiles, dbDir);
     }
 
     public boolean create(String name) {
+        dbName = name;
         return createDir(name);
     }
-
     public QueryResult executeQuery(Query query) {
         QueryResult result;
+        String rootDir = dbName + "/" + query.rootName;
 
         switch (query.action) {
-            case FETCH:
-            case DELETE:
+            case FETCH: {
+                var found = findWith(rootDir, query.predicateField, query.predicateValue);
+                if (found == null) {
+                    result = null;
+                    break;
+                }
+                result = new QueryResult(true, query.action, found.second);
+                break;
+            }
+            case DELETE: {
+                var found = findWith(rootDir, query.predicateField, query.predicateValue);
+                if (found == null) {
+                    result = null;
+                    break;
+                }
+                boolean wasDeleted = FileSystem.delete(found.first);
+                result = new QueryResult(wasDeleted, query.action);
+                break;
+            }
             case CREATE: {
-                result = new QueryResult(true, query.action);
+                String fileName = rootDir + "/" + query.values.get("id");
+                String data = serializeData(query.values);
+                if (!FileSystem.exists(fileName)) {
+                    FileSystem.createDir(rootDir);
+                }
+                FileSystem.writeFile(fileName, data);
+                result = new QueryResult(true, query.action, query.values);
                 break;
             }
             case UPDATE: {
+                var found = findWith(rootDir, query.predicateField, query.predicateValue);
+                if (found == null) { // handle properly
+                    result = null;
+                    break;
+                }
+                // loop over and update given values
+                for (Map.Entry<String, String> entry : query.values.entrySet()) {
+                    if (found.second.containsKey(entry.getKey())) {
+                        found.second.put(entry.getKey(), entry.getValue());
+                    }
+                }
+                FileSystem.writeFile(found.first, serializeData(found.second));
                 result = new QueryResult(true, query.action, query.values);
                 break;
             }
@@ -68,7 +101,7 @@ public class Database {
         return result;
     }
 
-    public HashMap<String, String> parseData(String fileData) {
+    public HashMap<String, String> deserializeData(String fileData) {
         List<String> lines = Util.stringToLines(fileData);
         if (lines == null) return null;
 
@@ -80,6 +113,33 @@ public class Database {
         }
 
         return values;
+    }
+
+    public String serializeData(HashMap<String, String> data) {
+        StringBuilder str = new StringBuilder();
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            str.append(String.format("%s=%s\n", entry.getKey(), entry.getValue()));
+        }
+        return str.toString().strip();
+    }
+
+    private Tuple<String, HashMap<String, String>> findWith(String root, String field, String value) {
+        File[] dirFiles = FileSystem.getDirFiles(root);
+        if (dirFiles == null) return null;
+
+        String fileName = null;
+        HashMap<String, String> result = null;
+
+        for (File file : dirFiles) {
+            String content = FileSystem.readFile(file.getPath());
+            fileName = file.getPath();
+            var data = deserializeData(content);
+            if (data.get(field).equals(value)) {
+                result = data;
+                break;
+            }
+        }
+        return new Tuple<>(fileName, result);
     }
 
     public void createDatabaseDir(List<String> pathNames, String dbDir){

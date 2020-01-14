@@ -56,10 +56,10 @@ public class Main {
         }
 
         // delete data
-        var deleteResult = db.executeQuery(new Query()
+        /*var deleteResult = db.executeQuery(new Query()
                 .from("artists").where("id", "123").delete());
 
         if (deleteResult.success)
-            System.out.println("Removed data");
+            System.out.println("Removed data");*/
     }
 }
