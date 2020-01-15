@@ -33,8 +33,8 @@ public class InputManager {
 
 
 
-    public static ArrayList<MusicObject> getDataList(String database, String subPath, String search, Database db ){
-        String path = database + "/" + subPath;
+    public static ArrayList<MusicObject> getDataList( String subPath, String search, Database db ){
+        String path = db.getDbName() + "/" + subPath;
         File[] fileArr = FileSystem.getDirFiles(path);
         ArrayList<MusicObject> searchResult = new ArrayList<>();
         for (File f: fileArr) {
@@ -58,6 +58,7 @@ public class InputManager {
                 System.out.println(string);
                 searchResult.add(result);
             }
+
         }
 
         return searchResult;
@@ -121,16 +122,30 @@ public class InputManager {
         for (File f: subFolder) {
             menuChoice.add(f.toString().split("\\\\")[1]);
         }
+
         for(int i = 0; i < menuChoice.size(); i++){
             System.out.println((i + 1) + ". " + menuChoice.get(i));
         }
+        System.out.println("4. search all.");
 
         int choice = userChoice() -1;
 
         System.out.println("Write search term");
         String search = userInput.next();
 
-        getDataList(database.getDbName(),menuChoice.get(choice),search,database);
+        if(choice == 3){
+            globalSearch(menuChoice,search,database);
+        }else{
+            getDataList(menuChoice.get(choice),search,database);
+        }
+
+
+    }
+
+    private void globalSearch(ArrayList<String> menuChoice, String search, Database database) {
+        for (int i = 0 ; i < menuChoice.size(); i++){
+            getDataList(menuChoice.get(i),search,database);
+        }
 
     }
 
