@@ -1,5 +1,6 @@
 package org.example;
 
+import org.fsdb.InputManager;
 import org.fsdb.database.Database;
 import org.fsdb.database.query.Query;
 import org.pojo.Album;
@@ -12,7 +13,7 @@ public class Main {
         String dbName = "example-db";
         Database db = new Database();
         db.create(dbName);
-        db.init();
+        new InputManager(db);
         // create data
         var createResult = db.executeQuery(new Query()
                 .from("artists")
