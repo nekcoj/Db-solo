@@ -173,4 +173,8 @@ public class Database {
             e.printStackTrace();
         }
     }
+
+    public String getDbName() {
+        return dbName;
+    }
 }

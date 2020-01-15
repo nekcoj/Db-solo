@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Album {
+public class Album  extends MusicObject{
 
      private int  id;
      private int artist;
@@ -86,4 +86,6 @@ public class Album {
     public void setSongIds(ArrayList<Integer> songIds) {
         this.songIds = songIds;
     }
+
+
 }

@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 public class FileSystem {
@@ -100,5 +101,9 @@ public class FileSystem {
             ex.printStackTrace();
             return null;
         }
+    }
+
+    public static File[] getSubFolders(String databasePath){
+        return new File(databasePath).listFiles(File::isDirectory);
     }
 }

@@ -2,7 +2,7 @@ package org.pojo;
 
 import java.util.HashMap;
 
-public class Artist {
+public class Artist extends MusicObject{
 
     private int id;
     private String name;
