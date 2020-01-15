@@ -2,6 +2,8 @@ package org.example;
 
 import org.fsdb.FileSystem;
 import org.fsdb.database.Database;
+import org.fsdb.database.query.Query;
+import org.pojo.Album;
 
 import java.io.File;
 import java.util.List;
@@ -9,7 +11,6 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         String dbName = "example-db";
-
         Database db = new Database();
         db.create(dbName);
 

@@ -20,7 +20,6 @@ public class TestDatabase {
     public void parseData() {
         String testData = "field1=123\nfield2=test\nfield3=[3,2,1]";
         var values = db.deserializeData(testData);
-
         assertEquals(values.get("field1"), "123");
         assertEquals(values.get("field2"), "test");
         assertEquals(values.get("field3"), "[3,2,1]");
@@ -29,7 +28,6 @@ public class TestDatabase {
     @Test
     public void query() {
         var result = db.executeQuery(new Query().from("test").where("id", "0").fetch());
-
         assertNotNull(result);
         assertEquals(result.action, QueryAction.FETCH);
     }
