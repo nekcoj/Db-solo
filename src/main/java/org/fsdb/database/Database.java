@@ -34,6 +34,9 @@ public class Database {
         createSubdirsFromJSON(filePaths, dbName);
     }
 
+
+
+
     public QueryResult executeQuery(Query query) {
         QueryResult result;
         String rootDir = dbName + "/" + query.rootName;
