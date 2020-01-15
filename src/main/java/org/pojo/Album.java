@@ -8,14 +8,14 @@ import java.util.stream.Stream;
 public class Album {
 
      private int  id;
-     private int  artistId;
+     private int artist;
      private String name;
      private int year;
      private ArrayList<Integer> songIds;
 
-    public Album(int id, int artistId, String name, int year) {
+    public Album(int id, int artist, String name, int year) {
         this.id = id;
-        this.artistId = artistId;
+        this.artist = artist;
         this.name = name;
         this.year = year;
         this.songIds = new ArrayList<>();
@@ -25,15 +25,15 @@ public class Album {
 
     public Album(HashMap<String,String> queryResult) {
         this.id = Integer.parseInt(queryResult.get("id")) ;
-        this.artistId = Integer.parseInt(queryResult.get("artistId"));
+        this.artist = Integer.parseInt(queryResult.get("artist"));
         this.name = queryResult.get("name");
         this.year =  Integer.parseInt(queryResult.get("year"));
-        this.songIds = parseToList(queryResult.get("&songIds"));
+        //this.songIds = parseToList(queryResult.get("&songIds"));
     }
     public HashMap mapObject(){
         HashMap<String, String> convertedAlbum = new HashMap<>();
         convertedAlbum.put("id", String.valueOf(this.id));
-        convertedAlbum.put("artistId", String.valueOf(this.artistId));
+        convertedAlbum.put("artist", String.valueOf(this.artist));
         convertedAlbum.put("name", this.name);
         convertedAlbum.put("year", String.valueOf(this.year));
         convertedAlbum.put("&songIds",this.songIds.toString().replaceAll("\\s+",""));
@@ -55,12 +55,12 @@ public class Album {
         this.id = id;
     }
 
-    public int getArtistId() {
-        return artistId;
+    public int getArtist() {
+        return artist;
     }
 
-    public void setArtistId(int artistId) {
-        this.artistId = artistId;
+    public void setArtist(int artist) {
+        this.artist = artist;
     }
 
     public String getName() {
