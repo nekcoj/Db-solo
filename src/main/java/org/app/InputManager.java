@@ -6,6 +6,7 @@ import org.app.pojo.Album;
 import org.app.pojo.Artist;
 import org.app.pojo.MusicObject;
 import org.app.pojo.Song;
+import org.fsdb.query.Query;
 
 import java.io.File;
 import java.util.*;
@@ -36,7 +37,7 @@ class InputManager {
         } while (menuSelection != 4);
     }
 
-    private ArrayList<MusicObject> getDataList(String subPath, String search, Database db) {
+    private ArrayList<MusicObject> getDataList(String subPath, String search, Database db, boolean printResult) {
         String path = db.getDbName() + "/" + subPath;
         File[] fileArr = FileSystem.getDirFiles(path);
 
@@ -60,15 +61,16 @@ class InputManager {
             } else System.out.println("Error no class defined");
 
             if (string.toLowerCase().contains(search.toLowerCase())) {
-                System.out.println(string);
                 searchResult.add(result);
                 searchHits++;
+                if (printResult) System.out.println(string);
             }
         }
-
-        System.out.printf("Found %d %s \n", searchHits, searchHits > 1 ? subPath : subPath.substring(0, subPath.length() - 1));
+        if (printResult)
+            System.out.printf("Found %d %s \n", searchHits, searchHits > 1 ? subPath : subPath.substring(0, subPath.length() - 1));
         return searchResult;
     }
+
 
     private int getClass(MusicObject musicObject) {
         if (musicObject.getClass().equals(Artist.class)) return ARTIST;
@@ -104,6 +106,7 @@ class InputManager {
                 break;
             case 2:
                 System.out.println("Lägga till låt");
+                addSong();
                 break;
             case 3:
                 System.out.println("Ta bort");
@@ -115,6 +118,36 @@ class InputManager {
                 System.out.println("Felaktig inmatning, försök igen!");
                 userChosenAction(userChoice());
         }
+    }
+
+    private void addSong() {
+        String path = "songs";
+        searchResult = new ArrayList<>();
+        System.out.println("Write song name to add");
+        String songName = userInput.next();
+        getDataList(path, songName, database, true);
+        if (searchResult.size() > 0) {
+            System.out.println("Continue to create song anyway? Y/N");
+            String input = userInput.next();
+            if (!input.toLowerCase().equals("y")) return;
+        }
+        Song song = new Song(generateID(path), 9000, songName, 9000, "Metal");
+        HashMap<String, String> mapSong = song.mapObject();
+        database.executeQuery(new Query().from(path).create(mapSong));
+        System.out.printf("%s %s has been created!\n", path.substring(0, path.length() - 1), songName);
+        //TODO
+        // Search/Create Artist (Create Artist method) (int id, int album, String title, int track, String genre)
+        // Search/Create Album  (Create Album method)
+
+    }
+
+    private int generateID(String type) {
+        int newId = -1;
+        ArrayList<MusicObject> list = getDataList(type, "", database, false);
+        for (MusicObject musicObject : list) {
+            if (musicObject.getId() > newId) newId = musicObject.getId();
+        }
+        return newId + 1;
     }
 
     private void searchMenu() {
@@ -137,12 +170,12 @@ class InputManager {
         String search = userInput.next();
 
         if (choice == GLOBAL_SEARCH) globalSearch(menuChoice, search, database);
-        else getDataList(menuChoice.get(choice), search, database);
+        else getDataList(menuChoice.get(choice), search, database, true);
     }
 
     private void globalSearch(ArrayList<String> menuChoice, String search, Database database) {
         for (String choice : menuChoice) {
-            getDataList(choice, search, database);
+            getDataList(choice, search, database, true);
         }
     }
 }
