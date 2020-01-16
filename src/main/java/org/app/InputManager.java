@@ -6,6 +6,7 @@ import org.app.pojo.Album;
 import org.app.pojo.Artist;
 import org.app.pojo.MusicObject;
 import org.app.pojo.Song;
+import org.fsdb.Util;
 
 import java.io.File;
 import java.util.*;
@@ -30,7 +31,14 @@ class InputManager {
     void showMenu() {
         int menuSelection;
         do {
-            System.out.println("Vad vill du göra? \n1. Sök\n2. Lägg till låt\n3. Ta bort låt\n4. Avsluta");
+            System.out.print(
+                    "Menu\n----------\n" +
+                            "1) Search\n" +
+                            "2) Add\n" +
+                            "3) Remove\n" +
+                            "4) Quit\n" +
+                            "> "
+            );
             menuSelection = userChoice();
             userChosenAction(menuSelection);
         } while (menuSelection != 4);
@@ -41,26 +49,26 @@ class InputManager {
         File[] fileArr = FileSystem.getDirFiles(path);
 
         int searchHits = 0;
-        for (File f : Objects.requireNonNull(fileArr)) {
-            String url = f.toString();
+        for (File file : Objects.requireNonNull(fileArr)) {
+            String url = file.toString();
             String data = FileSystem.readFile(url);
             HashMap<String, String> dataMap = db.deserializeData(data);
             MusicObject result = getNameOfData(subPath, dataMap);
-            String string = "";
+            String searchString = "";
 
             if (getClass(result) == ARTIST) {
-                Artist a = (Artist) result;
-                string = a.getName();
+                Artist obj = (Artist) result;
+                searchString = obj.getName();
             } else if (getClass(result) == ALBUM) {
-                Album a = (Album) result;
-                string = a.getName();
+                Album obj = (Album) result;
+                searchString = obj.getName();
             } else if (getClass(result) == SONG) {
-                Song a = (Song) result;
-                string = a.getTitle();
+                Song obj = (Song) result;
+                searchString = obj.getTitle();
             } else System.out.println("Error no class defined");
 
-            if (string.toLowerCase().contains(search.toLowerCase())) {
-                System.out.println(string);
+            if (searchString.toLowerCase().contains(search.toLowerCase())) {
+                System.out.println(searchString);
                 searchResult.add(result);
                 searchHits++;
             }
@@ -91,7 +99,7 @@ class InputManager {
         try {
             return Integer.parseInt(userInput.next());
         } catch (Exception e) {
-            System.out.println("Felaktig inmatning, försök igen");
+            System.out.println("Invalid menu choice, try again!");
             return userChoice();
         }
     }
@@ -99,41 +107,44 @@ class InputManager {
     private void userChosenAction(int userChoice) {
         switch (userChoice) {
             case 1:
-                System.out.println("Sök");
+                System.out.println("Search\n----------");
                 searchMenu();
                 break;
             case 2:
-                System.out.println("Lägga till låt");
+                System.out.println("Add\n----------");
                 break;
             case 3:
-                System.out.println("Ta bort");
+                System.out.println("Remove\n----------");
                 break;
             case 4:
-                System.out.println("Hej då!");
+                System.out.println("Goodbye :(");
                 break;
             default:
-                System.out.println("Felaktig inmatning, försök igen!");
                 userChosenAction(userChoice());
+                break;
         }
     }
 
     private void searchMenu() {
         searchResult = new ArrayList<>();
+
         File[] subFolder = FileSystem.getSubFolders(database.getDbName());
         ArrayList<String> menuChoice = new ArrayList<>();
-        for (File f : subFolder) {
-            menuChoice.add(f.toString().split("\\\\")[1]);
-        }
 
-        for (int i = 0; i < menuChoice.size(); i++) {
-            System.out.println((i + 1) + ". " + menuChoice.get(i));
-        }
-        System.out.println("4. search all.");
-        System.out.println("5. exit to main menu.");
+        // get folder names
+        for (File file : subFolder)
+            menuChoice.add(file.toString().split("\\\\")[1]);
+
+        // print menu search choices
+        for (int i = 0; i < menuChoice.size(); i++)
+            System.out.println((i + 1) + ". " + Util.capitalize(menuChoice.get(i)));
+
+        System.out.println("4. Search all.\n5. Exit to main menu.");
 
         int choice = userChoice() - 1;
         if (choice == EXIT) return;
-        System.out.println("Write search term");
+
+        System.out.print("Search for> ");
         String search = userInput.next();
 
         if (choice == GLOBAL_SEARCH) globalSearch(menuChoice, search, database);
