@@ -13,6 +13,13 @@ import java.util.*;
 public class InputManager {
     private static final int GLOBAL_SEARCH = 3;
     private static final int EXIT = 4;
+
+    private static final int ARTIST = 0;
+    private static final int ALBUM = 1;
+    private static final int SONG = 2;
+
+
+
     private Scanner userInput;
     private Database database;
     private ArrayList<MusicObject> searchResult;
@@ -31,7 +38,7 @@ public class InputManager {
             welcomeScreen();
             menuSelection = userChoice();
             userChosenAction(menuSelection);
-        } while (menuSelection != 5);
+        } while (menuSelection != 4);
     }
 
 
@@ -39,19 +46,20 @@ public class InputManager {
     public  ArrayList<MusicObject> getDataList( String subPath, String search, Database db ){
         String path = db.getDbName() + "/" + subPath;
         File[] fileArr = FileSystem.getDirFiles(path);
+        int searchHits = 0;
         for (File f: fileArr) {
             String url = f.toString();
             String data = FileSystem.readFile(url);
             HashMap<String,String> dataMap = db.deserializeData(data);
             MusicObject result = getNameOfData(subPath,dataMap);
             String string = "";
-            if(getClass(result) == 0){
+            if(getClass(result) == ARTIST){
                 Artist a = (Artist) result;
                 string = a.getName();
-            }else if(getClass(result) == 1){
+            }else if(getClass(result) == ALBUM){
                 Album a = (Album) result;
                 string = a.getName();
-            }else if(getClass(result) == 2){
+            }else if(getClass(result) == SONG){
                 Song a = (Song) result;
                 string = a.getTitle();
             }else System.out.println("Error no class defined");
@@ -59,17 +67,19 @@ public class InputManager {
             if(string.toLowerCase().contains(search.toLowerCase())) {
                 System.out.println(string);
                 searchResult.add(result);
+                searchHits++;
             }
 
         }
+        System.out.printf("Found %d %s \n", searchHits, searchHits > 1 ? subPath : subPath.substring(0,subPath.length()-1));
 
         return searchResult;
     }
 
     private  int getClass(MusicObject musicObject){
-        if(musicObject.getClass().equals(Artist.class)) return 0;
-        else if (musicObject.getClass().equals(Album.class)) return 1;
-        else if (musicObject.getClass().equals(Song.class)) return 2;
+        if(musicObject.getClass().equals(Artist.class)) return ARTIST;
+        else if (musicObject.getClass().equals(Album.class)) return ALBUM;
+        else if (musicObject.getClass().equals(Song.class)) return SONG;
         else return -1;
     }
 
