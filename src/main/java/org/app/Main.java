@@ -1,4 +1,4 @@
-package org.example;
+package org.app;
 import org.fsdb.database.Database;
 import java.util.List;
 

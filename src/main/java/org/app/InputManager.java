@@ -1,11 +1,11 @@
-package org.example;
+package org.app;
 
 import org.fsdb.FileSystem;
 import org.fsdb.database.Database;
-import org.example.pojo.Album;
-import org.example.pojo.Artist;
-import org.example.pojo.MusicObject;
-import org.example.pojo.Song;
+import org.app.pojo.Album;
+import org.app.pojo.Artist;
+import org.app.pojo.MusicObject;
+import org.app.pojo.Song;
 
 import java.io.File;
 import java.util.*;

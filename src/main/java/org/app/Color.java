@@ -1,4 +1,4 @@
-package org.example;
+package org.app;
 
 public class Color {
     // Reset
