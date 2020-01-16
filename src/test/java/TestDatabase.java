@@ -1,20 +1,26 @@
 import org.fsdb.FileSystem;
 import org.fsdb.database.Database;
 import org.fsdb.database.query.Query;
-import org.fsdb.database.query.QueryAction;
 
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.Assume.*;
 
 public class TestDatabase {
-    static final String dbName = System.getenv("TEST_DB");
-    static final String subDir = "sub_dir";
-    final Database db = new Database();
+    private static final String dbName = System.getenv("TEST_DB");
+    private static final String subDir = "test";
+    private static final Database db = new Database();
+
+    @BeforeClass
+    public static void setup() {
+        db.create(dbName);
+    }
 
     @Test
     public void parseData() {
@@ -28,17 +34,17 @@ public class TestDatabase {
 
     @Test
     public void query() {
-        var result = db.executeQuery(new Query().from("test").where("id", "0").fetch());
+        var values = new HashMap<>(Map.of("id", "0", "name", "test"));
 
-        assertNotNull(result);
-        assertEquals(result.action, QueryAction.FETCH);
-    }
+        var createResult = db.executeQuery(new Query().from(subDir).create(values));
+        assertTrue(createResult.success);
 
-    @Test
-    public void createDatabaseAndSubDir() {
-        assumeNotNull(db);
-        assertTrue(db.create(dbName));
-        assertTrue(FileSystem.createDir(dbName + "/" + subDir, true));
+        var fetchResult = db.executeQuery(new Query().from(subDir).where("id", "0").fetch());
+        assertTrue(fetchResult.success);
+        assertEquals("test", fetchResult.data.get("name"));
+
+        var deleteResult = db.executeQuery(new Query().from(subDir).where("id", "0").delete());
+        assertTrue(deleteResult.success);
     }
 
     @AfterClass
