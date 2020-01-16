@@ -1,4 +1,4 @@
-package org.pojo;
+package org.example.pojo;
 
 public class MusicObject {
 

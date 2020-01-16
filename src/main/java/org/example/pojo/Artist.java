@@ -1,4 +1,4 @@
-package org.pojo;
+package org.example.pojo;
 
 import java.util.HashMap;
 

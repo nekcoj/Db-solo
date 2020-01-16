@@ -2,23 +2,26 @@ package org.example;
 
 import org.fsdb.FileSystem;
 import org.fsdb.database.Database;
-import org.pojo.Album;
-import org.pojo.Artist;
-import org.pojo.MusicObject;
-import org.pojo.Song;
+import org.example.pojo.Album;
+import org.example.pojo.Artist;
+import org.example.pojo.MusicObject;
+import org.example.pojo.Song;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.util.*;
 
 public class InputManager {
+    private static final int GLOBAL_SEARCH = 3;
+    private static final int EXIT = 4;
     private Scanner userInput;
     private Database database;
+    private ArrayList<MusicObject> searchResult;
 
 
     public InputManager(Database database) {
         this.database = database;
         this.userInput = new Scanner(System.in);
+
         init();
     }
 
@@ -28,15 +31,14 @@ public class InputManager {
             welcomeScreen();
             menuSelection = userChoice();
             userChosenAction(menuSelection);
-        } while (menuSelection != 4);
+        } while (menuSelection != 5);
     }
 
 
 
-    public static ArrayList<MusicObject> getDataList( String subPath, String search, Database db ){
+    public  ArrayList<MusicObject> getDataList( String subPath, String search, Database db ){
         String path = db.getDbName() + "/" + subPath;
         File[] fileArr = FileSystem.getDirFiles(path);
-        ArrayList<MusicObject> searchResult = new ArrayList<>();
         for (File f: fileArr) {
             String url = f.toString();
             String data = FileSystem.readFile(url);
@@ -64,14 +66,14 @@ public class InputManager {
         return searchResult;
     }
 
-    private static int getClass(MusicObject musicObject){
+    private  int getClass(MusicObject musicObject){
         if(musicObject.getClass().equals(Artist.class)) return 0;
         else if (musicObject.getClass().equals(Album.class)) return 1;
         else if (musicObject.getClass().equals(Song.class)) return 2;
         else return -1;
     }
 
-    private static MusicObject getNameOfData(String subPath, HashMap<String, String> dataMap) {
+    private  MusicObject getNameOfData(String subPath, HashMap<String, String> dataMap) {
         if(subPath.equals("artists")){
             return   new Artist(dataMap);
         }else if(subPath.equals("albums")){
@@ -102,7 +104,6 @@ public class InputManager {
         switch (userChoice){
             case 1: System.out.println("Sök");
               searchMenu();
-
                 break;
             case 2: System.out.println("Lägga till låt");
                 break;
@@ -117,6 +118,7 @@ public class InputManager {
 
 
     private void searchMenu(){
+        searchResult= new ArrayList<>();
         List<File> subFolder = Arrays.asList(FileSystem.getSubFolders(database.getDbName()));
         ArrayList<String> menuChoice = new ArrayList<>();
         for (File f: subFolder) {
@@ -127,17 +129,16 @@ public class InputManager {
             System.out.println((i + 1) + ". " + menuChoice.get(i));
         }
         System.out.println("4. search all.");
+        System.out.println("5. exit to main menu.");
 
         int choice = userChoice() -1;
-
+        if(choice == EXIT)return;
         System.out.println("Write search term");
         String search = userInput.next();
 
-        if(choice == 3){
-            globalSearch(menuChoice,search,database);
-        }else{
-            getDataList(menuChoice.get(choice),search,database);
-        }
+        if(choice == GLOBAL_SEARCH)globalSearch(menuChoice,search,database);
+        else getDataList(menuChoice.get(choice),search,database);
+
 
 
     }
