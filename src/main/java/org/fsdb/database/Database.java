@@ -1,14 +1,19 @@
 package org.fsdb.database;
 
+import com.github.cliftonlabs.json_simple.*;
 import org.fsdb.FileSystem;
 import org.fsdb.Util;
 import org.fsdb.database.query.Query;
 import org.fsdb.database.query.QueryResult;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
 
 public class Database {
     private String dbName;
@@ -16,6 +21,14 @@ public class Database {
     public boolean create(String name) {
         dbName = name;
         return FileSystem.createDir(name);
+    }
+
+    public void loadJsonFile(String filePath) {
+        createSubdirsFromJSON(List.of(filePath), dbName);
+    }
+
+    public void loadJsonFiles(List<String> filePaths) {
+        createSubdirsFromJSON(filePaths, dbName);
     }
 
     public QueryResult executeQuery(Query query) {
@@ -116,5 +129,46 @@ public class Database {
             }
         }
         return new Tuple<>(fileName, result);
+    }
+
+    private void createSubdirsFromJSON(List<String> pathNames, String dbDir) {
+        for (String path : pathNames) {
+            if (!FileSystem.exists(path)) continue;
+
+            String[] split = path.split("\\.");
+
+            List<String> pathList;
+            pathList = Arrays.asList(split);
+
+            String[] dbPathSplit = pathList.get(0).split("/");
+
+            List<String> getFilePath = Arrays.asList(dbPathSplit);
+            String filePath = dbDir + "/" + getFilePath.get(getFilePath.size() - 1);
+
+            if (!FileSystem.exists(filePath)) {
+                FileSystem.createDir(filePath);
+                createFileFromJSON(path, filePath);
+            }
+        }
+    }
+
+    private void createFileFromJSON(String filePath, String dirPath) {
+        try (FileReader fileReader = new FileReader(filePath)) {
+            JsonArray ja = (JsonArray)Jsoner.deserialize(fileReader);
+
+            for (Object ob : ja) {
+                JsonObject temp = (JsonObject) ob;
+                String fileName = temp.get("id").toString();
+
+                StringBuilder sb = new StringBuilder();
+                for (var entry : temp.entrySet())
+                    sb.append(String.format("%s=%s\n", entry.getKey(), entry.getValue()));
+
+                FileSystem.writeFile(dirPath + "/" + fileName, sb.toString());
+            }
+
+        } catch (IOException | JsonException e) {
+            e.printStackTrace();
+        }
     }
 }
