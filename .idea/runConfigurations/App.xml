@@ -1,11 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ExampleApp" type="Application" factoryName="Application">
+  <configuration default="false" name="App" type="Application" factoryName="Application">
     <envs>
-      <env name="EXAMPLE_DIR" value="example-db" />
+      <env name="APP_DB" value="app-db" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="org.example.Main" />
     <module name="fsdb" />
-    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="main.org.example.*" />

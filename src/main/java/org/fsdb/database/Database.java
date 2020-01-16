@@ -10,9 +10,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.fsdb.FileSystem.createDir;
-import static org.fsdb.FileSystem.writeFile;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +20,7 @@ public class Database {
 
     public boolean create(String name) {
         dbName = name;
-        return createDir(name);
+        return FileSystem.createDir(name);
     }
 
     public void loadJsonFile(String filePath) {
@@ -138,19 +135,23 @@ public class Database {
     }
 
     private void createSubdirsFromJSON(List<String> pathNames, String dbDir) {
-        for (String s : pathNames) {
-            String[] a = s.split("\\.");
+        for (String path : pathNames) {
+            if (!FileSystem.exists(path)) continue;
+
+            String[] split = path.split("\\.");
 
             List<String> pathList;
-            pathList = Arrays.asList(a);
+            pathList = Arrays.asList(split);
 
             String[] dbPathSplit = pathList.get(0).split("/");
 
             List<String> getFilePath = Arrays.asList(dbPathSplit);
             String filePath = dbDir + "/" + getFilePath.get(getFilePath.size() - 1);
 
-            createDir(filePath);
-            createFileFromJSON(s, filePath);
+            if (!FileSystem.exists(filePath)) {
+                FileSystem.createDir(filePath);
+                createFileFromJSON(path, filePath);
+            }
         }
     }
 
@@ -166,7 +167,7 @@ public class Database {
                 for (var entry : temp.entrySet())
                     sb.append(String.format("%s=%s\n", entry.getKey(), entry.getValue()));
 
-                writeFile(dirPath + "/" + fileName, sb.toString());
+                FileSystem.writeFile(dirPath + "/" + fileName, sb.toString());
             }
 
         } catch (IOException | JsonException e) {
