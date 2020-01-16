@@ -7,11 +7,12 @@ import org.app.pojo.Artist;
 import org.app.pojo.MusicObject;
 import org.app.pojo.Song;
 import org.fsdb.Util;
+import org.fsdb.query.Query;
 
 import java.io.File;
 import java.util.*;
 
-class InputManager {
+class App {
     private static final int GLOBAL_SEARCH = 3;
     private static final int EXIT = 4;
 
@@ -21,14 +22,20 @@ class InputManager {
 
     private Scanner userInput;
     private Database database;
-    private ArrayList<MusicObject> searchResult;
 
-    InputManager(Database database) {
-        this.database = database;
-        this.userInput = new Scanner(System.in);
+    App(String dbName) {
+        database = new Database();
+        database.create(dbName);
+
+        userInput = new Scanner(System.in);
     }
 
-    void showMenu() {
+    void init() {
+        List<String> jsonFiles = List.of("assets/artists.json", "assets/albums.json", "assets/songs.json");
+        database.loadJsonFiles(jsonFiles);
+    }
+
+    void show() {
         int menuSelection;
         do {
             System.out.print(
@@ -44,15 +51,15 @@ class InputManager {
         } while (menuSelection != 4);
     }
 
-    private ArrayList<MusicObject> getDataList(String subPath, String search, Database db) {
-        String path = db.getDbName() + "/" + subPath;
+    private ArrayList<MusicObject> getDataList(String subPath, String search) {
+        ArrayList<MusicObject> results = new ArrayList<>();
+        String path = database.getDbName() + "/" + subPath;
         File[] fileArr = FileSystem.getDirFiles(path);
 
-        int searchHits = 0;
         for (File file : Objects.requireNonNull(fileArr)) {
             String url = file.toString();
             String data = FileSystem.readFile(url);
-            HashMap<String, String> dataMap = db.deserializeData(data);
+            HashMap<String, String> dataMap = database.deserializeData(data);
             MusicObject result = getNameOfData(subPath, dataMap);
             String searchString = "";
 
@@ -65,17 +72,12 @@ class InputManager {
             } else if (getClass(result) == SONG) {
                 Song obj = (Song) result;
                 searchString = obj.getTitle();
-            } else System.out.println("Error no class defined");
-
-            if (searchString.toLowerCase().contains(search.toLowerCase())) {
-                System.out.println(searchString);
-                searchResult.add(result);
-                searchHits++;
             }
-        }
 
-        System.out.printf("Found %d %s \n", searchHits, searchHits > 1 ? subPath : subPath.substring(0, subPath.length() - 1));
-        return searchResult;
+            if (searchString.toLowerCase().contains(search.toLowerCase()))
+                results.add(result);
+        }
+       return results;
     }
 
     private int getClass(MusicObject musicObject) {
@@ -115,6 +117,20 @@ class InputManager {
                 break;
             case 3:
                 System.out.println("Remove\n----------");
+                System.out.print("Search for song to remove>  ");
+
+                var songs = getDataList("songs", userInput.next());
+                printResults(songs, true);
+
+                System.out.print("Enter index to remove> ");
+                int index = userInput.nextInt();
+
+                String searchId = String.valueOf(((Song) songs.get(index - 1)).getId());
+                var deleteResult = database.executeQuery(new Query().from("songs").where("id", searchId).delete());
+
+                if (deleteResult.success) System.out.println("Successfully removed song.");
+                else System.out.println("Could not remove song.");
+
                 break;
             case 4:
                 System.out.println("Goodbye :(");
@@ -126,8 +142,6 @@ class InputManager {
     }
 
     private void searchMenu() {
-        searchResult = new ArrayList<>();
-
         File[] subFolder = FileSystem.getSubFolders(database.getDbName());
         ArrayList<String> menuChoice = new ArrayList<>();
 
@@ -147,13 +161,45 @@ class InputManager {
         System.out.print("Search for> ");
         String search = userInput.next();
 
-        if (choice == GLOBAL_SEARCH) globalSearch(menuChoice, search, database);
-        else getDataList(menuChoice.get(choice), search, database);
+        ArrayList<MusicObject> results;
+        if (choice == GLOBAL_SEARCH) results = globalSearch(menuChoice, search);
+        else results = getDataList(menuChoice.get(choice), search);
+
+        printResults(results, false);
     }
 
-    private void globalSearch(ArrayList<String> menuChoice, String search, Database database) {
-        for (String choice : menuChoice) {
-            getDataList(choice, search, database);
+    private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
+        var artists = (Artist[]) results.stream().filter(x -> getClass(x) == ARTIST).toArray(Artist[]::new);
+        if (artists.length > 0) {
+            System.out.println(String.format("-- Artists (%d) --", artists.length));
+            for (int i = 0; i < artists.length; i++) {
+                if (printIndexed) System.out.println(String.format("[%d] %s", i + 1, artists[i].getName()));
+                else System.out.println(artists[i].getName());
+            }
         }
+        var albums = (Album[]) results.stream().filter(x -> getClass(x) == ALBUM).toArray(Album[]::new);
+        if (albums.length > 0) {
+            System.out.println(String.format("-- Albums (%d) --", albums.length));
+            for (int i = 0; i < albums.length; i++) {
+                if (printIndexed) System.out.println(String.format("[%d] %s", i + 1, albums[i].getName()));
+                else System.out.println(albums[i].getName());
+            }
+        }
+        var songs = (Song[]) results.stream().filter(x -> getClass(x) == SONG).toArray(Song[]::new);
+        if (songs.length > 0) {
+            System.out.println(String.format("-- Songs (%d) --", songs.length));
+            for (int i = 0; i < songs.length; i++) {
+                if (printIndexed) System.out.println(String.format("[%d] %s", i + 1, songs[i].getTitle()));
+                else System.out.println(songs[i].getTitle());
+            }
+        }
+    }
+
+    private ArrayList<MusicObject> globalSearch(ArrayList<String> menuChoice, String search) {
+        var totalResults = new ArrayList<MusicObject>();
+        for (String choice : menuChoice) {
+            totalResults.addAll(getDataList(choice, search));
+        }
+        return totalResults;
     }
 }
