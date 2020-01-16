@@ -1,6 +1,7 @@
-import org.fsdb.FileSystem;
-import org.fsdb.database.Database;
-import org.fsdb.database.query.Query;
+package fsdb;
+
+import org.fsdb.Database;
+import org.fsdb.query.Query;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
