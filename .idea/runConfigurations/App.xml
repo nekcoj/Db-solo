@@ -3,7 +3,7 @@
     <envs>
       <env name="APP_DB" value="app-db" />
     </envs>
-    <option name="MAIN_CLASS_NAME" value="org.example.Main" />
+    <option name="MAIN_CLASS_NAME" value="org.app.Main" />
     <module name="fsdb" />
     <extension name="coverage">
       <pattern>

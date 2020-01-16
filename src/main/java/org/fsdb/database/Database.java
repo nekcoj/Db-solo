@@ -12,8 +12,8 @@ import java.util.Arrays;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class Database {
     private String dbName;
@@ -30,6 +30,9 @@ public class Database {
     public void loadJsonFiles(List<String> filePaths) {
         createSubdirsFromJSON(filePaths, dbName);
     }
+
+
+
 
     public QueryResult executeQuery(Query query) {
         QueryResult result;
@@ -170,5 +173,9 @@ public class Database {
         } catch (IOException | JsonException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getDbName() {
+        return dbName;
     }
 }

@@ -1,3 +1,5 @@
+package fsdb;
+
 import org.fsdb.FileSystem;
 import org.fsdb.database.Database;
 import org.fsdb.database.query.Query;
