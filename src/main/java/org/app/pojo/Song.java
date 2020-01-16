@@ -2,13 +2,12 @@ package org.app.pojo;
 
 import java.util.HashMap;
 
-public class Song extends MusicObject{
-     private int id;
-     private int album;
-     private String title;
-     private int track;
-     private String genre;
-
+public class Song implements MusicObject {
+    private int id;
+    private int album;
+    private String title;
+    private int track;
+    private String genre;
 
     public Song(int id, int album, String title, int track, String genre) {
         this.id = id;
@@ -18,15 +17,17 @@ public class Song extends MusicObject{
         this.genre = genre;
     }
 
-    public Song(HashMap<String,String> queryResult) {
+    public Song(HashMap<String, String> queryResult) {
         this.id = Integer.parseInt(queryResult.get("id"));
         this.album = Integer.parseInt(queryResult.get("album"));
         this.title = queryResult.get("title");
         this.track = Integer.parseInt(queryResult.get("track"));
         this.genre = queryResult.get("genre");
+
     }
-    public HashMap mapObject(){
-        HashMap<String, String> convertedSong = new HashMap<>();
+
+    public HashMap<String, String> mapObject() {
+        var convertedSong = new HashMap<String, String>();
         convertedSong.put("id", String.valueOf(this.id));
         convertedSong.put("album", String.valueOf(this.album));
         convertedSong.put("title", this.title);
@@ -34,7 +35,6 @@ public class Song extends MusicObject{
         convertedSong.put("genre", this.genre);
         return convertedSong;
     }
-
 
     public int getId() {
         return id;

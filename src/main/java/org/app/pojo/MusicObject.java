@@ -1,8 +1,5 @@
 package org.app.pojo;
 
-public class MusicObject {
-
-
-
-
+public interface MusicObject {
+    int id = 0;
 }

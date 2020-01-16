@@ -1,4 +1,4 @@
-package org.fsdb.database;
+package org.fsdb.classes;
 
 public class Tuple<A, B> {
     public A first;

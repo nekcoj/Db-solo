@@ -2,8 +2,7 @@ package org.app.pojo;
 
 import java.util.HashMap;
 
-public class Artist extends MusicObject{
-
+public class Artist implements MusicObject {
     private int id;
     private String name;
 
@@ -11,15 +10,15 @@ public class Artist extends MusicObject{
         this.id = id;
         this.name = name;
     }
-    public HashMap mapObject(){
-        HashMap<String, String> convertedArtist = new HashMap<>();
+
+    public HashMap<String, String> mapObject() {
+        var convertedArtist = new HashMap<String, String>();
         convertedArtist.put("id", String.valueOf(this.id));
         convertedArtist.put("name", this.name);
         return convertedArtist;
     }
 
-
-    public Artist(HashMap<String,String> queryResult) {
+    public Artist(HashMap<String, String> queryResult) {
         this.id = Integer.parseInt(queryResult.get("id"));
         this.name = queryResult.get("name");
     }

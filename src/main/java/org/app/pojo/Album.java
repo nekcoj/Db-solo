@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Album  extends MusicObject{
-
-     private int  id;
-     private int artist;
-     private String name;
-     private int year;
-     private ArrayList<Integer> songIds;
+public class Album implements MusicObject {
+    private int id;
+    private int artist;
+    private String name;
+    private int year;
+    private ArrayList<Integer> songIds;
 
     public Album(int id, int artist, String name, int year) {
         this.id = id;
@@ -19,31 +18,30 @@ public class Album  extends MusicObject{
         this.name = name;
         this.year = year;
         this.songIds = new ArrayList<>();
-
-
     }
 
-    public Album(HashMap<String,String> queryResult) {
-        this.id = Integer.parseInt(queryResult.get("id")) ;
+    public Album(HashMap<String, String> queryResult) {
+        this.id = Integer.parseInt(queryResult.get("id"));
         this.artist = Integer.parseInt(queryResult.get("artist"));
         this.name = queryResult.get("name");
-        this.year =  Integer.parseInt(queryResult.get("year"));
+        this.year = Integer.parseInt(queryResult.get("year"));
         //this.songIds = parseToList(queryResult.get("&songIds"));
     }
-    public HashMap mapObject(){
-        HashMap<String, String> convertedAlbum = new HashMap<>();
+
+    public HashMap<String, String> mapObject() {
+        var convertedAlbum = new HashMap<String, String>();
         convertedAlbum.put("id", String.valueOf(this.id));
         convertedAlbum.put("artist", String.valueOf(this.artist));
         convertedAlbum.put("name", this.name);
         convertedAlbum.put("year", String.valueOf(this.year));
-        convertedAlbum.put("&songIds",this.songIds.toString().replaceAll("\\s+",""));
+        convertedAlbum.put("&songIds", this.songIds.toString().replaceAll("\\s+", ""));
         return convertedAlbum;
     }
 
-    private static ArrayList<Integer> parseToList(String songIds){
-        songIds = songIds.substring(1, songIds.length() -1);
+    private static ArrayList<Integer> parseToList(String songIds) {
+        songIds = songIds.substring(1, songIds.length() - 1);
         return (ArrayList<Integer>) Stream.of(songIds.split(","))
-                .map (elem -> Integer.parseInt(new String(elem)) )
+                .map(Integer::parseInt)
                 .collect(Collectors.toList());
     }
 

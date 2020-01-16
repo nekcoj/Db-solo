@@ -1,10 +1,9 @@
-package org.fsdb.database;
+package org.fsdb;
 
 import com.github.cliftonlabs.json_simple.*;
-import org.fsdb.FileSystem;
-import org.fsdb.Util;
-import org.fsdb.database.query.Query;
-import org.fsdb.database.query.QueryResult;
+import org.fsdb.classes.Tuple;
+import org.fsdb.query.Query;
+import org.fsdb.query.QueryResult;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,8 +29,6 @@ public class Database {
     public void loadJsonFiles(List<String> filePaths) {
         createSubdirsFromJSON(filePaths, dbName);
     }
-
-
 
 
     public QueryResult executeQuery(Query query) {
@@ -107,7 +104,7 @@ public class Database {
         return values;
     }
 
-    public String serializeData(HashMap<String, String> data) {
+    private String serializeData(HashMap<String, String> data) {
         StringBuilder str = new StringBuilder();
         for (Map.Entry<String, String> entry : data.entrySet()) {
             str.append(String.format("%s=%s\n", entry.getKey(), entry.getValue()));
@@ -157,7 +154,7 @@ public class Database {
 
     private void createFileFromJSON(String filePath, String dirPath) {
         try (FileReader fileReader = new FileReader(filePath)) {
-            JsonArray ja = (JsonArray)Jsoner.deserialize(fileReader);
+            JsonArray ja = (JsonArray) Jsoner.deserialize(fileReader);
 
             for (Object ob : ja) {
                 JsonObject temp = (JsonObject) ob;
