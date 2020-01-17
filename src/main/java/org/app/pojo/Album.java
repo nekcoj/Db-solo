@@ -84,6 +84,4 @@ public class Album implements MusicObject {
     public void setSongIds(ArrayList<Integer> songIds) {
         this.songIds = songIds;
     }
-
-
 }
