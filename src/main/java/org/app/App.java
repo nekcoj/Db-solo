@@ -6,6 +6,7 @@ import org.app.pojo.Album;
 import org.app.pojo.Artist;
 import org.app.pojo.MusicObject;
 import org.app.pojo.Song;
+import org.fsdb.Input;
 import org.fsdb.Util;
 import org.fsdb.query.Query;
 
@@ -20,14 +21,11 @@ class App {
     private static final int ALBUM = 1;
     private static final int SONG = 2;
 
-    private Scanner userInput;
     private Database database;
 
     App(String dbName) {
         database = new Database();
         database.create(dbName);
-
-        userInput = new Scanner(System.in);
     }
 
     void init() {
@@ -53,16 +51,18 @@ class App {
 
     private ArrayList<MusicObject> getDataList(String subPath, String search) {
         ArrayList<MusicObject> results = new ArrayList<>();
+
         String path = database.getDbName() + "/" + subPath;
         File[] fileArr = FileSystem.getDirFiles(path);
 
         for (File file : Objects.requireNonNull(fileArr)) {
             String url = file.toString();
             String data = FileSystem.readFile(url);
+
             HashMap<String, String> dataMap = database.deserializeData(data);
             MusicObject result = getNameOfData(subPath, dataMap);
-            String searchString = "";
 
+            String searchString = "";
             if (getClass(result) == ARTIST) {
                 Artist obj = (Artist) result;
                 searchString = obj.getName();
@@ -98,8 +98,9 @@ class App {
     }
 
     private int userChoice() {
+        // prompt again on if Integer.parseInt throws NumberFormatException inside getInt()
         try {
-            return Integer.parseInt(userInput.next());
+            return Input.getInt();
         } catch (Exception e) {
             System.out.println("Invalid menu choice, try again!");
             return userChoice();
@@ -118,20 +119,7 @@ class App {
                 break;
             case 3:
                 System.out.println("Remove\n----------");
-                System.out.print("Search for song to remove>  ");
-
-                var songs = getDataList("songs", userInput.next());
-                printResults(songs, true);
-
-                System.out.print("Enter index to remove> ");
-                int index = userInput.nextInt();
-
-                String searchId = String.valueOf(((Song) songs.get(index - 1)).getId());
-                var deleteResult = database.executeQuery(new Query().from("songs").where("id", searchId).delete());
-
-                if (deleteResult.success) System.out.println("Successfully removed song.");
-                else System.out.println("Could not remove song.");
-
+                removeSong();
                 break;
             case 4:
                 System.out.println("Goodbye :(");
@@ -142,11 +130,29 @@ class App {
         }
     }
 
+    private void removeSong() {
+        System.out.print("Search for song to remove>  ");
+
+        var songs = getDataList("songs", Input.getLine());
+        printResults(songs, true);
+
+        System.out.print("Enter index to remove> ");
+        int index = Input.getInt();
+
+        String searchId = String.valueOf((songs.get(index - 1)).getId());
+        var deleteResult = database.executeQuery(new Query().from("songs").where("id", searchId).delete());
+
+        if (deleteResult.success) System.out.println("Successfully removed song.");
+        else System.out.println("Could not remove song.");
+    }
+
     private void addSong() {
+        System.out.print("Write song name to add> ");
+
+        String songName = Input.getLine();
+        System.out.println(songName);
+
         String path = "songs";
-        //var result = new ArrayList<MusicObject>();
-        System.out.println("Write song name to add");
-        String songName = userInput.next();
         getDataList(path, songName);
 
         Song song = new Song(generateID(path), 9000, songName, 9000, "Metal");
@@ -154,7 +160,7 @@ class App {
         database.executeQuery(new Query().from(path).create(mapSong));
 
         System.out.printf("%s %s has been created!\n", path.substring(0, path.length() - 1), songName);
-        //printResults(result, false);
+
         //TODO
         // Search/Create Artist (Create Artist method) (int id, int album, String title, int track, String genre)
         // Search/Create Album  (Create Album method)
@@ -188,7 +194,7 @@ class App {
         if (choice == EXIT) return;
 
         System.out.print("Search for> ");
-        String search = userInput.next();
+        String search = Input.getLine();
 
         ArrayList<MusicObject> results;
         if (choice == GLOBAL_SEARCH) results = globalSearch(menuChoice, search);
