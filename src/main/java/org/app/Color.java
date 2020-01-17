@@ -78,7 +78,7 @@ public class Color {
 
     //System.out.println(ANSI_RED + "This text is red!" + ANSI_RESET);
 
-    static void colorExample(){
+   public static void colorExample(){
         System.out.println(GREEN_BACKGROUND + "This text has a green background but default text!" + RESET);
         System.out.println(RED + "This text has red text but a default background!" + RESET);
         System.out.println(GREEN_BACKGROUND + RED + "This text has a green background and red text!" + RESET);
