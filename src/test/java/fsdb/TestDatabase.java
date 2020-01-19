@@ -20,7 +20,7 @@ public class TestDatabase {
 
     @BeforeClass
     public static void setup() {
-        db.create(dbName);
+        assertTrue(db.create(dbName));
     }
 
     @Test

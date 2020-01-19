@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class TestFileSystem {
-    String dbName = System.getenv("TEST_DB");
     String testFile = "test.txt";
 
     String outputText = "testing\n12345\ncontent";

@@ -36,13 +36,12 @@ class App {
     void show() {
         int menuSelection;
         do {
-            System.out.print(
-                    "Menu\n----------\n" +
-                            "1) Search\n" +
-                            "2) Add\n" +
-                            "3) Remove\n" +
-                            "4) Quit\n" +
-                            "> "
+            System.out.print("Menu\n----------\n" +
+                    "1) Search\n" +
+                    "2) Add\n" +
+                    "3) Remove\n" +
+                    "4) Quit\n" +
+                    "> "
             );
             menuSelection = userChoice();
             userChosenAction(menuSelection);
@@ -206,25 +205,25 @@ class App {
     private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
         var artists = (Artist[]) results.stream().filter(x -> getClass(x) == ARTIST).toArray(Artist[]::new);
         if (artists.length > 0) {
-            System.out.println(String.format("-- Artists (%d) --", artists.length));
+            System.out.printf("-- Artists (%d) --\n", artists.length);
             for (int i = 0; i < artists.length; i++) {
-                if (printIndexed) System.out.println(String.format("[%d] %s", i + 1, artists[i].getName()));
+                if (printIndexed) System.out.printf("[%d] %s\n", i + 1, artists[i].getName());
                 else System.out.println(artists[i].getName());
             }
         }
         var albums = (Album[]) results.stream().filter(x -> getClass(x) == ALBUM).toArray(Album[]::new);
         if (albums.length > 0) {
-            System.out.println(String.format("-- Albums (%d) --", albums.length));
+            System.out.printf("-- Albums (%d) --\n", albums.length);
             for (int i = 0; i < albums.length; i++) {
-                if (printIndexed) System.out.println(String.format("[%d] %s", i + 1, albums[i].getName()));
+                if (printIndexed) System.out.printf("[%d] %s\n", i + 1, albums[i].getName());
                 else System.out.println(albums[i].getName());
             }
         }
         var songs = (Song[]) results.stream().filter(x -> getClass(x) == SONG).toArray(Song[]::new);
         if (songs.length > 0) {
-            System.out.println(String.format("-- Songs (%d) --", songs.length));
+            System.out.printf("-- Songs (%d) --\n", songs.length);
             for (int i = 0; i < songs.length; i++) {
-                if (printIndexed) System.out.println(String.format("[%d] %s", i + 1, songs[i].getTitle()));
+                if (printIndexed) System.out.printf("[%d] %s\n", i + 1, songs[i].getTitle());
                 else System.out.println(songs[i].getTitle());
             }
         }
