@@ -154,7 +154,7 @@ class App {
         String path = "songs";
         getDataList(path, songName);
 
-        Song song = new Song(generateID(path), 9000, songName, 9000, "Metal");
+        Song song = new Song(generateID(path), 9000, songName, 9000, "Metal",9000);
         HashMap<String, String> mapSong = song.mapObject();
         database.executeQuery(new Query().from(path).create(mapSong));
 
