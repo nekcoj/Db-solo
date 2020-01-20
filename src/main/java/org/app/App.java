@@ -232,6 +232,8 @@ class App {
                 if (printIndexed) System.out.printf("[%d] %s\n", i + 1, artists[i].getName());
                 else System.out.println(artists[i].getName());
             }
+        } else {
+            System.out.printf("No artists (%d) found.\n", artists.length);
         }
         var albums = (Album[]) results.stream().filter(x -> getClass(x) == ALBUM).toArray(Album[]::new);
         if (albums.length > 0) {
@@ -240,6 +242,8 @@ class App {
                 if (printIndexed) System.out.printf("[%d] %s\n", i + 1, albums[i].getName());
                 else System.out.println(albums[i].getName());
             }
+        } else {
+            System.out.printf("No albums (%d) found.\n", albums.length);
         }
         var songs = (Song[]) results.stream().filter(x -> getClass(x) == SONG).toArray(Song[]::new);
         if (songs.length > 0) {
@@ -248,6 +252,8 @@ class App {
                 if (printIndexed) System.out.printf("[%d] %s\n", i + 1, songs[i].getTitle());
                 else System.out.println(songs[i].getTitle());
             }
+        } else {
+            System.out.printf("No songs (%d) found.\n", songs.length);
         }
     }
 
