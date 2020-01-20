@@ -30,7 +30,6 @@ public class Artist implements MusicObject {
     }
 
     private static ArrayList<Integer> parseToList(String songIds) {
-        System.out.println(songIds);
         songIds = songIds.substring(1, songIds.length() - 1);
         return songIds.length() > 0 ? (ArrayList<Integer>) Stream.of(songIds.split(","))
                 .map(var -> Integer.valueOf(var.replaceAll("\\s","")))
