@@ -123,7 +123,8 @@ class App {
                 break;
             case 4:
                 System.out.println("Edit\n----------");
-                editSong();
+                printEditMenu();
+                editMenuChoice(userChoice());
                 break;
             case 5:
                 System.out.println("Goodbye :(");
@@ -134,6 +135,33 @@ class App {
         }
     }
 
+    private void printEditMenu(){
+        System.out.print("Menu\n----------\n" +
+                "1) Edit song\n" +
+                "2) Edit album\n" +
+                "3) Edit artist\n" +
+                "4) Back to main menu\n" +
+                "> ");
+    }
+    private void editMenuChoice(int userChoice) {
+        switch (userChoice) {
+            case 1:
+                System.out.println("Search\n----------");
+                editSong();
+                break;
+            case 2:
+                System.out.println("Add\n----------");
+                editAlbum();
+                break;
+            case 3:
+                System.out.println("Remove\n----------");
+                //editArtist();
+                break;
+            case 4:
+                System.out.println("Edit\n----------");
+                break;
+        }
+    }
     private void removeSong() {
         System.out.print("Search for song to remove>  ");
 
@@ -166,7 +194,23 @@ class App {
         if (editResult.success) System.out.printf("Successfully edited song, new song title is: %s\n", newSongTitle);
         else System.out.println("Could not edit song.");
     }
+    private void editAlbum() {
+        System.out.print("Search for album to edit>  ");
 
+        var albums = getDataList("albums", Input.getLine());
+        printResults(albums, true);
+
+        System.out.print("Enter index to edit> ");
+        int index = Input.getInt();
+
+        String searchId = String.valueOf((albums.get(index - 1)).getId());
+        System.out.print("Enter new album title> ");
+        String newAlbumTitle = Input.getLine();
+        var editResult = database.executeQuery(new Query().from("albums").where("id", searchId).update("name", newAlbumTitle));
+        //editResult.data.get("title");
+        if (editResult.success) System.out.printf("Successfully edited album, new album title is: %s\n", newAlbumTitle);
+        else System.out.println("Could not edit album.");
+    }
     private void addSong() {
         System.out.print("Write song name to add> ");
 
