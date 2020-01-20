@@ -40,12 +40,13 @@ class App {
                     "1) Search\n" +
                     "2) Add\n" +
                     "3) Remove\n" +
-                    "4) Quit\n" +
+                    "4) Edit\n" +
+                    "5) Quit\n" +
                     "> "
             );
             menuSelection = userChoice();
             userChosenAction(menuSelection);
-        } while (menuSelection != 4);
+        } while (menuSelection != 5);
     }
 
     private ArrayList<MusicObject> getDataList(String subPath, String search) {
@@ -121,6 +122,10 @@ class App {
                 removeSong();
                 break;
             case 4:
+                System.out.println("Edit\n----------");
+                editSong();
+                break;
+            case 5:
                 System.out.println("Goodbye :(");
                 break;
             default:
@@ -143,6 +148,23 @@ class App {
 
         if (deleteResult.success) System.out.println("Successfully removed song.");
         else System.out.println("Could not remove song.");
+    }
+    private void editSong() {
+        System.out.print("Search for song to edit>  ");
+
+        var songs = getDataList("songs", Input.getLine());
+        printResults(songs, true);
+
+        System.out.print("Enter index to edit> ");
+        int index = Input.getInt();
+
+        String searchId = String.valueOf((songs.get(index - 1)).getId());
+        System.out.print("Enter new song title> ");
+        String newSongTitle = Input.getLine();
+        var editResult = database.executeQuery(new Query().from("songs").where("id", searchId).update("title", newSongTitle));
+        //editResult.data.get("title");
+        if (editResult.success) System.out.printf("Successfully edited song, new song title is: %s\n", newSongTitle);
+        else System.out.println("Could not edit song.");
     }
 
     private void addSong() {
