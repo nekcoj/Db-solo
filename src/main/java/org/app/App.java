@@ -146,19 +146,19 @@ class App {
     private void editMenuChoice(int userChoice) {
         switch (userChoice) {
             case 1:
-                System.out.println("Search\n----------");
+                System.out.println("Edit song\n----------");
                 editSong();
                 break;
             case 2:
-                System.out.println("Add\n----------");
+                System.out.println("Edit album\n----------");
                 editAlbum();
                 break;
             case 3:
-                System.out.println("Remove\n----------");
-                //editArtist();
+                System.out.println("Edit artist\n----------");
+                editArtist();
                 break;
             case 4:
-                System.out.println("Edit\n----------");
+                System.out.println("Returning to main menu\n----------");
                 break;
         }
     }
@@ -210,6 +210,23 @@ class App {
         //editResult.data.get("title");
         if (editResult.success) System.out.printf("Successfully edited album, new album title is: %s\n", newAlbumTitle);
         else System.out.println("Could not edit album.");
+    }
+    private void editArtist() {
+        System.out.print("Search for artist to edit>  ");
+
+        var artists = getDataList("artists", Input.getLine());
+        printResults(artists, true);
+
+        System.out.print("Enter index to edit> ");
+        int index = Input.getInt();
+
+        String searchId = String.valueOf((artists.get(index - 1)).getId());
+        System.out.print("Enter new artist name> ");
+        String newArtistName = Input.getLine();
+        var editResult = database.executeQuery(new Query().from("artists").where("id", searchId).update("name", newArtistName));
+        //editResult.data.get("title");
+        if (editResult.success) System.out.printf("Successfully edited artist, new artist name is: %s\n", newArtistName);
+        else System.out.println("Could not edit artist.");
     }
     private void addSong() {
         System.out.print("Write song name to add> ");
