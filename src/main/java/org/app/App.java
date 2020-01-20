@@ -140,7 +140,8 @@ class App {
                 "1) Edit song\n" +
                 "2) Edit album\n" +
                 "3) Edit artist\n" +
-                "4) Back to main menu\n" +
+                "4) Edit genre\n" +
+                "5) Back to main menu\n" +
                 "> ");
     }
     private void editMenuChoice(int userChoice) {
@@ -158,6 +159,10 @@ class App {
                 editArtist();
                 break;
             case 4:
+                System.out.println("Edit genre\n----------");
+                editGenre();
+                break;
+            case 5:
                 System.out.println("Returning to main menu\n----------");
                 break;
         }
@@ -194,15 +199,27 @@ class App {
         if (editResult.success) System.out.printf("Successfully edited song, new song title is: %s\n", newSongTitle);
         else System.out.println("Could not edit song.");
     }
-    private void editAlbum() {
-        System.out.print("Search for album to edit>  ");
-
-        var albums = getDataList("albums", Input.getLine());
-        printResults(albums, true);
-
+    private void editGenre() {
+        System.out.print("Search for song to edit genre of>  ");
+        var songs = getDataList("songs", Input.getLine());
+        printResults(songs, true);
         System.out.print("Enter index to edit> ");
         int index = Input.getInt();
-
+        String searchId = String.valueOf((songs.get(index - 1)).getId());
+        System.out.print("Enter new song genre> ");
+        String newGenre = Input.getLine();
+        var editResult = database.executeQuery(new Query().from("songs").where("id", searchId).update("genres", newGenre));
+        var fetchResult = database.executeQuery((new Query().from("songs").where("id", searchId).fetch()));
+        var songTitle = fetchResult.data.get("title");
+        if (editResult.success) System.out.printf("Successfully edited song, new genre of %s is: %s\n", songTitle, newGenre);
+        else System.out.println("Could not edit song.");
+    }
+    private void editAlbum() {
+        System.out.print("Search for album to edit>  ");
+        var albums = getDataList("albums", Input.getLine());
+        printResults(albums, true);
+        System.out.print("Enter index to edit> ");
+        int index = Input.getInt();
         String searchId = String.valueOf((albums.get(index - 1)).getId());
         System.out.print("Enter new album title> ");
         String newAlbumTitle = Input.getLine();
