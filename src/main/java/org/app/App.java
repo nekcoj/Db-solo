@@ -40,12 +40,13 @@ class App {
                     "1) Search\n" +
                     "2) Add\n" +
                     "3) Remove\n" +
-                    "4) Quit\n" +
+                    "4) Edit\n" +
+                    "5) Quit\n" +
                     "> "
             );
             menuSelection = userChoice();
             userChosenAction(menuSelection);
-        } while (menuSelection != 4);
+        } while (menuSelection != 5);
     }
 
     private ArrayList<MusicObject> getDataList(String subPath, String search) {
@@ -121,6 +122,11 @@ class App {
                 removeSong();
                 break;
             case 4:
+                System.out.println("Edit\n----------");
+                printEditMenu();
+                editMenuChoice(userChoice());
+                break;
+            case 5:
                 System.out.println("Goodbye :(");
                 break;
             default:
@@ -129,6 +135,38 @@ class App {
         }
     }
 
+    private void printEditMenu(){
+        System.out.print("Menu\n----------\n" +
+                "1) Edit song\n" +
+                "2) Edit album\n" +
+                "3) Edit artist\n" +
+                "4) Edit genre\n" +
+                "5) Back to main menu\n" +
+                "> ");
+    }
+    private void editMenuChoice(int userChoice) {
+        switch (userChoice) {
+            case 1:
+                System.out.println("Edit song\n----------");
+                editSong();
+                break;
+            case 2:
+                System.out.println("Edit album\n----------");
+                editAlbum();
+                break;
+            case 3:
+                System.out.println("Edit artist\n----------");
+                editArtist();
+                break;
+            case 4:
+                System.out.println("Edit genre\n----------");
+                editGenre();
+                break;
+            case 5:
+                System.out.println("Returning to main menu\n----------");
+                break;
+        }
+    }
     private void removeSong() {
         System.out.print("Search for song to remove>  ");
 
@@ -144,7 +182,69 @@ class App {
         if (deleteResult.success) System.out.println("Successfully removed song.");
         else System.out.println("Could not remove song.");
     }
+    private void editSong() {
+        System.out.print("Search for song to edit>  ");
 
+        var songs = getDataList("songs", Input.getLine());
+        printResults(songs, true);
+
+        System.out.print("Enter index to edit> ");
+        int index = Input.getInt();
+
+        String searchId = String.valueOf((songs.get(index - 1)).getId());
+        System.out.print("Enter new song title> ");
+        String newSongTitle = Input.getLine();
+        var editResult = database.executeQuery(new Query().from("songs").where("id", searchId).update("title", newSongTitle));
+        //editResult.data.get("title");
+        if (editResult.success) System.out.printf("Successfully edited song, new song title is: %s\n", newSongTitle);
+        else System.out.println("Could not edit song.");
+    }
+    private void editGenre() {
+        System.out.print("Search for song to edit genre of>  ");
+        var songs = getDataList("songs", Input.getLine());
+        printResults(songs, true);
+        System.out.print("Enter index to edit> ");
+        int index = Input.getInt();
+        String searchId = String.valueOf((songs.get(index - 1)).getId());
+        System.out.print("Enter new song genre> ");
+        String newGenre = Input.getLine();
+        var editResult = database.executeQuery(new Query().from("songs").where("id", searchId).update("genres", newGenre));
+        var fetchResult = database.executeQuery((new Query().from("songs").where("id", searchId).fetch()));
+        var songTitle = fetchResult.data.get("title");
+        if (editResult.success) System.out.printf("Successfully edited song, new genre of %s is: %s\n", songTitle, newGenre);
+        else System.out.println("Could not edit song.");
+    }
+    private void editAlbum() {
+        System.out.print("Search for album to edit>  ");
+        var albums = getDataList("albums", Input.getLine());
+        printResults(albums, true);
+        System.out.print("Enter index to edit> ");
+        int index = Input.getInt();
+        String searchId = String.valueOf((albums.get(index - 1)).getId());
+        System.out.print("Enter new album title> ");
+        String newAlbumTitle = Input.getLine();
+        var editResult = database.executeQuery(new Query().from("albums").where("id", searchId).update("name", newAlbumTitle));
+        //editResult.data.get("title");
+        if (editResult.success) System.out.printf("Successfully edited album, new album title is: %s\n", newAlbumTitle);
+        else System.out.println("Could not edit album.");
+    }
+    private void editArtist() {
+        System.out.print("Search for artist to edit>  ");
+
+        var artists = getDataList("artists", Input.getLine());
+        printResults(artists, true);
+
+        System.out.print("Enter index to edit> ");
+        int index = Input.getInt();
+
+        String searchId = String.valueOf((artists.get(index - 1)).getId());
+        System.out.print("Enter new artist name> ");
+        String newArtistName = Input.getLine();
+        var editResult = database.executeQuery(new Query().from("artists").where("id", searchId).update("name", newArtistName));
+        //editResult.data.get("title");
+        if (editResult.success) System.out.printf("Successfully edited artist, new artist name is: %s\n", newArtistName);
+        else System.out.println("Could not edit artist.");
+    }
     private void addSong() {
         System.out.print("Write song name to add> ");
 
@@ -210,6 +310,8 @@ class App {
                 if (printIndexed) System.out.printf("[%d] %s\n", i + 1, artists[i].getName());
                 else System.out.println(artists[i].getName());
             }
+        } else {
+            System.out.println("No artists found.\n");
         }
         var albums = (Album[]) results.stream().filter(x -> getClass(x) == ALBUM).toArray(Album[]::new);
         if (albums.length > 0) {
@@ -218,6 +320,8 @@ class App {
                 if (printIndexed) System.out.printf("[%d] %s\n", i + 1, albums[i].getName());
                 else System.out.println(albums[i].getName());
             }
+        } else {
+            System.out.println("No albums found.\n");
         }
         var songs = (Song[]) results.stream().filter(x -> getClass(x) == SONG).toArray(Song[]::new);
         if (songs.length > 0) {
@@ -226,6 +330,8 @@ class App {
                 if (printIndexed) System.out.printf("[%d] %s\n", i + 1, songs[i].getTitle());
                 else System.out.println(songs[i].getTitle());
             }
+        } else {
+            System.out.println("No songs found.\n");
         }
     }
 
