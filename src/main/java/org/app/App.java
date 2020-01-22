@@ -12,6 +12,7 @@ import org.fsdb.classes.Tuple;
 import org.fsdb.query.Query;
 
 import java.io.File;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -377,27 +378,50 @@ class App {
 
     private Album addAlbum(int artistId){
         var path = "albums";
-        System.out.print("What's the album name? ");
-        String albumInput = Input.getLine();
-        var albums = getDataList(path, albumInput);
 
+        var albums = getAlbumList(artistId);
+        Album album = new Album();
         printResults(albums, true);
         System.out.println("Are any of these the requested albums?> ");
         System.out.println("If yes, enter index to select> ");
-        System.out.println("Else, press 0 to create the album: " + Color.printAlbumColor(albumInput));
+        System.out.println("Else, enter album name");
+        String albumInput = Input.getLine();
+           int index = -1;
+            try {
+                index = Integer.parseInt(albumInput);
+            } catch(NumberFormatException n){
+                System.out.println("What year was the album released?");
+                int year = Input.getInt();
+                album = new Album(generateID(path), artistId,albumInput,year);
+            }
+        //System.out.println("Press 0 to create the album: " + Color.printAlbumColor(albumInput));
 
-        int index = Input.getInt();
-        Album album;
-
-        if (index == 0){
-            System.out.println("What year was the album released?");
-            int year = Input.getInt();
-            album = new Album(generateID(path), artistId,albumInput,year);
-        } else {
-            album = (Album) albums.get(index-1);
+       if (index !=-1){
+           album = (Album) albums.get(index-1);
         }
         database.executeQuery(new Query().from(path).create(album.mapObject()));
         return album;
+    }
+
+    private ArrayList<MusicObject> getAlbumList(int artistId) {
+        ArrayList<MusicObject> results = new ArrayList<>();
+        String albumUrl = "albums";
+        String path = database.getDbName() + "/" + albumUrl;
+        File[] fileArr = FileSystem.getDirFiles(path);
+        for (File file : Objects.requireNonNull(fileArr)) {
+            String url = file.toString();
+            String data = FileSystem.readFile(url);
+
+            HashMap<String, String> dataMap = database.deserializeData(data);
+            MusicObject result = getNameOfData(albumUrl, dataMap);
+            Album album = (Album) result;
+            if (artistId == album.getArtist()) {
+                results.add(result);
+            }
+
+        }
+        System.out.println(results.size() + " Hits");
+        return results;
     }
 
 
