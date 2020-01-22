@@ -240,7 +240,7 @@ class App {
 
     private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
         int index = 0;
-        var artists = (Artist[])results.stream().filter(x -> getClass(x) == ARTIST).toArray(Artist[]::new);
+        var artists = (Artist[])results.stream().filter(a -> getClass(a) == ARTIST).toArray(Artist[]::new);
         Arrays.sort(artists, ARTIST_COMPARATOR);
         if (artists.length > 0) {
             System.out.printf("-- Artists (%d) --\n", artists.length);
@@ -249,7 +249,7 @@ class App {
                 else System.out.println(artists[i].getName());
             }
         }
-        var albums = (Album[]) results.stream().filter(x -> getClass(x) == ALBUM).toArray(Album[]::new);
+        var albums = (Album[]) results.stream().filter(a -> getClass(a) == ALBUM).toArray(Album[]::new);
         Arrays.sort(albums, ALBUM_COMPARATOR);
         if (albums.length > 0) {
             System.out.printf("-- Albums (%d) --\n", albums.length);
@@ -258,7 +258,7 @@ class App {
                 else System.out.println(albums[i].getName());
             }
         }
-        var songs = (Song[]) results.stream().filter(x -> getClass(x) == SONG).toArray(Song[]::new);
+        var songs = (Song[]) results.stream().filter(s -> getClass(s) == SONG).toArray(Song[]::new);
         Arrays.sort(songs, SONG_COMPARATOR);
         if (songs.length > 0) {
             System.out.printf("-- Songs (%d) --\n", songs.length);
