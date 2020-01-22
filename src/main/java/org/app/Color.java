@@ -85,4 +85,15 @@ public class Color {
        System.out.println(YELLOW_BACKGROUND_BRIGHT + RED + "This text has a green background and red text!" + ANSI_RESET);
     }
 
+
+    public static String printArtistColor(String artist){
+       return Color.GREEN_BOLD_BRIGHT + artist + Color.ANSI_RESET;
+    }
+    public static String printAlbumColor(String album){
+        return Color.YELLOW_BOLD_BRIGHT + album + Color.ANSI_RESET;
+    }
+    public static String printSongColor(String song){
+        return Color.BLUE_BOLD_BRIGHT + song + Color.ANSI_RESET;
+    }
+
 }

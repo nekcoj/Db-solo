@@ -134,7 +134,6 @@ public class Database {
     private void createSubdirsFromJSON(List<String> pathNames, String dbDir) {
         for (String path : pathNames) {
             if (!FileSystem.exists(path)) continue;
-
             String[] split = path.split("\\.");
 
             List<String> pathList;
@@ -147,6 +146,7 @@ public class Database {
 
             if (!FileSystem.exists(filePath)) {
                 FileSystem.createDir(filePath);
+
                 createFileFromJSON(path, filePath);
             }
         }

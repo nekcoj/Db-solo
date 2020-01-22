@@ -10,9 +10,10 @@ public class Artist implements MusicObject {
     private String name;
     private ArrayList<Integer> refSongIds;
 
-    public Artist(int id, String name) {
+    public Artist(int id, String name, ArrayList<Integer> refSongIds) {
         this.id = id;
         this.name = name;
+        this.refSongIds = refSongIds;
     }
 
     public HashMap<String, String> mapObject() {
