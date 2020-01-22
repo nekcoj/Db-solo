@@ -8,10 +8,12 @@ import org.app.pojo.MusicObject;
 import org.app.pojo.Song;
 import org.fsdb.Input;
 import org.fsdb.Util;
+import org.fsdb.classes.Tuple;
 import org.fsdb.query.Query;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 class App {
     private static final int GLOBAL_SEARCH = 3;
@@ -20,6 +22,12 @@ class App {
     private static final int ARTIST = 0;
     private static final int ALBUM = 1;
     private static final int SONG = 2;
+    private static final int INVALID_CHOICE = -1;
+
+    private static final Comparator<Artist> ARTIST_COMPARATOR = ((a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
+    private static final Comparator<Album> ALBUM_COMPARATOR = ((a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
+    private static final Comparator<Song> SONG_COMPARATOR = ((s1, s2) -> s1.getTitle().compareToIgnoreCase(s2.getTitle()));
+
 
     private Database database;
 
@@ -87,6 +95,13 @@ class App {
         else return -1;
     }
 
+    private String getClassName(MusicObject musicObject) {
+        if (musicObject.getClass().equals(Artist.class)) return "artists";
+        else if (musicObject.getClass().equals(Album.class)) return "albums";
+        else if (musicObject.getClass().equals(Song.class)) return "songs";
+        else return null;
+    }
+
     private MusicObject getNameOfData(String subPath, HashMap<String, String> dataMap) {
         if (subPath.equals("artists")) {
             return new Artist(dataMap);
@@ -111,7 +126,9 @@ class App {
         switch (userChoice) {
             case 1:
                 System.out.println("Search\n----------");
-                searchMenu();
+                var choice = handleSubMenu();
+                var results = getSearchResults(choice);
+                printResults(results, false);
                 break;
             case 2:
                 System.out.println("Add\n----------");
@@ -135,7 +152,28 @@ class App {
         }
     }
 
-    private void printEditMenu(){
+    private Tuple<Integer, List<String>> handleSubMenu() {
+
+        var typeFolders = getTypeFolders();
+
+        for (int i = 0; i < typeFolders.size(); i++)
+            System.out.println((i + 1) + ". " + Util.capitalize(typeFolders.get(i)));
+
+        int menuSize = typeFolders.size();
+        System.out.printf("%d. Search all\n%d. Exit to main menu\n> ", menuSize + 1, menuSize + 2);
+
+        int choice = userChoice() - 1;
+        if (choice >= menuSize + 2 || choice < 0) return new Tuple<>(-1, typeFolders);
+
+        return new Tuple<>(choice, typeFolders);
+    }
+
+    private List<String> getTypeFolders() {
+        File[] subFolders = FileSystem.getSubFolders(database.getDbName());
+        return Arrays.stream(subFolders).map(File::getName).collect(Collectors.toList());
+    }
+
+    private void printEditMenu() {
         System.out.print("Menu\n----------\n" +
                 "1) Edit song\n" +
                 "2) Edit album\n" +
@@ -144,6 +182,7 @@ class App {
                 "5) Back to main menu\n" +
                 "> ");
     }
+
     private void editMenuChoice(int userChoice) {
         switch (userChoice) {
             case 1:
@@ -167,27 +206,47 @@ class App {
                 break;
         }
     }
-    private void removeSong() {
-        System.out.print("Search for song to remove>  ");
 
-        var songs = getDataList("songs", Input.getLine());
-        printResults(songs, true);
+    private void removeSong() {
+        Tuple<Integer, List<String>> choice = handleSubMenu();
+        var results = getSearchResults(choice);
+
+        printResults(results, true);
+
+        if (results.size() == 0) {
+            System.out.println("No results found.");
+            return;
+        }
 
         System.out.print("Enter index to remove> ");
         int index = Input.getInt();
 
-        String searchId = String.valueOf((songs.get(index - 1)).getId());
-        var deleteResult = database.executeQuery(new Query().from("songs").where("id", searchId).delete());
+        var typeName = getClassName(results.get(index - 1));
+        if (typeName == null) {
+            System.out.println("Could not remove.");
+            return;
+        }
 
-        if (deleteResult.success) System.out.println("Successfully removed song.");
-        else System.out.println("Could not remove song.");
+        String searchId = String.valueOf((results.get(index - 1)).getId());
+        var deleteResult = database.executeQuery(new Query().from(typeName).where("id", searchId).delete());
+
+        if (deleteResult.success) {
+            if (typeName.equals("songs"))
+                System.out.printf("Successfully removed %s\n", deleteResult.data.get("title"));
+            else System.out.printf("Successfully removed %s\n", deleteResult.data.get("name"));
+        }
     }
+
     private void editSong() {
         System.out.print("Search for song to edit>  ");
 
         var songs = getDataList("songs", Input.getLine());
         printResults(songs, true);
 
+        if (songs.size() == 0) {
+            System.out.println("No results found.");
+            return;
+        }
         System.out.print("Enter index to edit> ");
         int index = Input.getInt();
 
@@ -199,10 +258,17 @@ class App {
         if (editResult.success) System.out.printf("Successfully edited song, new song title is: %s\n", newSongTitle);
         else System.out.println("Could not edit song.");
     }
+
     private void editGenre() {
         System.out.print("Search for song to edit genre of>  ");
         var songs = getDataList("songs", Input.getLine());
         printResults(songs, true);
+
+        if (songs.size() == 0) {
+            System.out.println("No results found.");
+            return;
+        }
+
         System.out.print("Enter index to edit> ");
         int index = Input.getInt();
         String searchId = String.valueOf((songs.get(index - 1)).getId());
@@ -211,13 +277,21 @@ class App {
         var editResult = database.executeQuery(new Query().from("songs").where("id", searchId).update("genres", newGenre));
         var fetchResult = database.executeQuery((new Query().from("songs").where("id", searchId).fetch()));
         var songTitle = fetchResult.data.get("title");
-        if (editResult.success) System.out.printf("Successfully edited song, new genre of %s is: %s\n", songTitle, newGenre);
+        if (editResult.success)
+            System.out.printf("Successfully edited song, new genre of %s is: %s\n", songTitle, newGenre);
         else System.out.println("Could not edit song.");
     }
+
     private void editAlbum() {
         System.out.print("Search for album to edit>  ");
         var albums = getDataList("albums", Input.getLine());
         printResults(albums, true);
+
+        if (albums.size() == 0) {
+            System.out.println("No results found.");
+            return;
+        }
+
         System.out.print("Enter index to edit> ");
         int index = Input.getInt();
         String searchId = String.valueOf((albums.get(index - 1)).getId());
@@ -228,11 +302,17 @@ class App {
         if (editResult.success) System.out.printf("Successfully edited album, new album title is: %s\n", newAlbumTitle);
         else System.out.println("Could not edit album.");
     }
+
     private void editArtist() {
         System.out.print("Search for artist to edit>  ");
 
         var artists = getDataList("artists", Input.getLine());
         printResults(artists, true);
+
+        if (artists.size() == 0) {
+            System.out.println("No results found.");
+            return;
+        }
 
         System.out.print("Enter index to edit> ");
         int index = Input.getInt();
@@ -241,56 +321,86 @@ class App {
         System.out.print("Enter new artist name> ");
         String newArtistName = Input.getLine();
         var editResult = database.executeQuery(new Query().from("artists").where("id", searchId).update("name", newArtistName));
-        //editResult.data.get("title");
-        if (editResult.success) System.out.printf("Successfully edited artist, new artist name is: %s\n", newArtistName);
+
+        if (editResult.success)
+            System.out.printf("Successfully edited artist, new artist name is: %s\n", newArtistName);
         else System.out.println("Could not edit artist.");
     }
+
     private void addSong() {
         System.out.print("Write song name to add> ");
-
         String songName = Input.getLine();
-        System.out.println(songName);
 
         String path = "songs";
         getDataList(path, songName);
         int songId = generateID(path);
         Artist artist = addArtist(songId);
-        Song song = new Song(songId, 9000, songName, 9000, "Metal",artist.getId());
+        Album album = addAlbum(artist.getId());
+        Song song = new Song(songId, album.getId(), songName, -1, "Metal",artist.getId());
         HashMap<String, String> mapSong = song.mapObject();
         database.executeQuery(new Query().from(path).create(mapSong));
 
-
-        System.out.printf("%s %s has been created, with the artist: %s!\n", path.substring(0, path.length() - 1),
+        System.out.printf("%s %s has been created, with the artist: %s associated with the album %s!\n", Util.capitalize(path.substring(0, path.length() - 1)),
                 Color.printSongColor(songName),
-                Color.printArtistColor(artist.getName()));
-
-
-        //TODO
-        // Search/Create Artist (Create Artist method) (int id, int album, String title, int track, String genre)
-        // Search/Create Album  (Create Album method)
-
+                Color.printArtistColor(artist.getName()),
+                Color.printAlbumColor(album.getName()));
     }
-    private Artist addArtist(int songId){
+
+    private Artist addArtist(int songId) {
         var path = "artists";
-                System.out.print("Who's the artist?>  ");
+        System.out.print("Who's the artist?>  ");
         String artistInput = Input.getLine();
-        var artists = getDataList("artists", artistInput);
-        printResults(artists, true);
-        System.out.println("Are any of these the requested artist?> ");
-        System.out.println("If yes, enter index to select> ");
-        System.out.println("Else, press 0 to create the artist: " + Color.printArtistColor(artistInput));
+        var artists = getDataList(path, artistInput);
+
+        if (artists.size() > 0) {
+            printResults(artists, true);
+            System.out.println("Are any of these the requested artist?> ");
+            System.out.println("If yes, enter index to select> ");
+            System.out.println("Else, press 0 to create the artist: " + Color.printArtistColor(artistInput));
+        } else {
+            System.out.println("No results found.");
+            System.out.println("Press 0 to create the artist: " + Color.printArtistColor(artistInput));
+        }
+
         int index = Input.getInt();
         Artist artist;
-        if (index == 0){
-           ArrayList<Integer> newArrayList = new ArrayList<Integer>();
-           newArrayList.add(songId);
-           artist = new Artist(generateID(path), artistInput,newArrayList);
+        if (index == 0) {
+            ArrayList<Integer> newArrayList = new ArrayList<>();
+            newArrayList.add(songId);
+            artist = new Artist(generateID(path), artistInput, newArrayList);
         } else {
-            artist = (Artist) artists.get(index-1);
+            artist = (Artist) artists.get(index - 1);
         }
         database.executeQuery(new Query().from(path).create(artist.mapObject()));
-  return artist;
+        return artist;
     }
+
+    private Album addAlbum(int artistId){
+        var path = "albums";
+        System.out.print("What's the album name? ");
+        String albumInput = Input.getLine();
+        var albums = getDataList(path, albumInput);
+
+        printResults(albums, true);
+        System.out.println("Are any of these the requested albums?> ");
+        System.out.println("If yes, enter index to select> ");
+        System.out.println("Else, press 0 to create the album: " + Color.printAlbumColor(albumInput));
+
+        int index = Input.getInt();
+        Album album;
+
+        if (index == 0){
+            System.out.println("What year was the album released?");
+            int year = Input.getInt();
+            album = new Album(generateID(path), artistId,albumInput,year);
+        } else {
+            album = (Album) albums.get(index-1);
+        }
+        database.executeQuery(new Query().from(path).create(album.mapObject()));
+        return album;
+    }
+
+
     private int generateID(String type) {
         int newId = -1;
         ArrayList<MusicObject> list = getDataList(type, "");
@@ -300,63 +410,48 @@ class App {
         return newId + 1;
     }
 
-    private void searchMenu() {
-        File[] subFolder = FileSystem.getSubFolders(database.getDbName());
-        ArrayList<String> menuChoice = new ArrayList<>();
+    private ArrayList<MusicObject> getSearchResults(Tuple<Integer, List<String>> input) {
+        if (input.first == EXIT || input.first == INVALID_CHOICE) return new ArrayList<>();
 
-        // get folder names
-        for (File file : subFolder)
-            menuChoice.add(file.getName());
-
-        // print menu search choices
-        for (int i = 0; i < menuChoice.size(); i++)
-            System.out.println((i + 1) + ". " + Util.capitalize(menuChoice.get(i)));
-
-        System.out.println("4. Search all.\n5. Exit to main menu.");
-
-        int choice = userChoice() - 1;
-        if (choice == EXIT) return;
-
-        System.out.print("Search for> ");
-        String search = Input.getLine();
+        String typeStr = input.first == 3 ? "all" : input.second.get(input.first);
+        System.out.printf("Search %s> ", typeStr);
+        var search = Input.getLine();
 
         ArrayList<MusicObject> results;
-        if (choice == GLOBAL_SEARCH) results = globalSearch(menuChoice, search);
-        else results = getDataList(menuChoice.get(choice), search);
+        if (input.first == GLOBAL_SEARCH) results = globalSearch((ArrayList<String>) input.second, search);
+        else results = getDataList(input.second.get(input.first), search);
 
-        printResults(results, false);
+        return results;
     }
 
     private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
-        var artists = (Artist[]) results.stream().filter(x -> getClass(x) == ARTIST).toArray(Artist[]::new);
+        int index = 0;
+        var artists = (Artist[]) results.stream().filter(a -> getClass(a) == ARTIST).toArray(Artist[]::new);
+        Arrays.sort(artists, ARTIST_COMPARATOR);
         if (artists.length > 0) {
             System.out.printf("-- Artists (%d) --\n", artists.length);
-            for (int i = 0; i < artists.length; i++) {
+            for (int i = 0; i < artists.length; i++, index++) {
                 if (printIndexed) System.out.printf("[%d] %s\n", i + 1, artists[i].getName());
                 else System.out.println(artists[i].getName());
             }
-        } else {
-            System.out.printf("No artists (%d) found.\n", artists.length);
         }
-        var albums = (Album[]) results.stream().filter(x -> getClass(x) == ALBUM).toArray(Album[]::new);
+        var albums = (Album[]) results.stream().filter(a -> getClass(a) == ALBUM).toArray(Album[]::new);
+        Arrays.sort(albums, ALBUM_COMPARATOR);
         if (albums.length > 0) {
             System.out.printf("-- Albums (%d) --\n", albums.length);
             for (int i = 0; i < albums.length; i++) {
                 if (printIndexed) System.out.printf("[%d] %s\n", i + 1, albums[i].getName());
                 else System.out.println(albums[i].getName());
             }
-        } else {
-            System.out.printf("No albums (%d) found.\n", albums.length);
         }
-        var songs = (Song[]) results.stream().filter(x -> getClass(x) == SONG).toArray(Song[]::new);
+        var songs = (Song[]) results.stream().filter(s -> getClass(s) == SONG).toArray(Song[]::new);
+        Arrays.sort(songs, SONG_COMPARATOR);
         if (songs.length > 0) {
             System.out.printf("-- Songs (%d) --\n", songs.length);
             for (int i = 0; i < songs.length; i++) {
                 if (printIndexed) System.out.printf("[%d] %s\n", i + 1, songs[i].getTitle());
                 else System.out.println(songs[i].getTitle());
             }
-        } else {
-            System.out.printf("No songs (%d) found.\n", songs.length);
         }
     }
 
