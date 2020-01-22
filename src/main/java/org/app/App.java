@@ -29,6 +29,11 @@ class App {
     private static final int SONG = 2;
     private static final int INVALID_CHOICE = -1;
 
+    private static final Comparator<Artist> ARTIST_COMPARATOR = ((a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
+    private static final Comparator<Album> ALBUM_COMPARATOR = ((a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
+    private static final Comparator<Song> SONG_COMPARATOR = ((s1, s2) -> s1.getTitle().compareToIgnoreCase(s2.getTitle()));
+
+
     private Database database;
 
     App(String dbName) {
@@ -235,7 +240,8 @@ class App {
 
     private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
         int index = 0;
-        var artists = (Artist[]) results.stream().filter(x -> getClass(x) == ARTIST).toArray(Artist[]::new);
+        var artists = (Artist[])results.stream().filter(x -> getClass(x) == ARTIST).toArray(Artist[]::new);
+        Arrays.sort(artists, ARTIST_COMPARATOR);
         if (artists.length > 0) {
             System.out.printf("-- Artists (%d) --\n", artists.length);
             for (int i = 0; i < artists.length; i++, index++) {
@@ -244,6 +250,7 @@ class App {
             }
         }
         var albums = (Album[]) results.stream().filter(x -> getClass(x) == ALBUM).toArray(Album[]::new);
+        Arrays.sort(albums, ALBUM_COMPARATOR);
         if (albums.length > 0) {
             System.out.printf("-- Albums (%d) --\n", albums.length);
             for (int i = 0; i < albums.length; i++) {
@@ -252,6 +259,7 @@ class App {
             }
         }
         var songs = (Song[]) results.stream().filter(x -> getClass(x) == SONG).toArray(Song[]::new);
+        Arrays.sort(songs, SONG_COMPARATOR);
         if (songs.length > 0) {
             System.out.printf("-- Songs (%d) --\n", songs.length);
             for (int i = 0; i < songs.length; i++) {
