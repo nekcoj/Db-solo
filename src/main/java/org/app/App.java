@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
 import static java.util.List.*;
 
 class App {
@@ -124,7 +125,9 @@ class App {
         switch (userChoice) {
             case 1:
                 System.out.println("Search\n----------");
-                searchMenu();
+                var choice = handleSubMenu();
+                var results = getSearchResults(choice);
+                printResults(results, false);
                 break;
             case 2:
                 System.out.println("Add\n----------");
@@ -166,21 +169,7 @@ class App {
 
     private void removeSong() {
         Tuple<Integer, List<String>> choice = handleSubMenu();
-
-        if (choice.first == EXIT || choice.first == INVALID_CHOICE) return;
-
-        String typeStr = choice.first == 3 ? "all" : choice.second.get(choice.first);
-        System.out.printf("Search %s> ", typeStr);
-        String search = Input.getLine();
-
-        ArrayList<MusicObject> results;
-        if (choice.first == GLOBAL_SEARCH) results = globalSearch((ArrayList<String>) choice.second, search);
-        else results = getDataList(choice.second.get(choice.first), search);
-
-        if (results.size() < 1) {
-            System.out.println("Could not find any results.");
-            return;
-        }
+        var results = getSearchResults(choice);
 
         printResults(results, true);
         System.out.print("Enter index to remove> ");
@@ -196,17 +185,15 @@ class App {
         var deleteResult = database.executeQuery(new Query().from(typeName).where("id", searchId).delete());
 
         if (deleteResult.success) {
-            System.out.println(typeStr);
-            if (typeName.equals("songs")) System.out.printf("Successfully removed %s\n", deleteResult.data.get("title"));
+            if (typeName.equals("songs"))
+                System.out.printf("Successfully removed %s\n", deleteResult.data.get("title"));
             else System.out.printf("Successfully removed %s\n", deleteResult.data.get("name"));
         }
     }
 
     private void addSong() {
         System.out.print("Write song name to add> ");
-
         String songName = Input.getLine();
-        System.out.println(songName);
 
         String path = "songs";
         getDataList(path, songName);
@@ -215,7 +202,7 @@ class App {
         HashMap<String, String> mapSong = song.mapObject();
         database.executeQuery(new Query().from(path).create(mapSong));
 
-        System.out.printf("%s %s has been created!\n", path.substring(0, path.length() - 1), songName);
+        System.out.printf("%s %s has been created!\n", Util.capitalize(path.substring(0, path.length() - 1)), songName);
 
         //TODO
         // Search/Create Artist (Create Artist method) (int id, int album, String title, int track, String genre)
@@ -232,20 +219,18 @@ class App {
         return newId + 1;
     }
 
-    private void searchMenu() {
-        var choice = handleSubMenu();
+    private ArrayList<MusicObject> getSearchResults(Tuple<Integer, List<String>> input) {
+        if (input.first == EXIT || input.first == INVALID_CHOICE) return new ArrayList<>();
 
-        if (choice.first == EXIT || choice.first == INVALID_CHOICE) return;
-
-        String typeStr = choice.first == 3 ? "all" : choice.second.get(choice.first);
+        String typeStr = input.first == 3 ? "all" : input.second.get(input.first);
         System.out.printf("Search %s> ", typeStr);
-        String search = Input.getLine();
+        var search = Input.getLine();
 
         ArrayList<MusicObject> results;
-        if (choice.first == GLOBAL_SEARCH) results = globalSearch((ArrayList<String>) choice.second, search);
-        else results = getDataList(choice.second.get(choice.first), search);
+        if (input.first == GLOBAL_SEARCH) results = globalSearch((ArrayList<String>) input.second, search);
+        else results = getDataList(input.second.get(input.first), search);
 
-        printResults(results, false);
+        return results;
     }
 
     private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
