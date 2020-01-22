@@ -8,13 +8,15 @@ public class Song implements MusicObject {
     private String title;
     private int track;
     private String genre;
+    private int artistId;
 
-    public Song(int id, int album, String title, int track, String genre) {
+    public Song(int id, int album, String title, int track, String genre, int artistId) {
         this.id = id;
         this.album = album;
         this.title = title;
         this.track = track;
         this.genre = genre;
+        this.artistId = artistId;
     }
 
     public Song(HashMap<String, String> queryResult) {
@@ -23,7 +25,7 @@ public class Song implements MusicObject {
         this.title = queryResult.get("title");
         this.track = Integer.parseInt(queryResult.get("track"));
         this.genre = queryResult.get("genre");
-
+        this.artistId = Integer.parseInt(queryResult.get("artistId"));
     }
 
     public HashMap<String, String> mapObject() {
@@ -33,6 +35,7 @@ public class Song implements MusicObject {
         convertedSong.put("title", this.title);
         convertedSong.put("track", String.valueOf(this.track));
         convertedSong.put("genre", this.genre);
+        convertedSong.put("artistId", String.valueOf(this.artistId));
         return convertedSong;
     }
 
@@ -74,5 +77,13 @@ public class Song implements MusicObject {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public int getArtistId() {
+        return artistId;
+    }
+
+    public void setArtistId(int artistId) {
+        this.artistId = artistId;
     }
 }

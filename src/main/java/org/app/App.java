@@ -254,7 +254,7 @@ class App {
         String path = "songs";
         getDataList(path, songName);
 
-        Song song = new Song(generateID(path), 9000, songName, 9000, "Metal");
+        Song song = new Song(generateID(path), 9000, songName, 9000, "Metal",9000);
         HashMap<String, String> mapSong = song.mapObject();
         database.executeQuery(new Query().from(path).create(mapSong));
 
@@ -311,7 +311,7 @@ class App {
                 else System.out.println(artists[i].getName());
             }
         } else {
-            System.out.println("No artists found.\n");
+            System.out.printf("No artists (%d) found.\n", artists.length);
         }
         var albums = (Album[]) results.stream().filter(x -> getClass(x) == ALBUM).toArray(Album[]::new);
         if (albums.length > 0) {
@@ -321,7 +321,7 @@ class App {
                 else System.out.println(albums[i].getName());
             }
         } else {
-            System.out.println("No albums found.\n");
+            System.out.printf("No albums (%d) found.\n", albums.length);
         }
         var songs = (Song[]) results.stream().filter(x -> getClass(x) == SONG).toArray(Song[]::new);
         if (songs.length > 0) {
@@ -331,7 +331,7 @@ class App {
                 else System.out.println(songs[i].getTitle());
             }
         } else {
-            System.out.println("No songs found.\n");
+            System.out.printf("No songs (%d) found.\n", songs.length);
         }
     }
 
