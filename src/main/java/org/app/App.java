@@ -126,7 +126,8 @@ class App {
                 printResults(results, true);
 
                 // if the search was artists we ask if they want to print the songs for that artist
-                if (choice.second.get(choice.first).equals("artists")) {
+                if (choice.first > choice.second.size() - 1) break;
+                else if (choice.second.get(choice.first).equals("artists")) {
                     System.out.println("Enter 0 to return to menu");
                     System.out.print("or enter index to list songs> ");
                     var index = Input.getInt();
@@ -459,6 +460,8 @@ class App {
                 else System.out.println(songs[i].getTitle());
             }
         }
+
+        System.out.printf("\nFound %d artist(s), %d album(s) and %d song(s)\n", artists.length, albums.length, songs.length);
     }
 
     private void printArtistSongs(String artistName) {
