@@ -13,11 +13,7 @@ import org.fsdb.query.Query;
 
 import java.io.File;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
-import static java.util.Collections.emptyList;
-import static java.util.List.*;
 
 class App {
     private static final int GLOBAL_SEARCH = 3;
@@ -177,7 +173,7 @@ class App {
         return Arrays.stream(subFolders).map(File::getName).collect(Collectors.toList());
     }
 
-    private void printEditMenu(){
+    private void printEditMenu() {
         System.out.print("Menu\n----------\n" +
                 "1) Edit song\n" +
                 "2) Edit album\n" +
@@ -186,6 +182,7 @@ class App {
                 "5) Back to main menu\n" +
                 "> ");
     }
+
     private void editMenuChoice(int userChoice) {
         switch (userChoice) {
             case 1:
@@ -209,11 +206,18 @@ class App {
                 break;
         }
     }
+
     private void removeSong() {
         Tuple<Integer, List<String>> choice = handleSubMenu();
         var results = getSearchResults(choice);
 
         printResults(results, true);
+
+        if (results.size() == 0) {
+            System.out.println("No results found.");
+            return;
+        }
+
         System.out.print("Enter index to remove> ");
         int index = Input.getInt();
 
@@ -232,6 +236,7 @@ class App {
             else System.out.printf("Successfully removed %s\n", deleteResult.data.get("name"));
         }
     }
+
     private void editSong() {
         System.out.print("Search for song to edit>  ");
 
@@ -249,6 +254,7 @@ class App {
         if (editResult.success) System.out.printf("Successfully edited song, new song title is: %s\n", newSongTitle);
         else System.out.println("Could not edit song.");
     }
+
     private void editGenre() {
         System.out.print("Search for song to edit genre of>  ");
         var songs = getDataList("songs", Input.getLine());
@@ -261,9 +267,11 @@ class App {
         var editResult = database.executeQuery(new Query().from("songs").where("id", searchId).update("genres", newGenre));
         var fetchResult = database.executeQuery((new Query().from("songs").where("id", searchId).fetch()));
         var songTitle = fetchResult.data.get("title");
-        if (editResult.success) System.out.printf("Successfully edited song, new genre of %s is: %s\n", songTitle, newGenre);
+        if (editResult.success)
+            System.out.printf("Successfully edited song, new genre of %s is: %s\n", songTitle, newGenre);
         else System.out.println("Could not edit song.");
     }
+
     private void editAlbum() {
         System.out.print("Search for album to edit>  ");
         var albums = getDataList("albums", Input.getLine());
@@ -278,6 +286,7 @@ class App {
         if (editResult.success) System.out.printf("Successfully edited album, new album title is: %s\n", newAlbumTitle);
         else System.out.println("Could not edit album.");
     }
+
     private void editArtist() {
         System.out.print("Search for artist to edit>  ");
 
@@ -292,9 +301,11 @@ class App {
         String newArtistName = Input.getLine();
         var editResult = database.executeQuery(new Query().from("artists").where("id", searchId).update("name", newArtistName));
         //editResult.data.get("title");
-        if (editResult.success) System.out.printf("Successfully edited artist, new artist name is: %s\n", newArtistName);
+        if (editResult.success)
+            System.out.printf("Successfully edited artist, new artist name is: %s\n", newArtistName);
         else System.out.println("Could not edit artist.");
     }
+
     private void addSong() {
         System.out.print("Write song name to add> ");
         String songName = Input.getLine();
@@ -339,7 +350,7 @@ class App {
 
     private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
         int index = 0;
-        var artists = (Artist[])results.stream().filter(a -> getClass(a) == ARTIST).toArray(Artist[]::new);
+        var artists = (Artist[]) results.stream().filter(a -> getClass(a) == ARTIST).toArray(Artist[]::new);
         Arrays.sort(artists, ARTIST_COMPARATOR);
         if (artists.length > 0) {
             System.out.printf("-- Artists (%d) --\n", artists.length);
