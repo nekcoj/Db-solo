@@ -41,6 +41,16 @@ public class Artist implements MusicObject {
         return id;
     }
 
+    @Override
+    public String getResolvedName() {
+        return getName();
+    }
+
+    @Override
+    public int compareTo(MusicObject o) {
+        return getName().compareTo(o.getResolvedName());
+    }
+
     public void setId(int id) {
         this.id = id;
     }
