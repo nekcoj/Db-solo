@@ -34,10 +34,18 @@ public class Album implements MusicObject {
         return convertedAlbum;
     }
 
-
-
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String getResolvedName() {
+        return getName();
+    }
+
+    @Override
+    public int compareTo(MusicObject o) {
+        return getName().compareTo(o.getResolvedName());
     }
 
     public void setId(int id) {

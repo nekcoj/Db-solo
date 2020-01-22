@@ -24,11 +24,6 @@ class App {
     private static final int SONG = 2;
     private static final int INVALID_CHOICE = -1;
 
-    private static final Comparator<Artist> ARTIST_COMPARATOR = ((a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
-    private static final Comparator<Album> ALBUM_COMPARATOR = ((a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
-    private static final Comparator<Song> SONG_COMPARATOR = ((s1, s2) -> s1.getTitle().compareToIgnoreCase(s2.getTitle()));
-
-
     private Database database;
 
     App(String dbName) {
@@ -127,7 +122,7 @@ class App {
             case 1:
                 System.out.println("Search\n----------");
                 var choice = handleSubMenu();
-                var results = getSearchResults(choice);
+                var results = sortResults(getSearchResults(choice));
                 printResults(results, false);
                 break;
             case 2:
@@ -209,7 +204,7 @@ class App {
 
     private void removeSong() {
         Tuple<Integer, List<String>> choice = handleSubMenu();
-        var results = getSearchResults(choice);
+        var results = sortResults(getSearchResults(choice));
 
         printResults(results, true);
 
@@ -240,7 +235,7 @@ class App {
     private void editSong() {
         System.out.print("Search for song to edit>  ");
 
-        var songs = getDataList("songs", Input.getLine());
+        var songs = sortResults(getDataList("songs", Input.getLine()));
         printResults(songs, true);
 
         if (songs.size() == 0) {
@@ -261,7 +256,7 @@ class App {
 
     private void editGenre() {
         System.out.print("Search for song to edit genre of>  ");
-        var songs = getDataList("songs", Input.getLine());
+        var songs = sortResults(getDataList("songs", Input.getLine()));
         printResults(songs, true);
 
         if (songs.size() == 0) {
@@ -284,7 +279,7 @@ class App {
 
     private void editAlbum() {
         System.out.print("Search for album to edit>  ");
-        var albums = getDataList("albums", Input.getLine());
+        var albums = sortResults(getDataList("albums", Input.getLine()));
         printResults(albums, true);
 
         if (albums.size() == 0) {
@@ -306,7 +301,7 @@ class App {
     private void editArtist() {
         System.out.print("Search for artist to edit>  ");
 
-        var artists = getDataList("artists", Input.getLine());
+        var artists = sortResults(getDataList("artists", Input.getLine()));
         printResults(artists, true);
 
         if (artists.size() == 0) {
@@ -350,7 +345,7 @@ class App {
         var path = "artists";
         System.out.print("Who's the artist?>  ");
         String artistInput = Input.getLine();
-        var artists = getDataList(path, artistInput);
+        var artists = sortResults(getDataList(path, artistInput));
 
         if (artists.size() > 0) {
             printResults(artists, true);
@@ -379,7 +374,7 @@ class App {
         var path = "albums";
         System.out.print("What's the album name? ");
         String albumInput = Input.getLine();
-        var albums = getDataList(path, albumInput);
+        var albums = sortResults(getDataList(path, albumInput));
 
         printResults(albums, true);
         System.out.println("Are any of these the requested albums?> ");
@@ -399,7 +394,6 @@ class App {
         database.executeQuery(new Query().from(path).create(album.mapObject()));
         return album;
     }
-
 
     private int generateID(String type) {
         int newId = -1;
@@ -424,10 +418,14 @@ class App {
         return results;
     }
 
+    private ArrayList<MusicObject> sortResults(ArrayList<MusicObject> results) {
+        results.sort(Comparator.naturalOrder());
+        return results;
+    }
+
     private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
         int index = 0;
         var artists = (Artist[]) results.stream().filter(a -> getClass(a) == ARTIST).toArray(Artist[]::new);
-        Arrays.sort(artists, ARTIST_COMPARATOR);
         if (artists.length > 0) {
             System.out.printf("-- Artists (%d) --\n", artists.length);
             for (int i = 0; i < artists.length; i++, index++) {
@@ -436,7 +434,6 @@ class App {
             }
         }
         var albums = (Album[]) results.stream().filter(a -> getClass(a) == ALBUM).toArray(Album[]::new);
-        Arrays.sort(albums, ALBUM_COMPARATOR);
         if (albums.length > 0) {
             System.out.printf("-- Albums (%d) --\n", albums.length);
             for (int i = 0; i < albums.length; i++, index++) {
@@ -445,7 +442,6 @@ class App {
             }
         }
         var songs = (Song[]) results.stream().filter(s -> getClass(s) == SONG).toArray(Song[]::new);
-        Arrays.sort(songs, SONG_COMPARATOR);
         if (songs.length > 0) {
             System.out.printf("-- Songs (%d) --\n", songs.length);
             for (int i = 0; i < songs.length; i++, index++) {
