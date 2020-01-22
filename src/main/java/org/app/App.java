@@ -243,6 +243,10 @@ class App {
         var songs = getDataList("songs", Input.getLine());
         printResults(songs, true);
 
+        if (songs.size() == 0) {
+            System.out.println("No results found.");
+            return;
+        }
         System.out.print("Enter index to edit> ");
         int index = Input.getInt();
 
@@ -259,6 +263,12 @@ class App {
         System.out.print("Search for song to edit genre of>  ");
         var songs = getDataList("songs", Input.getLine());
         printResults(songs, true);
+
+        if (songs.size() == 0) {
+            System.out.println("No results found.");
+            return;
+        }
+
         System.out.print("Enter index to edit> ");
         int index = Input.getInt();
         String searchId = String.valueOf((songs.get(index - 1)).getId());
@@ -276,6 +286,12 @@ class App {
         System.out.print("Search for album to edit>  ");
         var albums = getDataList("albums", Input.getLine());
         printResults(albums, true);
+
+        if (albums.size() == 0) {
+            System.out.println("No results found.");
+            return;
+        }
+
         System.out.print("Enter index to edit> ");
         int index = Input.getInt();
         String searchId = String.valueOf((albums.get(index - 1)).getId());
@@ -292,6 +308,11 @@ class App {
 
         var artists = getDataList("artists", Input.getLine());
         printResults(artists, true);
+
+        if (artists.size() == 0) {
+            System.out.println("No results found.");
+            return;
+        }
 
         System.out.print("Enter index to edit> ");
         int index = Input.getInt();
@@ -319,7 +340,7 @@ class App {
         HashMap<String, String> mapSong = song.mapObject();
         database.executeQuery(new Query().from(path).create(mapSong));
 
-        System.out.printf("%s %s has been created, with the artist: %s associated with the album %s!\n", path.substring(0, path.length() - 1),
+        System.out.printf("%s %s has been created, with the artist: %s associated with the album %s!\n", Util.capitalize(path.substring(0, path.length() - 1)),
                 Color.printSongColor(songName),
                 Color.printArtistColor(artist.getName()),
                 Color.printAlbumColor(album.getName()));
@@ -330,10 +351,17 @@ class App {
         System.out.print("Who's the artist?>  ");
         String artistInput = Input.getLine();
         var artists = getDataList(path, artistInput);
-        printResults(artists, true);
-        System.out.println("Are any of these the requested artist?> ");
-        System.out.println("If yes, enter index to select> ");
-        System.out.println("Else, press 0 to create the artist: " + Color.printArtistColor(artistInput));
+
+        if (artists.size() > 0) {
+            printResults(artists, true);
+            System.out.println("Are any of these the requested artist?> ");
+            System.out.println("If yes, enter index to select> ");
+            System.out.println("Else, press 0 to create the artist: " + Color.printArtistColor(artistInput));
+        } else {
+            System.out.println("No results found.");
+            System.out.println("Press 0 to create the artist: " + Color.printArtistColor(artistInput));
+        }
+
         int index = Input.getInt();
         Artist artist;
         if (index == 0) {
@@ -352,12 +380,15 @@ class App {
         System.out.print("What's the album name? ");
         String albumInput = Input.getLine();
         var albums = getDataList(path, albumInput);
+
         printResults(albums, true);
         System.out.println("Are any of these the requested albums?> ");
         System.out.println("If yes, enter index to select> ");
         System.out.println("Else, press 0 to create the album: " + Color.printAlbumColor(albumInput));
+
         int index = Input.getInt();
         Album album;
+
         if (index == 0){
             System.out.println("What year was the album released?");
             int year = Input.getInt();
