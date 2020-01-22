@@ -4,5 +4,5 @@ public enum QueryAction {
     CREATE,
     FETCH,
     UPDATE,
-    DELETE
+    DELETE,
 }

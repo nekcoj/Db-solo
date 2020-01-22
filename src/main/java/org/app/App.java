@@ -312,19 +312,45 @@ class App {
 
         String path = "songs";
         getDataList(path, songName);
-
-        Song song = new Song(generateID(path), 9000, songName, 9000, "Metal");
+        int songId = generateID(path);
+        Artist artist = addArtist(songId);
+        Song song = new Song(songId, 9000, songName, 9000, "Metal",artist.getId());
         HashMap<String, String> mapSong = song.mapObject();
         database.executeQuery(new Query().from(path).create(mapSong));
 
         System.out.printf("%s %s has been created!\n", Util.capitalize(path.substring(0, path.length() - 1)), songName);
+
+        System.out.printf("%s %s has been created, with the artist: %s!\n", path.substring(0, path.length() - 1),
+                Color.printSongColor(songName),
+                Color.printArtistColor(artist.getName()));
+
 
         //TODO
         // Search/Create Artist (Create Artist method) (int id, int album, String title, int track, String genre)
         // Search/Create Album  (Create Album method)
 
     }
-
+    private Artist addArtist(int songId){
+        var path = "artists";
+                System.out.print("Who's the artist?>  ");
+        String artistInput = Input.getLine();
+        var artists = getDataList("artists", artistInput);
+        printResults(artists, true);
+        System.out.println("Are any of these the requested artist?> ");
+        System.out.println("If yes, enter index to select> ");
+        System.out.println("Else, press 0 to create the artist: " + Color.printArtistColor(artistInput));
+        int index = Input.getInt();
+        Artist artist;
+        if (index == 0){
+           ArrayList<Integer> newArrayList = new ArrayList<Integer>();
+           newArrayList.add(songId);
+           artist = new Artist(generateID(path), artistInput,newArrayList);
+        } else {
+            artist = (Artist) artists.get(index-1);
+        }
+        database.executeQuery(new Query().from(path).create(artist.mapObject()));
+  return artist;
+    }
     private int generateID(String type) {
         int newId = -1;
         ArrayList<MusicObject> list = getDataList(type, "");
