@@ -255,26 +255,21 @@ class App {
         getDataList(path, songName);
         int songId = generateID(path);
         Artist artist = addArtist(songId);
-        Song song = new Song(songId, 9000, songName, 9000, "Metal",artist.getId());
+        Album album = addAlbum(artist.getId());
+        Song song = new Song(songId, album.getId(), songName, -1, "Metal",artist.getId());
         HashMap<String, String> mapSong = song.mapObject();
         database.executeQuery(new Query().from(path).create(mapSong));
 
-
-        System.out.printf("%s %s has been created, with the artist: %s!\n", path.substring(0, path.length() - 1),
+        System.out.printf("%s %s has been created, with the artist: %s associated with the album %s!\n", path.substring(0, path.length() - 1),
                 Color.printSongColor(songName),
-                Color.printArtistColor(artist.getName()));
-
-
-        //TODO
-        // Search/Create Artist (Create Artist method) (int id, int album, String title, int track, String genre)
-        // Search/Create Album  (Create Album method)
-
+                Color.printArtistColor(artist.getName()),
+                Color.printAlbumColor(album.getName()));
     }
     private Artist addArtist(int songId){
         var path = "artists";
                 System.out.print("Who's the artist?>  ");
         String artistInput = Input.getLine();
-        var artists = getDataList("artists", artistInput);
+        var artists = getDataList(path, artistInput);
         printResults(artists, true);
         System.out.println("Are any of these the requested artist?> ");
         System.out.println("If yes, enter index to select> ");
@@ -291,6 +286,29 @@ class App {
         database.executeQuery(new Query().from(path).create(artist.mapObject()));
   return artist;
     }
+
+    private Album addAlbum(int artistId){
+        var path = "albums";
+        System.out.print("What's the album name? ");
+        String albumInput = Input.getLine();
+        var albums = getDataList(path, albumInput);
+        printResults(albums, true);
+        System.out.println("Are any of these the requested albums?> ");
+        System.out.println("If yes, enter index to select> ");
+        System.out.println("Else, press 0 to create the album: " + Color.printAlbumColor(albumInput));
+        int index = Input.getInt();
+        Album album;
+        if (index == 0){
+            System.out.println("What year was the album released?");
+            int year = Input.getInt();
+            album = new Album(generateID(path), artistId,albumInput,year);
+        } else {
+            album = (Album) albums.get(index-1);
+        }
+        database.executeQuery(new Query().from(path).create(album.mapObject()));
+        return album;
+    }
+
     private int generateID(String type) {
         int newId = -1;
         ArrayList<MusicObject> list = getDataList(type, "");
