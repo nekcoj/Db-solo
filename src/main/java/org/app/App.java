@@ -300,7 +300,7 @@ class App {
         System.out.print("Enter new artist name> ");
         String newArtistName = Input.getLine();
         var editResult = database.executeQuery(new Query().from("artists").where("id", searchId).update("name", newArtistName));
-        //editResult.data.get("title");
+
         if (editResult.success)
             System.out.printf("Successfully edited artist, new artist name is: %s\n", newArtistName);
         else System.out.println("Could not edit artist.");
@@ -314,7 +314,7 @@ class App {
         getDataList(path, songName);
         int songId = generateID(path);
         Artist artist = addArtist(songId);
-        Song song = new Song(songId, 9000, songName, 9000, "Metal",artist.getId());
+        Song song = new Song(songId, 9000, songName, 9000, "Metal", artist.getId());
         HashMap<String, String> mapSong = song.mapObject();
         database.executeQuery(new Query().from(path).create(mapSong));
 
@@ -323,16 +323,11 @@ class App {
         System.out.printf("%s %s has been created, with the artist: %s!\n", path.substring(0, path.length() - 1),
                 Color.printSongColor(songName),
                 Color.printArtistColor(artist.getName()));
-
-
-        //TODO
-        // Search/Create Artist (Create Artist method) (int id, int album, String title, int track, String genre)
-        // Search/Create Album  (Create Album method)
-
     }
-    private Artist addArtist(int songId){
+
+    private Artist addArtist(int songId) {
         var path = "artists";
-                System.out.print("Who's the artist?>  ");
+        System.out.print("Who's the artist?>  ");
         String artistInput = Input.getLine();
         var artists = getDataList("artists", artistInput);
         printResults(artists, true);
@@ -341,16 +336,17 @@ class App {
         System.out.println("Else, press 0 to create the artist: " + Color.printArtistColor(artistInput));
         int index = Input.getInt();
         Artist artist;
-        if (index == 0){
-           ArrayList<Integer> newArrayList = new ArrayList<Integer>();
-           newArrayList.add(songId);
-           artist = new Artist(generateID(path), artistInput,newArrayList);
+        if (index == 0) {
+            ArrayList<Integer> newArrayList = new ArrayList<>();
+            newArrayList.add(songId);
+            artist = new Artist(generateID(path), artistInput, newArrayList);
         } else {
-            artist = (Artist) artists.get(index-1);
+            artist = (Artist) artists.get(index - 1);
         }
         database.executeQuery(new Query().from(path).create(artist.mapObject()));
-  return artist;
+        return artist;
     }
+
     private int generateID(String type) {
         int newId = -1;
         ArrayList<MusicObject> list = getDataList(type, "");
