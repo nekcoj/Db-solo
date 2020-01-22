@@ -52,7 +52,7 @@ public class Database {
                     break;
                 }
                 boolean wasDeleted = FileSystem.delete(found.first);
-                result = new QueryResult(wasDeleted, query.action);
+                result = new QueryResult(wasDeleted, query.action, found.second);
                 break;
             }
             case CREATE: {
