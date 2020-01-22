@@ -123,7 +123,17 @@ class App {
                 System.out.println("Search\n----------");
                 var choice = handleSubMenu();
                 var results = sortResults(getSearchResults(choice));
-                printResults(results, false);
+                printResults(results, true);
+
+                // if the search was artists we ask if they want to print the songs for that artist
+                if (choice.second.get(choice.first).equals("artists")) {
+                    System.out.println("Enter 0 to return to menu");
+                    System.out.print("or enter index to list songs> ");
+                    var index = Input.getInt();
+                    if (index == 0) break;
+                    printArtistSongs(results.get(index - 1).getResolvedName());
+                }
+
                 break;
             case 2:
                 System.out.println("Add\n----------");
@@ -249,7 +259,7 @@ class App {
         System.out.print("Enter new song title> ");
         String newSongTitle = Input.getLine();
         var editResult = database.executeQuery(new Query().from("songs").where("id", searchId).update("title", newSongTitle));
-        //editResult.data.get("title");
+
         if (editResult.success) System.out.printf("Successfully edited song, new song title is: %s\n", newSongTitle);
         else System.out.println("Could not edit song.");
     }
@@ -331,7 +341,7 @@ class App {
         int songId = generateID(path);
         Artist artist = addArtist(songId);
         Album album = addAlbum(artist.getId());
-        Song song = new Song(songId, album.getId(), songName, -1, "Metal",artist.getId());
+        Song song = new Song(songId, album.getId(), songName, -1, "Metal", artist.getId());
         HashMap<String, String> mapSong = song.mapObject();
         database.executeQuery(new Query().from(path).create(mapSong));
 
@@ -370,7 +380,7 @@ class App {
         return artist;
     }
 
-    private Album addAlbum(int artistId){
+    private Album addAlbum(int artistId) {
         var path = "albums";
         System.out.print("What's the album name? ");
         String albumInput = Input.getLine();
@@ -384,12 +394,12 @@ class App {
         int index = Input.getInt();
         Album album;
 
-        if (index == 0){
+        if (index == 0) {
             System.out.println("What year was the album released?");
             int year = Input.getInt();
-            album = new Album(generateID(path), artistId,albumInput,year);
+            album = new Album(generateID(path), artistId, albumInput, year);
         } else {
-            album = (Album) albums.get(index-1);
+            album = (Album) albums.get(index - 1);
         }
         database.executeQuery(new Query().from(path).create(album.mapObject()));
         return album;
@@ -449,6 +459,29 @@ class App {
                 else System.out.println(songs[i].getTitle());
             }
         }
+    }
+
+    private void printArtistSongs(String artistName) {
+        var fetchResult = database.executeQuery(new Query().from("artists").where("name", artistName).fetch());
+        if (!fetchResult.success) System.out.println("Could find artist!");
+
+        var artist = new Artist(fetchResult.data);
+        var songs = new ArrayList<String>();
+
+        // queries are not fast enough for aggregating lots of data
+        File[] songFiles = FileSystem.getDirFiles(database.getDbName() + "/songs");
+
+        for (File songFile : Objects.requireNonNull(songFiles)) {
+            var data = database.deserializeData(FileSystem.readFile(songFile.getPath()));
+            var musicObject = getNameOfData("songs", data);
+
+            for (var songId : artist.getRefSongIds()) {
+                if (songId == musicObject.getId()) songs.add(musicObject.getResolvedName());
+            }
+        }
+
+        System.out.printf("\n----- Song by %s -----\n", artist.getName());
+        songs.forEach(System.out::println);
     }
 
     private ArrayList<MusicObject> globalSearch(ArrayList<String> menuChoice, String search) {
