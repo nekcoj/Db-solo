@@ -431,7 +431,7 @@ class App {
         if (artists.length > 0) {
             System.out.printf("-- Artists (%d) --\n", artists.length);
             for (int i = 0; i < artists.length; i++, index++) {
-                if (printIndexed) System.out.printf("[%d] %s\n", i + 1, artists[i].getName());
+                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, artists[i].getName());
                 else System.out.println(artists[i].getName());
             }
         }
@@ -439,8 +439,8 @@ class App {
         Arrays.sort(albums, ALBUM_COMPARATOR);
         if (albums.length > 0) {
             System.out.printf("-- Albums (%d) --\n", albums.length);
-            for (int i = 0; i < albums.length; i++) {
-                if (printIndexed) System.out.printf("[%d] %s\n", i + 1, albums[i].getName());
+            for (int i = 0; i < albums.length; i++, index++) {
+                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, albums[i].getName());
                 else System.out.println(albums[i].getName());
             }
         }
@@ -448,8 +448,8 @@ class App {
         Arrays.sort(songs, SONG_COMPARATOR);
         if (songs.length > 0) {
             System.out.printf("-- Songs (%d) --\n", songs.length);
-            for (int i = 0; i < songs.length; i++) {
-                if (printIndexed) System.out.printf("[%d] %s\n", i + 1, songs[i].getTitle());
+            for (int i = 0; i < songs.length; i++, index++) {
+                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, songs[i].getTitle());
                 else System.out.println(songs[i].getTitle());
             }
         }
