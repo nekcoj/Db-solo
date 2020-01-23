@@ -442,31 +442,31 @@ class App {
         if (artists.length > 0) {
             System.out.printf("-- Artists (%d) --\n", artists.length);
             for (int i = 0; i < artists.length; i++, index++) {
-                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, artists[i].getName());
-                else System.out.println(artists[i].getName());
+                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, artists[i].getNameColored());
+                else System.out.println(artists[i].getNameColored());
             }
         }
         var albums = (Album[]) results.stream().filter(a -> getClass(a) == ALBUM).toArray(Album[]::new);
         if (albums.length > 0) {
             System.out.printf("-- Albums (%d) --\n", albums.length);
             for (int i = 0; i < albums.length; i++, index++) {
-                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, albums[i].getName());
-                else System.out.println(albums[i].getName());
+                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, albums[i].getNameColored());
+                else System.out.println(albums[i].getNameColored());
             }
         }
         var songs = (Song[]) results.stream().filter(s -> getClass(s) == SONG).toArray(Song[]::new);
         if (songs.length > 0) {
             System.out.printf("-- Songs (%d) --\n", songs.length);
             for (int i = 0; i < songs.length; i++, index++) {
-                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, songs[i].getTitle());
-                else System.out.println(songs[i].getTitle());
+                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, songs[i].getNameColored());
+                else System.out.println(songs[i].getNameColored());
             }
         }
 
-        System.out.printf("\nFound %d %s, %d %s and %d %s\n",
-                artists.length,Color.printArtistColor("artist(s)")
-                , albums.length,Color.printAlbumColor("album(s)")
-                , songs.length,Color.printSongColor("song(s)"));
+        System.out.printf("\nFound %s, %s and %s\n"
+               ,Color.printArtistColor( artists.length + " artist(s)")
+                ,Color.printAlbumColor(albums.length + " album(s)")
+                ,Color.printSongColor(songs.length + " song(s)"));
     }
 
     private void printArtistSongs(String artistName) {
@@ -488,8 +488,8 @@ class App {
             }
         }
 
-        System.out.printf("\n----- Song by %s -----\n", artist.getName());
-        songs.forEach(System.out::println);
+        System.out.printf("\n----- Song by %s -----\n", Color.printArtistColor(artist.getName()));
+        songs.forEach(song -> System.out.println(Color.printSongColor(song)));
     }
 
     private ArrayList<MusicObject> globalSearch(ArrayList<String> menuChoice, String search) {
