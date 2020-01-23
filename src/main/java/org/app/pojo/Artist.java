@@ -1,5 +1,7 @@
 package org.app.pojo;
 
+import org.app.Color;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -44,6 +46,11 @@ public class Artist implements MusicObject {
     @Override
     public String getResolvedName() {
         return getName();
+    }
+
+    @Override
+    public String getNameColored() {
+        return  Color.printArtistColor(name);
     }
 
     @Override

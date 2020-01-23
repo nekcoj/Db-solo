@@ -238,8 +238,10 @@ class App {
 
         if (deleteResult.success) {
             if (typeName.equals("songs"))
-                System.out.printf("Successfully removed %s\n", deleteResult.data.get("title"));
-            else System.out.printf("Successfully removed %s\n", deleteResult.data.get("name"));
+                System.out.printf("Successfully removed %s\n", Color.printSongColor(deleteResult.data.get("title")));
+            else if(typeName.equals("albums")){
+                System.out.printf("Successfully removed %s\n", Color.printAlbumColor(deleteResult.data.get("name")));
+            }else  System.out.printf("Successfully removed %s\n", Color.printArtistColor(deleteResult.data.get("name")));
         }
     }
 
@@ -261,7 +263,7 @@ class App {
         String newSongTitle = Input.getLine();
         var editResult = database.executeQuery(new Query().from("songs").where("id", searchId).update("title", newSongTitle));
 
-        if (editResult.success) System.out.printf("Successfully edited song, new song title is: %s\n", newSongTitle);
+        if (editResult.success) System.out.printf("Successfully edited song, new song title is: %s\n", Color.printSongColor(newSongTitle));
         else System.out.println("Could not edit song.");
     }
 
@@ -284,7 +286,7 @@ class App {
         var fetchResult = database.executeQuery((new Query().from("songs").where("id", searchId).fetch()));
         var songTitle = fetchResult.data.get("title");
         if (editResult.success)
-            System.out.printf("Successfully edited song, new genre of %s is: %s\n", songTitle, newGenre);
+            System.out.printf("Successfully edited song, new genre of %s is: %s\n", Color.printSongColor(songTitle) , newGenre);
         else System.out.println("Could not edit song.");
     }
 
@@ -305,7 +307,7 @@ class App {
         String newAlbumTitle = Input.getLine();
         var editResult = database.executeQuery(new Query().from("albums").where("id", searchId).update("name", newAlbumTitle));
         //editResult.data.get("title");
-        if (editResult.success) System.out.printf("Successfully edited album, new album title is: %s\n", newAlbumTitle);
+        if (editResult.success) System.out.printf("Successfully edited album, new album title is: %s\n", Color.printAlbumColor(newAlbumTitle));
         else System.out.println("Could not edit album.");
     }
 
@@ -329,7 +331,7 @@ class App {
         var editResult = database.executeQuery(new Query().from("artists").where("id", searchId).update("name", newArtistName));
 
         if (editResult.success)
-            System.out.printf("Successfully edited artist, new artist name is: %s\n", newArtistName);
+            System.out.printf("Successfully edited artist, new artist name is: %s\n", Color.printArtistColor(newArtistName));
         else System.out.println("Could not edit artist.");
     }
 
@@ -461,7 +463,10 @@ class App {
             }
         }
 
-        System.out.printf("\nFound %d artist(s), %d album(s) and %d song(s)\n", artists.length, albums.length, songs.length);
+        System.out.printf("\nFound %d %s, %d %s and %d %s\n",
+                artists.length,Color.printArtistColor("artist(s)")
+                , albums.length,Color.printAlbumColor("album(s)")
+                , songs.length,Color.printSongColor("song(s)"));
     }
 
     private void printArtistSongs(String artistName) {
