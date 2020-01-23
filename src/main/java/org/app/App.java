@@ -123,7 +123,7 @@ class App {
                 System.out.println("Search\n----------");
                 var choice = handleSubMenu();
                 var results = sortResults(getSearchResults(choice));
-                printResults(results, true);
+                printResults(results, true,true);
 
                 // if the search was artists we ask if they want to print the songs for that artist
                 if (choice.first > choice.second.size() - 1) break;
@@ -217,7 +217,7 @@ class App {
         Tuple<Integer, List<String>> choice = handleSubMenu();
         var results = sortResults(getSearchResults(choice));
 
-        printResults(results, true);
+        printResults(results, true, true);
 
         if (results.size() == 0) {
             System.out.println("No results found.");
@@ -247,7 +247,7 @@ class App {
         System.out.print("Search for song to edit>  ");
 
         var songs = sortResults(getDataList("songs", Input.getLine()));
-        printResults(songs, true);
+        printResults(songs, true, true);
 
         if (songs.size() == 0) {
             System.out.println("No results found.");
@@ -268,7 +268,7 @@ class App {
     private void editGenre() {
         System.out.print("Search for song to edit genre of>  ");
         var songs = sortResults(getDataList("songs", Input.getLine()));
-        printResults(songs, true);
+        printResults(songs, true,true);
 
         if (songs.size() == 0) {
             System.out.println("No results found.");
@@ -291,7 +291,7 @@ class App {
     private void editAlbum() {
         System.out.print("Search for album to edit>  ");
         var albums = sortResults(getDataList("albums", Input.getLine()));
-        printResults(albums, true);
+        printResults(albums, true,true);
 
         if (albums.size() == 0) {
             System.out.println("No results found.");
@@ -313,7 +313,7 @@ class App {
         System.out.print("Search for artist to edit>  ");
 
         var artists = sortResults(getDataList("artists", Input.getLine()));
-        printResults(artists, true);
+        printResults(artists, true,true);
 
         if (artists.size() == 0) {
             System.out.println("No results found.");
@@ -359,7 +359,7 @@ class App {
         var artists = sortResults(getDataList(path, artistInput));
 
         if (artists.size() > 0) {
-            printResults(artists, true);
+            printResults(artists, true,true);
             System.out.println("Are any of these the requested artist?> ");
             System.out.println("If yes, enter index to select> ");
             System.out.println("Else, press 0 to create the artist: " + Color.printArtistColor(artistInput));
@@ -385,7 +385,7 @@ class App {
         Album album;
         var path = "albums";
         var albums = sortResults(getAlbumList(artistId));
-        printResults(albums, true);
+        printResults(albums, true,false);
         System.out.println("Are any of these the requested albums?> ");
         System.out.println("If yes, enter index to select> ");
         System.out.println("Else, enter 0 to create new album");
@@ -452,7 +452,7 @@ class App {
         return results;
     }
 
-    private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
+    private void printResults(ArrayList<MusicObject> results, boolean printIndexed, boolean printResult) {
         int index = 0;
         var artists = (Artist[]) results.stream().filter(a -> getClass(a) == ARTIST).toArray(Artist[]::new);
         if (artists.length > 0) {
@@ -479,7 +479,7 @@ class App {
             }
         }
 
-        System.out.printf("\nFound %d artist(s), %d album(s) and %d song(s)\n", artists.length, albums.length, songs.length);
+      if(printResult) System.out.printf("\nFound %d artist(s), %d album(s) and %d song(s)\n", artists.length, albums.length, songs.length);
     }
 
     private void printArtistSongs(String artistName) {
