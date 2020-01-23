@@ -7,12 +7,9 @@ import org.fsdb.query.QueryResult;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Database {
     private String dbName;
@@ -38,19 +35,18 @@ public class Database {
         switch (query.action) {
             case FETCH: {
                 var found = findWith(rootDir, query.predicateField, query.predicateValue);
-                if (found == null) {
-                    result = null;
-                    break;
-                }
                 result = new QueryResult(true, query.action, found.second);
+                break;
+            }
+            case FETCH_ALL: {
+                var found = findAllWith(rootDir, query.predicateField, query.predicateValue);
+                result = new QueryResult(true, query.action);
+                result.dataArray = new ArrayList<>();
+                result.dataArray.addAll(found.second);
                 break;
             }
             case DELETE: {
                 var found = findWith(rootDir, query.predicateField, query.predicateValue);
-                if (found == null) {
-                    result = null;
-                    break;
-                }
                 boolean wasDeleted = FileSystem.delete(found.first);
                 result = new QueryResult(wasDeleted, query.action, found.second);
                 break;
@@ -67,10 +63,7 @@ public class Database {
             }
             case UPDATE: {
                 var found = findWith(rootDir, query.predicateField, query.predicateValue);
-                if (found == null) { // handle properly
-                    result = null;
-                    break;
-                }
+
                 // loop over and update given values
                 for (Map.Entry<String, String> entry : query.values.entrySet()) {
                     if (found.second.containsKey(entry.getKey())) {
@@ -114,12 +107,11 @@ public class Database {
 
     private Tuple<String, HashMap<String, String>> findWith(String root, String field, String value) {
         File[] dirFiles = FileSystem.getDirFiles(root);
-        if (dirFiles == null) return null;
 
         String fileName = null;
         HashMap<String, String> result = null;
 
-        for (File file : dirFiles) {
+        for (File file : Objects.requireNonNull(dirFiles)) {
             String content = FileSystem.readFile(file.getPath());
             fileName = file.getPath();
             var data = deserializeData(content);
@@ -129,6 +121,23 @@ public class Database {
             }
         }
         return new Tuple<>(fileName, result);
+    }
+
+    private Tuple<String, ArrayList<HashMap<String, String>>> findAllWith(String root, String field, String value) {
+        File[] dirFiles = FileSystem.getDirFiles(root);
+
+        String fileName = null;
+        var resultArray = new ArrayList<HashMap<String, String>>();
+
+        for (File file : Objects.requireNonNull(dirFiles)) {
+            String content = FileSystem.readFile(file.getPath());
+            fileName = file.getPath();
+            var data = deserializeData(content);
+            if (data.get(field).equals(value)) {
+                resultArray.add(data);
+            }
+        }
+        return new Tuple<>(fileName, resultArray);
     }
 
     private void createSubdirsFromJSON(List<String> pathNames, String dbDir) {

@@ -538,22 +538,19 @@ class App {
         if (!fetchResult.success) System.out.println("Could find artist!");
 
         var artist = new Artist(fetchResult.data);
-        var songs = new ArrayList<String>();
+        var songsResult = database.executeQuery(new Query()
+                .from("songs").where("artistId", String.valueOf(artist.getId()))
+                .fetchAll());
 
-        // queries are not fast enough for aggregating lots of data
-        File[] songFiles = FileSystem.getDirFiles(database.getDbName() + "/songs");
+        var songs = songsResult.dataArray
+                .stream()
+                .map(s -> s.get("title"))
+                .collect(Collectors.toList());
 
-        for (File songFile : Objects.requireNonNull(songFiles)) {
-            var data = database.deserializeData(FileSystem.readFile(songFile.getPath()));
-            var musicObject = getNameOfData("songs", data);
-
-            for (var songId : artist.getRefSongIds()) {
-                if (songId == musicObject.getId()) songs.add(musicObject.getResolvedName());
-            }
-        }
-
-        System.out.printf("\n----- Song by %s -----\n", artist.getName());
-        songs.forEach(System.out::println);
+        System.out.printf("\n----- Song(s) by %s -----\n", artist.getName());
+        songs.forEach(s -> System.out.printf("%s - %s\n",
+                Color.printSongColor(s), Color.printArtistColor(artist.getName())
+        ));
     }
 
     private ArrayList<MusicObject> globalSearch(ArrayList<String> menuChoice, String search) {

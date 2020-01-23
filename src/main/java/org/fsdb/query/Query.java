@@ -36,6 +36,11 @@ public class Query {
         return this;
     }
 
+    public Query fetchAll() {
+        action = QueryAction.FETCH_ALL;
+        return this;
+    }
+
     public Query delete() {
         action = QueryAction.DELETE;
         return this;
