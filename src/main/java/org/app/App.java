@@ -437,11 +437,21 @@ class App {
             Album album;
             var path = "albums";
             var albums = sortResults(getAlbumList(artistId));
-            printResults(albums, true, false);
+            if (albums.size() > 0) {
+                printResults(albums, true, true);
+                System.out.println("Are any of these the requested albums?> ");
+                System.out.println("If yes, enter index to select> ");
+                System.out.println("Else, press 0 to create a new album.");
+            } else {
+                System.out.println("Press 0 to create a new album.");
+            }
+            int index = Input.getInt();
+
+         /*  printResults(albums, true, false);
             System.out.println("Are any of these the requested albums?> ");
             System.out.println("If yes, enter index to select> ");
-            System.out.println("Else, enter 0 to create new album");
-            int index = Input.getInt();
+            System.out.println("Else, enter 0 to create new album"); */
+
             if (index == 0) {
                 System.out.println("What is the name of the album?");
                 String albumName = Input.getLine();
