@@ -16,13 +16,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 class App {
-    private static final int GLOBAL_SEARCH = 3;
-    private static final int EXIT = 4;
-
+    private static final int INVALID_CHOICE = -1;
     private static final int ARTIST = 0;
     private static final int ALBUM = 1;
     private static final int SONG = 2;
-    private static final int INVALID_CHOICE = -1;
+    private static final int GLOBAL_SEARCH = 3;
+    private static final int EXIT = 4;
 
     private Database database;
 
@@ -123,7 +122,7 @@ class App {
                 System.out.println("Search\n----------");
                 var choice = handleSubMenu();
                 var results = sortResults(getSearchResults(choice));
-                printResults(results, true);
+                printResults(results, true,true);
 
                 // if the search was artists we ask if they want to print the songs for that artist
                 if (choice.first > choice.second.size() - 1) break;
@@ -217,7 +216,7 @@ class App {
         Tuple<Integer, List<String>> choice = handleSubMenu();
         var results = sortResults(getSearchResults(choice));
 
-        printResults(results, true);
+        printResults(results, true, true);
 
         if (results.size() == 0) {
             System.out.println("No results found.");
@@ -291,7 +290,7 @@ class App {
         System.out.print("Search for song to edit>  ");
 
         var songs = sortResults(getDataList("songs", Input.getLine()));
-        printResults(songs, true);
+        printResults(songs, true, true);
 
         if (songs.size() == 0) {
             System.out.println("No results found.");
@@ -312,7 +311,7 @@ class App {
     private void editGenre() {
         System.out.print("Search for song to edit genre of>  ");
         var songs = sortResults(getDataList("songs", Input.getLine()));
-        printResults(songs, true);
+        printResults(songs, true,true);
 
         if (songs.size() == 0) {
             System.out.println("No results found.");
@@ -335,7 +334,7 @@ class App {
     private void editAlbum() {
         System.out.print("Search for album to edit>  ");
         var albums = sortResults(getDataList("albums", Input.getLine()));
-        printResults(albums, true);
+        printResults(albums, true,true);
 
         if (albums.size() == 0) {
             System.out.println("No results found.");
@@ -357,7 +356,7 @@ class App {
         System.out.print("Search for artist to edit>  ");
 
         var artists = sortResults(getDataList("artists", Input.getLine()));
-        printResults(artists, true);
+        printResults(artists, true,true);
 
         if (artists.size() == 0) {
             System.out.println("No results found.");
@@ -403,7 +402,7 @@ class App {
         var artists = sortResults(getDataList(path, artistInput));
 
         if (artists.size() > 0) {
-            printResults(artists, true);
+            printResults(artists, true,true);
             System.out.println("Are any of these the requested artist?> ");
             System.out.println("If yes, enter index to select> ");
             System.out.println("Else, press 0 to create the artist: " + Color.printArtistColor(artistInput));
@@ -426,29 +425,47 @@ class App {
     }
 
     private Album addAlbum(int artistId) {
+        Album album;
         var path = "albums";
-        System.out.print("What's the album name? ");
-        String albumInput = Input.getLine();
-        var albums = sortResults(getDataList(path, albumInput));
-
-        printResults(albums, true);
+        var albums = sortResults(getAlbumList(artistId));
+        printResults(albums, true,false);
         System.out.println("Are any of these the requested albums?> ");
         System.out.println("If yes, enter index to select> ");
-        System.out.println("Else, press 0 to create the album: " + Color.printAlbumColor(albumInput));
-
+        System.out.println("Else, enter 0 to create new album");
         int index = Input.getInt();
-        Album album;
-
         if (index == 0) {
+            System.out.println("What is the name of the album?");
+            String albumName = Input.getLine();
             System.out.println("What year was the album released?");
             int year = Input.getInt();
-            album = new Album(generateID(path), artistId, albumInput, year);
+            album = new Album(generateID(path), artistId, albumName, year);
         } else {
             album = (Album) albums.get(index - 1);
         }
         database.executeQuery(new Query().from(path).create(album.mapObject()));
         return album;
     }
+
+    private ArrayList<MusicObject> getAlbumList(int artistId) {
+        ArrayList<MusicObject> results = new ArrayList<>();
+        String albumUrl = "albums";
+        String path = database.getDbName() + "/" + albumUrl;
+        File[] fileArr = FileSystem.getDirFiles(path);
+        for (File file : Objects.requireNonNull(fileArr)) {
+            String url = file.toString();
+            String data = FileSystem.readFile(url);
+
+            HashMap<String, String> dataMap = database.deserializeData(data);
+            MusicObject result = getNameOfData(albumUrl, dataMap);
+            Album album = (Album) result;
+            if (artistId == album.getArtist()) {
+                results.add(result);
+            }
+
+        }
+        return results;
+    }
+
 
     private int generateID(String type) {
         int newId = -1;
@@ -478,7 +495,7 @@ class App {
         return results;
     }
 
-    private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
+    private void printResults(ArrayList<MusicObject> results, boolean printIndexed, boolean printResult) {
         int index = 0;
         String artistStr = "", albumStr = "", songStr = "";
 
