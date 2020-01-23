@@ -96,6 +96,7 @@ public class Song implements MusicObject {
         this.genre = genre;
     }
 
+    @Override
     public int getArtistId() {
         return artistId;
     }

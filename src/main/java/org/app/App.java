@@ -528,12 +528,22 @@ class App {
                 else System.out.println(artists[i].getNameColored());
             }
         }
+         var allArtistsPaths = FileSystem.getDirFiles(database.getDbName() +"/artists");
+        var artistArray = new ArrayList<Artist>();
+        for(File file : allArtistsPaths){
+            artistArray.add(new Artist(database.deserializeData(FileSystem.readFile(file.getPath()))));
+        }
+
         var albums = (Album[]) results.stream().filter(a -> getClass(a) == ALBUM).toArray(Album[]::new);
         if (albums.length > 0) {
             albumStr = albums.length + " Album(s)";
             System.out.printf("-- Albums (%d) --\n", albums.length);
             for (int i = 0; i < albums.length; i++, index++) {
-                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, albums[i].getNameColored());
+
+                int finalI = i;
+                var artistFiltered =  artistArray.stream().filter(a -> a.getId() == albums[finalI].getArtistId()).findFirst().get();
+
+                if (printIndexed) System.out.printf("[%d] %s - %s\n", index + 1, albums[i].getNameColored(), artistFiltered.getNameColored());
                 else System.out.println(albums[i].getNameColored());
             }
         }
@@ -542,7 +552,9 @@ class App {
             songStr = songs.length + " Song(s)";
             System.out.printf("-- Songs (%d) --\n", songs.length);
             for (int i = 0; i < songs.length; i++, index++) {
-                if (printIndexed) System.out.printf("[%d] %s\n", index + 1, songs[i].getNameColored());
+                int finalI = i;
+                var artistFiltered =  artistArray.stream().filter(a -> a.getId() == songs[finalI].getArtistId()).findFirst().get();
+                if (printIndexed) System.out.printf("[%d] %s - %s\n", index + 1, songs[i].getNameColored(),artistFiltered.getNameColored());
                 else System.out.println(songs[i].getNameColored());
             }
         }

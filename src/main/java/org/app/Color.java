@@ -3,7 +3,7 @@ package org.app;
 public class Color {
 
     public static final String ARTIST_COLOR = Color.GREEN_BOLD_BRIGHT;
-    public static final String ALBUM_COLOR = Color.YELLOW_BOLD_BRIGHT;
+    public static final String ALBUM_COLOR = Color.PURPLE_BOLD_BRIGHT;
     public static final String SONG_COLOR = Color.BLUE_BOLD_BRIGHT;
 
 

@@ -5,7 +5,7 @@ public interface MusicObject extends Comparable<MusicObject> {
     int getId();
     String getResolvedName();
     String getNameColored();
-
+    int getArtistId();
 
     @Override
     int compareTo(MusicObject o);

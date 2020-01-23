@@ -51,6 +51,11 @@ public class Album implements MusicObject {
     }
 
     @Override
+    public int getArtistId() {
+        return artist;
+    }
+
+    @Override
     public int compareTo(MusicObject o) {
         return getName().compareTo(o.getResolvedName());
     }
