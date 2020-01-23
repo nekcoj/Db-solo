@@ -16,13 +16,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 class App {
-    private static final int GLOBAL_SEARCH = 3;
-    private static final int EXIT = 4;
-
+    private static final int INVALID_CHOICE = -1;
     private static final int ARTIST = 0;
     private static final int ALBUM = 1;
     private static final int SONG = 2;
-    private static final int INVALID_CHOICE = -1;
+    private static final int GLOBAL_SEARCH = 3;
+    private static final int EXIT = 4;
 
     private Database database;
 
