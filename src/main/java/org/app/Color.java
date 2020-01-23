@@ -2,6 +2,11 @@ package org.app;
 
 public class Color {
 
+    public static final String ARTIST_COLOR = Color.GREEN_BOLD_BRIGHT;
+    public static final String ALBUM_COLOR = Color.YELLOW_BOLD_BRIGHT;
+    public static final String SONG_COLOR = Color.BLUE_BOLD_BRIGHT;
+
+
 
     public static final String ANSI_RESET = "\u001B[0m";
 
@@ -82,18 +87,18 @@ public class Color {
    public static void colorExample(){
        System.out.println(RED_BACKGROUND_BRIGHT + "This text has a green background but default text!" + ANSI_RESET);
        System.out.println(GREEN + "This text has red text but a default background!" + ANSI_RESET);
-       System.out.println(YELLOW_BACKGROUND_BRIGHT + RED + "This text has a green background and red text!" + ANSI_RESET);
+       System.out.println(YELLOW_BACKGROUND_BRIGHT + RED_UNDERLINED + "This text has a green background and red text!" + ANSI_RESET);
     }
 
 
     public static String printArtistColor(String artist){
-       return Color.GREEN_BOLD_BRIGHT + artist + Color.ANSI_RESET;
+       return Color.ARTIST_COLOR + artist + Color.ANSI_RESET;
     }
     public static String printAlbumColor(String album){
-        return Color.YELLOW_BOLD_BRIGHT + album + Color.ANSI_RESET;
+        return Color.ALBUM_COLOR + album + Color.ANSI_RESET;
     }
     public static String printSongColor(String song){
-        return Color.BLUE_BOLD_BRIGHT + song + Color.ANSI_RESET;
+        return Color.SONG_COLOR + song + Color.ANSI_RESET;
     }
 
 }
