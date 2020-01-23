@@ -337,7 +337,7 @@ class App {
         int songId = generateID(path);
         Artist artist = addArtist(songId);
         Album album = addAlbum(artist.getId());
-        Song song = new Song(songId, album.getId(), songName, -1, "Metal",artist.getId());
+        Song song = new Song(songId, album.getId(), songName, -1, "Metal", artist.getId());
         HashMap<String, String> mapSong = song.mapObject();
         database.executeQuery(new Query().from(path).create(mapSong));
 
@@ -376,29 +376,25 @@ class App {
         return artist;
     }
 
-    private Album addAlbum(int artistId){
+    private Album addAlbum(int artistId) {
+        Album album;
         var path = "albums";
-
         var albums = getAlbumList(artistId);
-        Album album = new Album();
         printResults(albums, true);
         System.out.println("Are any of these the requested albums?> ");
         System.out.println("If yes, enter index to select> ");
-        System.out.println("Else, enter album name");
-        String albumInput = Input.getLine();
-           int index = -1;
-            try {
-                index = Integer.parseInt(albumInput);
-            } catch(NumberFormatException n){
-                System.out.println("What year was the album released?");
-                int year = Input.getInt();
-                album = new Album(generateID(path), artistId,albumInput,year);
-            }
-        //System.out.println("Press 0 to create the album: " + Color.printAlbumColor(albumInput));
-
-       if (index !=-1){
-           album = (Album) albums.get(index-1);
+        System.out.println("Else, enter 0 to create new album");
+        int index = Input.getInt();
+        if (index == 0) {
+            System.out.println("What is the name of the album?");
+            String albumName = Input.getLine();
+            System.out.println("What year was the album released?");
+            int year = Input.getInt();
+            album = new Album(generateID(path), artistId, albumName, year);
+        } else {
+            album = (Album) albums.get(index - 1);
         }
+        // System.out.println("Press 0 to create the album: " + Color.printAlbumColor(albumInput));
         database.executeQuery(new Query().from(path).create(album.mapObject()));
         return album;
     }
@@ -420,7 +416,6 @@ class App {
             }
 
         }
-        System.out.println(results.size() + " Hits");
         return results;
     }
 
