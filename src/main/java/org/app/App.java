@@ -142,7 +142,7 @@ class App {
                 break;
             case 3:
                 System.out.println("Remove\n----------");
-                removeSong();
+                removeObject();
                 break;
             case 4:
                 System.out.println("Edit\n----------");
@@ -213,7 +213,7 @@ class App {
         }
     }
 
-    private void removeSong() {
+    private void removeObject() {
         Tuple<Integer, List<String>> choice = handleSubMenu();
         var results = sortResults(getSearchResults(choice));
 
@@ -233,13 +233,57 @@ class App {
             return;
         }
 
-        String searchId = String.valueOf((results.get(index - 1)).getId());
-        var deleteResult = database.executeQuery(new Query().from(typeName).where("id", searchId).delete());
+        if (typeName.equals("albums")) {
+            System.out.println("Deep removing album");
+            deepRemoveAlbum(results.get(index - 1).getId());
+        } else if (typeName.equals("artists")) {
+            System.out.println("Deep removing artist");
+            deepRemoveArtist(results.get(index - 1).getId());
+        } else {
+            String searchId = String.valueOf((results.get(index - 1)).getId());
+            var deleteResult = database.executeQuery(new Query().from(typeName).where("id", searchId).delete());
 
-        if (deleteResult.success) {
-            if (typeName.equals("songs"))
-                System.out.printf("Successfully removed %s\n", deleteResult.data.get("title"));
-            else System.out.printf("Successfully removed %s\n", deleteResult.data.get("name"));
+            if (deleteResult.success) {
+                if (typeName.equals("songs"))
+                    System.out.printf("Successfully removed %s\n", deleteResult.data.get("title"));
+                else System.out.printf("Successfully removed %s\n", deleteResult.data.get("name"));
+            }
+        }
+    }
+
+    private void deepRemoveArtist(Integer artistId) {
+        String albumPath = database.getDbName() + "/albums";
+        File[] albums = FileSystem.getDirFiles(albumPath);
+
+        for (var albumFile : Objects.requireNonNull(albums)) {
+            var data = database.deserializeData(FileSystem.readFile(albumFile.getPath()));
+            if (data.get("artist").equals(artistId.toString())) {
+                FileSystem.delete(albumPath + "/" + data.get("id"));
+                System.out.printf("[ALBUM] removed album with name %s\n", data.get("name"));
+            }
+        }
+
+        var deleteArtist = database.executeQuery(new Query()
+                .from("artists").where("id", artistId.toString()).delete());
+
+        var artist = new Artist(deleteArtist.data);
+        for (var songId : artist.getRefSongIds()) {
+            FileSystem.delete(database.getDbName() + "/songs/" + songId);
+            System.out.printf("[SONG] removed song with id %d\n", songId);
+        }
+    }
+
+    private void deepRemoveAlbum(Integer albumId) {
+        FileSystem.delete(database.getDbName() + "/albums/" + albumId);
+        String songsPath = database.getDbName() + "/songs";
+        File[] songs = FileSystem.getDirFiles(songsPath);
+
+        for (var songFile : Objects.requireNonNull(songs)) {
+            var data = database.deserializeData(FileSystem.readFile(songFile.getPath()));
+            if (data.get("album").equals(albumId.toString())) {
+                FileSystem.delete(songsPath + "/" + data.get("id"));
+                System.out.printf("Removed song %s\n", data.get("title"));
+            }
         }
     }
 
@@ -304,7 +348,7 @@ class App {
         System.out.print("Enter new album title> ");
         String newAlbumTitle = Input.getLine();
         var editResult = database.executeQuery(new Query().from("albums").where("id", searchId).update("name", newAlbumTitle));
-        //editResult.data.get("title");
+
         if (editResult.success) System.out.printf("Successfully edited album, new album title is: %s\n", newAlbumTitle);
         else System.out.println("Could not edit album.");
     }
@@ -436,8 +480,11 @@ class App {
 
     private void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
         int index = 0;
+        String artistStr = "", albumStr = "", songStr = "";
+
         var artists = (Artist[]) results.stream().filter(a -> getClass(a) == ARTIST).toArray(Artist[]::new);
         if (artists.length > 0) {
+            artistStr = artists.length + " Artist(s)";
             System.out.printf("-- Artists (%d) --\n", artists.length);
             for (int i = 0; i < artists.length; i++, index++) {
                 if (printIndexed) System.out.printf("[%d] %s\n", index + 1, artists[i].getName());
@@ -446,6 +493,7 @@ class App {
         }
         var albums = (Album[]) results.stream().filter(a -> getClass(a) == ALBUM).toArray(Album[]::new);
         if (albums.length > 0) {
+            albumStr = albums.length + " Album(s)";
             System.out.printf("-- Albums (%d) --\n", albums.length);
             for (int i = 0; i < albums.length; i++, index++) {
                 if (printIndexed) System.out.printf("[%d] %s\n", index + 1, albums[i].getName());
@@ -454,6 +502,7 @@ class App {
         }
         var songs = (Song[]) results.stream().filter(s -> getClass(s) == SONG).toArray(Song[]::new);
         if (songs.length > 0) {
+            songStr = songs.length + " Song(s)";
             System.out.printf("-- Songs (%d) --\n", songs.length);
             for (int i = 0; i < songs.length; i++, index++) {
                 if (printIndexed) System.out.printf("[%d] %s\n", index + 1, songs[i].getTitle());
@@ -461,7 +510,10 @@ class App {
             }
         }
 
-        System.out.printf("\nFound %d artist(s), %d album(s) and %d song(s)\n", artists.length, albums.length, songs.length);
+        if (index > 0) {
+            String resultStr = String.format("%s %s %s\n", artistStr, albumStr, songStr);
+            System.out.println("Found " + resultStr.strip());
+        }
     }
 
     private void printArtistSongs(String artistName) {
