@@ -43,6 +43,16 @@ public class Song implements MusicObject {
         return id;
     }
 
+    @Override
+    public String getResolvedName() {
+        return getTitle();
+    }
+
+    @Override
+    public int compareTo(MusicObject o) {
+        return getTitle().compareTo(o.getResolvedName());
+    }
+
     public void setId(int id) {
         this.id = id;
     }

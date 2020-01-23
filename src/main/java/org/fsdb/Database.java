@@ -146,8 +146,8 @@ public class Database {
 
             if (!FileSystem.exists(filePath)) {
                 FileSystem.createDir(filePath);
-
                 createFileFromJSON(path, filePath);
+                System.out.printf("Loaded data from JSON file '%s'\n", path);
             }
         }
     }
