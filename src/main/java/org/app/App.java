@@ -450,11 +450,6 @@ class App {
         }
         int index = Input.getInt();
 
-         /*  printResults(albums, true, false);
-            System.out.println("Are any of these the requested albums?> ");
-            System.out.println("If yes, enter index to select> ");
-            System.out.println("Else, enter 0 to create new album"); */
-
         if (index == 0) {
             System.out.println("What is the name of the album?");
             String albumName = Input.getLine();
@@ -523,7 +518,7 @@ class App {
 
         var artists = (Artist[]) results.stream().filter(a -> getClass(a) == ARTIST).toArray(Artist[]::new);
         if (artists.length > 0) {
-            artistStr = artists.length + " Artist(s)";
+            artistStr = artists.length + " Artist(s) ";
             System.out.printf("-- Artists (%d) --\n", artists.length);
             for (int i = 0; i < artists.length; i++, index++) {
                 if (printIndexed) System.out.printf("[%d] %s\n", index + 1, artists[i].getNameColored());
@@ -538,7 +533,7 @@ class App {
 
         var albums = (Album[]) results.stream().filter(a -> getClass(a) == ALBUM).toArray(Album[]::new);
         if (albums.length > 0) {
-            albumStr = albums.length + " Album(s)";
+            albumStr = albums.length + " Album(s) ";
             System.out.printf("-- Albums (%d) --\n", albums.length);
             for (int i = 0; i < albums.length; i++, index++) {
 
@@ -551,7 +546,7 @@ class App {
         }
         var songs = (Song[]) results.stream().filter(s -> getClass(s) == SONG).toArray(Song[]::new);
         if (songs.length > 0) {
-            songStr = songs.length + " Song(s)";
+            songStr = songs.length + " Song(s) ";
             System.out.printf("-- Songs (%d) --\n", songs.length);
             for (int i = 0; i < songs.length; i++, index++) {
                 int finalI = i;
@@ -561,7 +556,7 @@ class App {
             }
         }
 
-        System.out.printf("\nFound %s, %s and %s\n"
+        System.out.printf("\nFound %s%s%s\n"
                 , Color.printArtistColor(artistStr)
                 , Color.printAlbumColor(albumStr)
                 , Color.printSongColor(songStr));
