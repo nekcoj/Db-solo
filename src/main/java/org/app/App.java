@@ -415,15 +415,17 @@ class App {
             printResults(artists, true, true);
             System.out.println("Are any of these the requested artist?> ");
             System.out.println("If yes, enter index to select> ");
-            System.out.println("Else, press 0 to create the artist: " + Color.printArtistColor(artistInput));
+            System.out.println("Else, press 0 to create new " + Color.printArtistColor("artist"));
         } else {
             System.out.println("No results found.");
-            System.out.println("Press 0 to create the artist: " + Color.printArtistColor(artistInput));
+            System.out.println("Press 0 to create new " + Color.printArtistColor("artist"));
         }
 
         int index = Input.getInt();
         Artist artist;
         if (index == 0) {
+            System.out.print("Write new Artist >");
+            artistInput = Input.getLine();
             ArrayList<Integer> newArrayList = new ArrayList<>();
             newArrayList.add(songId);
             artist = new Artist(generateID(path), artistInput, newArrayList);
