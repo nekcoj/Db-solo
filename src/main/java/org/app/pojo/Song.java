@@ -1,5 +1,7 @@
 package org.app.pojo;
 
+import org.app.Color;
+
 import java.util.HashMap;
 
 public class Song implements MusicObject {
@@ -49,6 +51,11 @@ public class Song implements MusicObject {
     }
 
     @Override
+    public String getNameColored() {
+      return  Color.printSongColor(title);
+    }
+
+    @Override
     public int compareTo(MusicObject o) {
         return getTitle().compareTo(o.getResolvedName());
     }
@@ -89,6 +96,7 @@ public class Song implements MusicObject {
         this.genre = genre;
     }
 
+    @Override
     public int getArtistId() {
         return artistId;
     }
