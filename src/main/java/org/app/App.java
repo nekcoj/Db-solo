@@ -483,7 +483,6 @@ class App {
         return results;
     }
 
-
     private int generateID(String type) {
         int newId = -1;
         ArrayList<MusicObject> list = getDataList(type, "");
@@ -541,7 +540,7 @@ class App {
                 var artistName = "Unknown Artist";
                 var artistObject = artistArray.stream().filter(a -> a.getId() == albums[finalI].getArtistId()).findFirst();
                 if (artistObject.isPresent())
-                    artistName = artistObject.get().getName();
+                    artistName = artistObject.get().getNameColored();
 
                 if (printIndexed) System.out.printf("[%d] %s - %s\n", index + 1, albums[i].getNameColored(), artistName);
                 else System.out.println(albums[i].getNameColored());
@@ -557,7 +556,7 @@ class App {
                 var artistName = "Unknown Artist";
                 var artistObject = artistArray.stream().filter(a -> a.getId() == songs[finalI].getArtistId()).findFirst();
                 if (artistObject.isPresent())
-                    artistName = artistObject.get().getName();
+                    artistName = artistObject.get().getNameColored();
 
                 if (printIndexed) System.out.printf("[%d] %s - %s\n", index + 1, songs[i].getNameColored(), artistName);
                 else System.out.println(songs[i].getNameColored());
@@ -572,7 +571,7 @@ class App {
 
     private void printArtistSongs(String artistName) {
         var fetchResult = database.executeQuery(new Query().from("artists").where("name", artistName).fetch());
-        if (!fetchResult.success) System.out.println("Could find artist!");
+        if (!fetchResult.success) System.out.println("Could not find artist!");
 
         var artist = new Artist(fetchResult.data);
         var songsResult = database.executeQuery(new Query()

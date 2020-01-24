@@ -1,0 +1,2636 @@
+[
+    {
+        "id": 1,
+        "artist": 16,
+        "name": "Tales of the Crown",
+        "year": 1969
+    },
+    {
+        "id": 2,
+        "artist": 16,
+        "name": "The Masquerade Ball",
+        "year": 1950
+    },
+    {
+        "id": 3,
+        "artist": 159,
+        "name": "Grace",
+        "year": 1979
+    },
+    {
+        "id": 4,
+        "artist": 147,
+        "name": "Behind Closed Doors",
+        "year": 1992
+    },
+    {
+        "id": 5,
+        "artist": 121,
+        "name": "Day & Age",
+        "year": 2018
+    },
+    {
+        "id": 6,
+        "artist": 172,
+        "name": "Sweet Fanny Adams",
+        "year": 1997
+    },
+    {
+        "id": 7,
+        "artist": 199,
+        "name": "Spem In Alium",
+        "year": 2017
+    },
+    {
+        "id": 8,
+        "artist": 152,
+        "name": "Night In The Ruts",
+        "year": 1997
+    },
+    {
+        "id": 9,
+        "artist": 95,
+        "name": "Impurity",
+        "year": 2000
+    },
+    {
+        "id": 10,
+        "artist": 196,
+        "name": "Concerto For Group and Orchestra",
+        "year": 2006
+    },
+    {
+        "id": 11,
+        "artist": 28,
+        "name": "Doremi Fasol Latido",
+        "year": 2008
+    },
+    {
+        "id": 12,
+        "artist": 130,
+        "name": "Pulse",
+        "year": 1963
+    },
+    {
+        "id": 13,
+        "artist": 97,
+        "name": "Mirage",
+        "year": 1998
+    },
+    {
+        "id": 14,
+        "artist": 41,
+        "name": "Permission To Land",
+        "year": 2019
+    },
+    {
+        "id": 15,
+        "artist": 6,
+        "name": "Crimes of Passion",
+        "year": 1995
+    },
+    {
+        "id": 16,
+        "artist": 64,
+        "name": "The Soundtrack from the film The Song Remains The Same",
+        "year": 1951
+    },
+    {
+        "id": 17,
+        "artist": 65,
+        "name": "Greetings From Asbury Park N.J_",
+        "year": 1980
+    },
+    {
+        "id": 18,
+        "artist": 18,
+        "name": "Nightflight",
+        "year": 1957
+    },
+    {
+        "id": 19,
+        "artist": 22,
+        "name": "Doolittle",
+        "year": 1961
+    },
+    {
+        "id": 20,
+        "artist": 52,
+        "name": "Pungent Effulgent",
+        "year": 1984
+    },
+    {
+        "id": 21,
+        "artist": 154,
+        "name": "Only Revolutions",
+        "year": 1993
+    },
+    {
+        "id": 22,
+        "artist": 23,
+        "name": "Rio Grande Mud",
+        "year": 2017
+    },
+    {
+        "id": 23,
+        "artist": 76,
+        "name": "Diary Of A Madman",
+        "year": 1973
+    },
+    {
+        "id": 24,
+        "artist": 28,
+        "name": "Warrior On The Edge Of Time",
+        "year": 2012
+    },
+    {
+        "id": 25,
+        "artist": 16,
+        "name": "Mystica",
+        "year": 2017
+    },
+    {
+        "id": 26,
+        "artist": 119,
+        "name": "The Collection Volume One",
+        "year": 2014
+    },
+    {
+        "id": 27,
+        "artist": 181,
+        "name": "Sgt. Pepper's Lonely Hearts Club Band",
+        "year": 1987
+    },
+    {
+        "id": 28,
+        "artist": 134,
+        "name": "On Every Street",
+        "year": 1989
+    },
+    {
+        "id": 29,
+        "artist": 39,
+        "name": "Dreamboat Annie",
+        "year": 1972
+    },
+    {
+        "id": 30,
+        "artist": 147,
+        "name": "Backstreet Symphony",
+        "year": 1973
+    },
+    {
+        "id": 31,
+        "artist": 152,
+        "name": "Just Push Play",
+        "year": 1974
+    },
+    {
+        "id": 32,
+        "artist": 182,
+        "name": "Valley Of The Damned",
+        "year": 1985
+    },
+    {
+        "id": 33,
+        "artist": 81,
+        "name": "Lone Star",
+        "year": 1973
+    },
+    {
+        "id": 34,
+        "artist": 3,
+        "name": "Demo",
+        "year": 1962
+    },
+    {
+        "id": 35,
+        "artist": 81,
+        "name": "Firing On All Six",
+        "year": 1957
+    },
+    {
+        "id": 36,
+        "artist": 144,
+        "name": "Tales from the Blue Cocoons",
+        "year": 2015
+    },
+    {
+        "id": 37,
+        "artist": 133,
+        "name": "The Big Come Up",
+        "year": 2003
+    },
+    {
+        "id": 38,
+        "artist": 39,
+        "name": "Little Queen",
+        "year": 2018
+    },
+    {
+        "id": 39,
+        "artist": 36,
+        "name": "Tyr",
+        "year": 1994
+    },
+    {
+        "id": 40,
+        "artist": 27,
+        "name": "Ted Nugent",
+        "year": 2010
+    },
+    {
+        "id": 41,
+        "artist": 92,
+        "name": "The Dance",
+        "year": 2019
+    },
+    {
+        "id": 42,
+        "artist": 113,
+        "name": "Aliens",
+        "year": 2006
+    },
+    {
+        "id": 43,
+        "artist": 142,
+        "name": "Introduce Yourself",
+        "year": 1989
+    },
+    {
+        "id": 44,
+        "artist": 138,
+        "name": "Keys To The World",
+        "year": 1972
+    },
+    {
+        "id": 45,
+        "artist": 149,
+        "name": "Demon Days",
+        "year": 2009
+    },
+    {
+        "id": 46,
+        "artist": 153,
+        "name": "Athens Andover",
+        "year": 1953
+    },
+    {
+        "id": 47,
+        "artist": 198,
+        "name": "Greatest Hits",
+        "year": 1954
+    },
+    {
+        "id": 48,
+        "artist": 36,
+        "name": "Master Of Reality",
+        "year": 2011
+    },
+    {
+        "id": 49,
+        "artist": 116,
+        "name": "Selling England by the Pound",
+        "year": 2014
+    },
+    {
+        "id": 50,
+        "artist": 36,
+        "name": "Paranoid",
+        "year": 1955
+    },
+    {
+        "id": 51,
+        "artist": 74,
+        "name": "Crossroads",
+        "year": 1996
+    },
+    {
+        "id": 52,
+        "artist": 102,
+        "name": "Pies-Pasties-and-Rock-n-Roll",
+        "year": 1973
+    },
+    {
+        "id": 53,
+        "artist": 164,
+        "name": "Electricity",
+        "year": 2009
+    },
+    {
+        "id": 54,
+        "artist": 193,
+        "name": "18 Singles",
+        "year": 1999
+    },
+    {
+        "id": 55,
+        "artist": 140,
+        "name": "The Yellow Shark",
+        "year": 1965
+    },
+    {
+        "id": 56,
+        "artist": 192,
+        "name": "Ride the Lightning",
+        "year": 1998
+    },
+    {
+        "id": 57,
+        "artist": 34,
+        "name": "More Mayhem",
+        "year": 1993
+    },
+    {
+        "id": 58,
+        "artist": 16,
+        "name": "Between The Walls",
+        "year": 1987
+    },
+    {
+        "id": 59,
+        "artist": 13,
+        "name": "Razamanaz",
+        "year": 1985
+    },
+    {
+        "id": 60,
+        "artist": 75,
+        "name": "Garden of eden",
+        "year": 2010
+    },
+    {
+        "id": 61,
+        "artist": 106,
+        "name": "Sin After Sin [The Re-Masters]",
+        "year": 1962
+    },
+    {
+        "id": 62,
+        "artist": 95,
+        "name": "Thunder And Consolation",
+        "year": 1959
+    },
+    {
+        "id": 63,
+        "artist": 130,
+        "name": "Winter Tour 74",
+        "year": 1969
+    },
+    {
+        "id": 64,
+        "artist": 114,
+        "name": "Cult\u00f6saurus Erectus",
+        "year": 1983
+    },
+    {
+        "id": 65,
+        "artist": 111,
+        "name": "Sigh No More",
+        "year": 1968
+    },
+    {
+        "id": 66,
+        "artist": 31,
+        "name": "The Mask",
+        "year": 1963
+    },
+    {
+        "id": 67,
+        "artist": 27,
+        "name": "Cat Scratch Fever",
+        "year": 1975
+    },
+    {
+        "id": 68,
+        "artist": 131,
+        "name": "In The Court Of The Crimson King",
+        "year": 1960
+    },
+    {
+        "id": 69,
+        "artist": 56,
+        "name": "Live Licks",
+        "year": 1952
+    },
+    {
+        "id": 70,
+        "artist": 31,
+        "name": "Kill Bill",
+        "year": 1967
+    },
+    {
+        "id": 71,
+        "artist": 196,
+        "name": "Fireball 25th Anniversary Edition",
+        "year": 1972
+    },
+    {
+        "id": 72,
+        "artist": 91,
+        "name": "The Dreaming",
+        "year": 1998
+    },
+    {
+        "id": 73,
+        "artist": 69,
+        "name": "The Most Of The Animals",
+        "year": 1985
+    },
+    {
+        "id": 74,
+        "artist": 21,
+        "name": "Kev's Kristmas Album",
+        "year": 2013
+    },
+    {
+        "id": 75,
+        "artist": 196,
+        "name": "Machine Head (1997 Remixes)",
+        "year": 1969
+    },
+    {
+        "id": 76,
+        "artist": 196,
+        "name": "Who Do We Think We Are Remastered Edition",
+        "year": 2012
+    },
+    {
+        "id": 77,
+        "artist": 119,
+        "name": "Natty Dread",
+        "year": 1987
+    },
+    {
+        "id": 78,
+        "artist": 141,
+        "name": "Night on Bald Mountain",
+        "year": 2002
+    },
+    {
+        "id": 79,
+        "artist": 116,
+        "name": "Foxtrot",
+        "year": 1968
+    },
+    {
+        "id": 80,
+        "artist": 52,
+        "name": "Strangeitude",
+        "year": 1995
+    },
+    {
+        "id": 81,
+        "artist": 194,
+        "name": "Garbage",
+        "year": 1999
+    },
+    {
+        "id": 82,
+        "artist": 12,
+        "name": "Argus",
+        "year": 1965
+    },
+    {
+        "id": 83,
+        "artist": 113,
+        "name": "Happy to Meet Sorry to Part",
+        "year": 1959
+    },
+    {
+        "id": 84,
+        "artist": 102,
+        "name": "Rockin-the-Arm-Live-EP",
+        "year": 1964
+    },
+    {
+        "id": 85,
+        "artist": 114,
+        "name": "Curse of the Hidden Mirror",
+        "year": 1969
+    },
+    {
+        "id": 86,
+        "artist": 130,
+        "name": "Obscured By Clouds",
+        "year": 1957
+    },
+    {
+        "id": 87,
+        "artist": 16,
+        "name": "Magic",
+        "year": 1957
+    },
+    {
+        "id": 88,
+        "artist": 196,
+        "name": "Shades Of Deep Purple",
+        "year": 1950
+    },
+    {
+        "id": 89,
+        "artist": 174,
+        "name": "Lust For Life",
+        "year": 1953
+    },
+    {
+        "id": 90,
+        "artist": 66,
+        "name": "For Those About To Rock (We Salute You)",
+        "year": 1990
+    },
+    {
+        "id": 91,
+        "artist": 123,
+        "name": "Astro-Creep",
+        "year": 2000
+    },
+    {
+        "id": 92,
+        "artist": 196,
+        "name": "Made In Japan",
+        "year": 1999
+    },
+    {
+        "id": 93,
+        "artist": 152,
+        "name": "Toys In The Attic",
+        "year": 2009
+    },
+    {
+        "id": 94,
+        "artist": 36,
+        "name": "Born Again",
+        "year": 2010
+    },
+    {
+        "id": 95,
+        "artist": 119,
+        "name": "Stir it Up - Vol 4",
+        "year": 1955
+    },
+    {
+        "id": 96,
+        "artist": 120,
+        "name": "Carmina Burana",
+        "year": 2016
+    },
+    {
+        "id": 97,
+        "artist": 153,
+        "name": "Wild Thing - The Greatest Hits",
+        "year": 2005
+    },
+    {
+        "id": 98,
+        "artist": 20,
+        "name": "Le Roi Est Mort Vive Le Roi!",
+        "year": 1989
+    },
+    {
+        "id": 99,
+        "artist": 171,
+        "name": "Sheer Heart Attack",
+        "year": 1959
+    },
+    {
+        "id": 100,
+        "artist": 35,
+        "name": "Holy Diver",
+        "year": 1995
+    },
+    {
+        "id": 101,
+        "artist": 189,
+        "name": "Bad Company",
+        "year": 1996
+    },
+    {
+        "id": 102,
+        "artist": 29,
+        "name": "Piledriver",
+        "year": 1993
+    },
+    {
+        "id": 103,
+        "artist": 150,
+        "name": "4",
+        "year": 1979
+    },
+    {
+        "id": 104,
+        "artist": 114,
+        "name": "Champions Of Rock",
+        "year": 1962
+    },
+    {
+        "id": 105,
+        "artist": 83,
+        "name": "I'm In The Mood",
+        "year": 1995
+    },
+    {
+        "id": 106,
+        "artist": 33,
+        "name": "Peter Gabriel 3",
+        "year": 1954
+    },
+    {
+        "id": 107,
+        "artist": 183,
+        "name": "Jack O The Green (Small World Big Band - Friends 3)",
+        "year": 1999
+    },
+    {
+        "id": 108,
+        "artist": 101,
+        "name": "Molten Gold- The Anthology",
+        "year": 1961
+    },
+    {
+        "id": 109,
+        "artist": 122,
+        "name": "Vanilla Sky",
+        "year": 1995
+    },
+    {
+        "id": 110,
+        "artist": 25,
+        "name": "Weapons Of Grass Destruction",
+        "year": 1981
+    },
+    {
+        "id": 111,
+        "artist": 36,
+        "name": "Mob Rules",
+        "year": 1957
+    },
+    {
+        "id": 112,
+        "artist": 167,
+        "name": "Showbusiness!",
+        "year": 1991
+    },
+    {
+        "id": 113,
+        "artist": 15,
+        "name": "The Baddest Of George Thorogood & The Destroyers",
+        "year": 2000
+    },
+    {
+        "id": 114,
+        "artist": 23,
+        "name": "Antenna",
+        "year": 1994
+    },
+    {
+        "id": 115,
+        "artist": 146,
+        "name": "Joe Satriani",
+        "year": 1971
+    },
+    {
+        "id": 116,
+        "artist": 16,
+        "name": "Diamonds Unlocked",
+        "year": 2019
+    },
+    {
+        "id": 117,
+        "artist": 68,
+        "name": "Be Good To Yourself At Least Once A Day",
+        "year": 2011
+    },
+    {
+        "id": 118,
+        "artist": 109,
+        "name": "Super Lungs",
+        "year": 1971
+    },
+    {
+        "id": 119,
+        "artist": 145,
+        "name": "The King Of The Blues - The Blues Collection 2",
+        "year": 1953
+    },
+    {
+        "id": 120,
+        "artist": 134,
+        "name": "Communiqu\u00e9",
+        "year": 1960
+    },
+    {
+        "id": 121,
+        "artist": 64,
+        "name": "Led Zeppelin IV",
+        "year": 1976
+    },
+    {
+        "id": 122,
+        "artist": 151,
+        "name": "Naturally",
+        "year": 1996
+    },
+    {
+        "id": 123,
+        "artist": 133,
+        "name": "El Camino",
+        "year": 1961
+    },
+    {
+        "id": 124,
+        "artist": 11,
+        "name": "Our Time in Eden",
+        "year": 1961
+    },
+    {
+        "id": 125,
+        "artist": 20,
+        "name": "MCMXC a.D",
+        "year": 1982
+    },
+    {
+        "id": 126,
+        "artist": 70,
+        "name": "Lietenant Kije Symphony 5",
+        "year": 1964
+    },
+    {
+        "id": 127,
+        "artist": 190,
+        "name": "Wave",
+        "year": 2012
+    },
+    {
+        "id": 128,
+        "artist": 56,
+        "name": "Forty Licks",
+        "year": 1987
+    },
+    {
+        "id": 129,
+        "artist": 134,
+        "name": "Making Movies",
+        "year": 1980
+    },
+    {
+        "id": 130,
+        "artist": 196,
+        "name": "Deep Purple In Rock",
+        "year": 1988
+    },
+    {
+        "id": 131,
+        "artist": 20,
+        "name": "The Cross Of Changes",
+        "year": 1988
+    },
+    {
+        "id": 132,
+        "artist": 114,
+        "name": "Blue \u00d6yster Cult",
+        "year": 1971
+    },
+    {
+        "id": 133,
+        "artist": 37,
+        "name": "Sneakin' Suspicion",
+        "year": 2010
+    },
+    {
+        "id": 134,
+        "artist": 29,
+        "name": "On the Level",
+        "year": 1952
+    },
+    {
+        "id": 135,
+        "artist": 85,
+        "name": "One World",
+        "year": 1980
+    },
+    {
+        "id": 136,
+        "artist": 29,
+        "name": "Quo & Blue For You",
+        "year": 2002
+    },
+    {
+        "id": 137,
+        "artist": 48,
+        "name": "Pictures at an Exhibition",
+        "year": 2019
+    },
+    {
+        "id": 138,
+        "artist": 130,
+        "name": "The Wall",
+        "year": 1965
+    },
+    {
+        "id": 139,
+        "artist": 47,
+        "name": "The Ascent Of Mann",
+        "year": 1964
+    },
+    {
+        "id": 140,
+        "artist": 1,
+        "name": "Mahogany Rush Live",
+        "year": 2004
+    },
+    {
+        "id": 141,
+        "artist": 14,
+        "name": "So Far",
+        "year": 1977
+    },
+    {
+        "id": 142,
+        "artist": 9,
+        "name": "Laughter With A Bang",
+        "year": 1969
+    },
+    {
+        "id": 143,
+        "artist": 36,
+        "name": "Black Sabbath",
+        "year": 1971
+    },
+    {
+        "id": 144,
+        "artist": 116,
+        "name": "A Trick Of The Tail",
+        "year": 1979
+    },
+    {
+        "id": 145,
+        "artist": 162,
+        "name": "K",
+        "year": 1983
+    },
+    {
+        "id": 146,
+        "artist": 143,
+        "name": "Bat Out Of Hell 3",
+        "year": 1997
+    },
+    {
+        "id": 147,
+        "artist": 42,
+        "name": "Walking Into Clarksdale",
+        "year": 2002
+    },
+    {
+        "id": 148,
+        "artist": 16,
+        "name": "Shadow Zone",
+        "year": 2015
+    },
+    {
+        "id": 149,
+        "artist": 20,
+        "name": "The Screen Behind The Mirror",
+        "year": 1966
+    },
+    {
+        "id": 150,
+        "artist": 196,
+        "name": "Made In Europe",
+        "year": 1999
+    },
+    {
+        "id": 151,
+        "artist": 134,
+        "name": "Love Over Gold",
+        "year": 1981
+    },
+    {
+        "id": 152,
+        "artist": 130,
+        "name": "Ummagumma",
+        "year": 1999
+    },
+    {
+        "id": 153,
+        "artist": 171,
+        "name": "The Miracle",
+        "year": 1974
+    },
+    {
+        "id": 154,
+        "artist": 140,
+        "name": "One Size Fits All",
+        "year": 1977
+    },
+    {
+        "id": 155,
+        "artist": 33,
+        "name": "Peter Gabriel 1",
+        "year": 2014
+    },
+    {
+        "id": 156,
+        "artist": 155,
+        "name": "The Wolf Is At Your Door",
+        "year": 1992
+    },
+    {
+        "id": 157,
+        "artist": 67,
+        "name": "The Velvet Underground & Nico",
+        "year": 1979
+    },
+    {
+        "id": 158,
+        "artist": 97,
+        "name": "The Snow Goose",
+        "year": 2014
+    },
+    {
+        "id": 159,
+        "artist": 24,
+        "name": "Burning Boats",
+        "year": 1995
+    },
+    {
+        "id": 160,
+        "artist": 28,
+        "name": "Quark Strangeness And Charm",
+        "year": 2015
+    },
+    {
+        "id": 161,
+        "artist": 196,
+        "name": "Deep Purple",
+        "year": 2002
+    },
+    {
+        "id": 162,
+        "artist": 196,
+        "name": "Stormbringer",
+        "year": 2008
+    },
+    {
+        "id": 163,
+        "artist": 53,
+        "name": "Florence And the Machine - Ceremonials",
+        "year": 2015
+    },
+    {
+        "id": 164,
+        "artist": 28,
+        "name": "In Search Of Space",
+        "year": 2007
+    },
+    {
+        "id": 165,
+        "artist": 61,
+        "name": "Sex & Religion",
+        "year": 1977
+    },
+    {
+        "id": 166,
+        "artist": 15,
+        "name": "One Bourbon One Scotch One Beer",
+        "year": 1983
+    },
+    {
+        "id": 167,
+        "artist": 129,
+        "name": "Blurring The Edges",
+        "year": 1996
+    },
+    {
+        "id": 168,
+        "artist": 113,
+        "name": "The Book Of Invasions",
+        "year": 1961
+    },
+    {
+        "id": 169,
+        "artist": 186,
+        "name": "The Wicker Man",
+        "year": 1972
+    },
+    {
+        "id": 170,
+        "artist": 152,
+        "name": "Get A Grip",
+        "year": 1965
+    },
+    {
+        "id": 171,
+        "artist": 9,
+        "name": "Watch Out For The Bits",
+        "year": 2018
+    },
+    {
+        "id": 172,
+        "artist": 28,
+        "name": "Hall Of The Mountain Grill",
+        "year": 1996
+    },
+    {
+        "id": 173,
+        "artist": 3,
+        "name": "You Know Who You Are",
+        "year": 2018
+    },
+    {
+        "id": 174,
+        "artist": 191,
+        "name": "The Southern Harmony And Musical Companion",
+        "year": 1989
+    },
+    {
+        "id": 175,
+        "artist": 16,
+        "name": "Kings and Queens",
+        "year": 1962
+    },
+    {
+        "id": 176,
+        "artist": 2,
+        "name": "Trying To Burn The Sun",
+        "year": 1978
+    },
+    {
+        "id": 177,
+        "artist": 124,
+        "name": "Cornology",
+        "year": 1957
+    },
+    {
+        "id": 178,
+        "artist": 13,
+        "name": "Rampant",
+        "year": 1953
+    },
+    {
+        "id": 179,
+        "artist": 161,
+        "name": "X-M@$ [Explicit]",
+        "year": 1992
+    },
+    {
+        "id": 180,
+        "artist": 84,
+        "name": "Van Halen",
+        "year": 2012
+    },
+    {
+        "id": 181,
+        "artist": 163,
+        "name": "The Collection",
+        "year": 1999
+    },
+    {
+        "id": 182,
+        "artist": 71,
+        "name": "Live And Dangerous",
+        "year": 1991
+    },
+    {
+        "id": 183,
+        "artist": 158,
+        "name": "An Diolaim - Folk Roots of One of Ireland's Groups",
+        "year": 1986
+    },
+    {
+        "id": 184,
+        "artist": 127,
+        "name": "Reloaded",
+        "year": 1956
+    },
+    {
+        "id": 185,
+        "artist": 177,
+        "name": "Money Ain't Everything",
+        "year": 2012
+    },
+    {
+        "id": 186,
+        "artist": 160,
+        "name": "Rising",
+        "year": 1956
+    },
+    {
+        "id": 187,
+        "artist": 152,
+        "name": "Gems",
+        "year": 1979
+    },
+    {
+        "id": 188,
+        "artist": 49,
+        "name": "Food For The Soul",
+        "year": 1975
+    },
+    {
+        "id": 189,
+        "artist": 30,
+        "name": "Just Dusty",
+        "year": 1961
+    },
+    {
+        "id": 190,
+        "artist": 152,
+        "name": "Nine Lives",
+        "year": 1994
+    },
+    {
+        "id": 191,
+        "artist": 18,
+        "name": "Never Turn Your Back On A Friend",
+        "year": 1964
+    },
+    {
+        "id": 192,
+        "artist": 64,
+        "name": "Led Zeppelin II",
+        "year": 1987
+    },
+    {
+        "id": 193,
+        "artist": 80,
+        "name": "Mercury High",
+        "year": 1978
+    },
+    {
+        "id": 194,
+        "artist": 24,
+        "name": "Mappa Mundi",
+        "year": 2014
+    },
+    {
+        "id": 195,
+        "artist": 10,
+        "name": "The Best of PROCOL HARUM Halcyon Daze",
+        "year": 1998
+    },
+    {
+        "id": 196,
+        "artist": 31,
+        "name": "Matrix",
+        "year": 1961
+    },
+    {
+        "id": 197,
+        "artist": 6,
+        "name": "In The Heat of the Night",
+        "year": 1976
+    },
+    {
+        "id": 198,
+        "artist": 57,
+        "name": "Eruption Live In Europe",
+        "year": 2003
+    },
+    {
+        "id": 199,
+        "artist": 64,
+        "name": "Led Zeppelin III",
+        "year": 1962
+    },
+    {
+        "id": 200,
+        "artist": 104,
+        "name": "All Night Wrong",
+        "year": 2018
+    },
+    {
+        "id": 201,
+        "artist": 36,
+        "name": "Sabbath Bloody Sabbath",
+        "year": 2005
+    },
+    {
+        "id": 202,
+        "artist": 137,
+        "name": "Best Of The Doors",
+        "year": 2003
+    },
+    {
+        "id": 203,
+        "artist": 115,
+        "name": "Phenomenon",
+        "year": 1952
+    },
+    {
+        "id": 204,
+        "artist": 36,
+        "name": "Black Sabbath Vol.4",
+        "year": 2010
+    },
+    {
+        "id": 205,
+        "artist": 76,
+        "name": "Under Cover",
+        "year": 1963
+    },
+    {
+        "id": 206,
+        "artist": 177,
+        "name": "Breakfast in Denmark",
+        "year": 1959
+    },
+    {
+        "id": 207,
+        "artist": 182,
+        "name": "Sonic Firestorm",
+        "year": 1987
+    },
+    {
+        "id": 208,
+        "artist": 83,
+        "name": "Boom Boom",
+        "year": 1959
+    },
+    {
+        "id": 209,
+        "artist": 90,
+        "name": "Purple Haze",
+        "year": 2004
+    },
+    {
+        "id": 210,
+        "artist": 1,
+        "name": "Mahogany Rush IV",
+        "year": 2007
+    },
+    {
+        "id": 211,
+        "artist": 154,
+        "name": "Revolutions Live in Wembley",
+        "year": 1988
+    },
+    {
+        "id": 212,
+        "artist": 91,
+        "name": "The Kick Inside",
+        "year": 2001
+    },
+    {
+        "id": 213,
+        "artist": 192,
+        "name": "Kill 'Em All",
+        "year": 2012
+    },
+    {
+        "id": 214,
+        "artist": 126,
+        "name": "Disraeli Gears",
+        "year": 1955
+    },
+    {
+        "id": 215,
+        "artist": 114,
+        "name": "Fire Of Unknown Origin",
+        "year": 1996
+    },
+    {
+        "id": 216,
+        "artist": 171,
+        "name": "Innuendo Disk 2",
+        "year": 1984
+    },
+    {
+        "id": 217,
+        "artist": 178,
+        "name": "Hell Is",
+        "year": 2001
+    },
+    {
+        "id": 218,
+        "artist": 134,
+        "name": "Brothers In Arms",
+        "year": 2003
+    },
+    {
+        "id": 219,
+        "artist": 173,
+        "name": "Motivation Radio",
+        "year": 1968
+    },
+    {
+        "id": 220,
+        "artist": 53,
+        "name": "Lungs",
+        "year": 1976
+    },
+    {
+        "id": 221,
+        "artist": 83,
+        "name": "Boogie Man - The Blues Collection 1",
+        "year": 1951
+    },
+    {
+        "id": 222,
+        "artist": 180,
+        "name": "Voyage of the Acolyte",
+        "year": 1991
+    },
+    {
+        "id": 223,
+        "artist": 55,
+        "name": "Surrealistic Pillow",
+        "year": 1988
+    },
+    {
+        "id": 224,
+        "artist": 91,
+        "name": "Arial",
+        "year": 1964
+    },
+    {
+        "id": 225,
+        "artist": 16,
+        "name": "Black Moon Pyramid",
+        "year": 1950
+    },
+    {
+        "id": 226,
+        "artist": 91,
+        "name": "The Sensual World",
+        "year": 2002
+    },
+    {
+        "id": 227,
+        "artist": 2,
+        "name": "Carolina County Ball",
+        "year": 1959
+    },
+    {
+        "id": 228,
+        "artist": 105,
+        "name": "The Rise And Fall Of Ziggy Stardust and The Spiders From Mars",
+        "year": 1963
+    },
+    {
+        "id": 229,
+        "artist": 16,
+        "name": "Eternal Prisoner",
+        "year": 1971
+    },
+    {
+        "id": 230,
+        "artist": 160,
+        "name": "Rainbow",
+        "year": 2003
+    },
+    {
+        "id": 231,
+        "artist": 7,
+        "name": "Irish Tour",
+        "year": 2016
+    },
+    {
+        "id": 232,
+        "artist": 92,
+        "name": "The Very Best Of",
+        "year": 1985
+    },
+    {
+        "id": 233,
+        "artist": 171,
+        "name": "Innuendo",
+        "year": 1996
+    },
+    {
+        "id": 234,
+        "artist": 5,
+        "name": "Folkjokeopus",
+        "year": 1978
+    },
+    {
+        "id": 235,
+        "artist": 140,
+        "name": "Apostrophe (')",
+        "year": 1966
+    },
+    {
+        "id": 236,
+        "artist": 8,
+        "name": "The Number of the Beast",
+        "year": 2002
+    },
+    {
+        "id": 237,
+        "artist": 13,
+        "name": "Narareth - Loud 'n' Proud",
+        "year": 1983
+    },
+    {
+        "id": 238,
+        "artist": 92,
+        "name": "Greatest Hits",
+        "year": 1987
+    },
+    {
+        "id": 239,
+        "artist": 90,
+        "name": "The Ultimate Experience",
+        "year": 2010
+    },
+    {
+        "id": 240,
+        "artist": 82,
+        "name": "Demons And Wizards",
+        "year": 2012
+    },
+    {
+        "id": 241,
+        "artist": 75,
+        "name": "Temporary Immortality",
+        "year": 1991
+    },
+    {
+        "id": 242,
+        "artist": 195,
+        "name": "Never Never Land",
+        "year": 2019
+    },
+    {
+        "id": 243,
+        "artist": 180,
+        "name": "Please Don't Touch!",
+        "year": 1995
+    },
+    {
+        "id": 244,
+        "artist": 36,
+        "name": "Never Say Die",
+        "year": 1981
+    },
+    {
+        "id": 245,
+        "artist": 30,
+        "name": "Dusty In Memphis",
+        "year": 2009
+    },
+    {
+        "id": 246,
+        "artist": 46,
+        "name": "Don't Believe The Truth",
+        "year": 1961
+    },
+    {
+        "id": 247,
+        "artist": 141,
+        "name": "Pictures At An Exhibition",
+        "year": 1987
+    },
+    {
+        "id": 248,
+        "artist": 152,
+        "name": "Done With Mirrors",
+        "year": 1953
+    },
+    {
+        "id": 249,
+        "artist": 64,
+        "name": "Led Zeppelin",
+        "year": 2009
+    },
+    {
+        "id": 250,
+        "artist": 76,
+        "name": "No More Tears",
+        "year": 2008
+    },
+    {
+        "id": 251,
+        "artist": 119,
+        "name": "Soul Shakeddown Party - Vol 3",
+        "year": 1984
+    },
+    {
+        "id": 252,
+        "artist": 36,
+        "name": "Forbidden",
+        "year": 2001
+    },
+    {
+        "id": 253,
+        "artist": 31,
+        "name": "The Fifth Element",
+        "year": 1963
+    },
+    {
+        "id": 254,
+        "artist": 151,
+        "name": "Anyway The Wind Blows - The Anthology",
+        "year": 1971
+    },
+    {
+        "id": 255,
+        "artist": 112,
+        "name": "Pictures At An Exhibition",
+        "year": 2020
+    },
+    {
+        "id": 256,
+        "artist": 175,
+        "name": "Walkin' Man The Best of Seasick Steve",
+        "year": 1963
+    },
+    {
+        "id": 257,
+        "artist": 73,
+        "name": "Alice's Restaurant",
+        "year": 1952
+    },
+    {
+        "id": 258,
+        "artist": 93,
+        "name": "Wasting Light",
+        "year": 2001
+    },
+    {
+        "id": 259,
+        "artist": 156,
+        "name": "Crash Course",
+        "year": 1976
+    },
+    {
+        "id": 260,
+        "artist": 37,
+        "name": "Private Practice",
+        "year": 1999
+    },
+    {
+        "id": 261,
+        "artist": 16,
+        "name": "Oceans of time",
+        "year": 1956
+    },
+    {
+        "id": 262,
+        "artist": 59,
+        "name": "Izbrannoye",
+        "year": 1968
+    },
+    {
+        "id": 263,
+        "artist": 23,
+        "name": "Recycler",
+        "year": 1976
+    },
+    {
+        "id": 264,
+        "artist": 74,
+        "name": "Paris Texas",
+        "year": 2004
+    },
+    {
+        "id": 265,
+        "artist": 114,
+        "name": "Agents Of Fortune",
+        "year": 1974
+    },
+    {
+        "id": 266,
+        "artist": 28,
+        "name": "Astounding Sounds Amazing Music",
+        "year": 1999
+    },
+    {
+        "id": 267,
+        "artist": 90,
+        "name": "Excellence De Luxe",
+        "year": 1966
+    },
+    {
+        "id": 268,
+        "artist": 103,
+        "name": "Ray Of Light",
+        "year": 1992
+    },
+    {
+        "id": 269,
+        "artist": 51,
+        "name": "Futurama",
+        "year": 1982
+    },
+    {
+        "id": 270,
+        "artist": 80,
+        "name": "Child In Time 2",
+        "year": 1984
+    },
+    {
+        "id": 271,
+        "artist": 36,
+        "name": "Heaven and Hell",
+        "year": 2009
+    },
+    {
+        "id": 272,
+        "artist": 36,
+        "name": "Dehumanizer",
+        "year": 2002
+    },
+    {
+        "id": 273,
+        "artist": 144,
+        "name": "Black Hole Star",
+        "year": 2002
+    },
+    {
+        "id": 274,
+        "artist": 91,
+        "name": "The Red Shoes",
+        "year": 1971
+    },
+    {
+        "id": 275,
+        "artist": 77,
+        "name": "Dragon Fly",
+        "year": 1969
+    },
+    {
+        "id": 276,
+        "artist": 113,
+        "name": "Short Stories Tall Tales",
+        "year": 2007
+    },
+    {
+        "id": 277,
+        "artist": 170,
+        "name": "Live and Unleashed",
+        "year": 1967
+    },
+    {
+        "id": 278,
+        "artist": 72,
+        "name": "Tomorrow We'll Be Sober",
+        "year": 2003
+    },
+    {
+        "id": 279,
+        "artist": 79,
+        "name": "Extreme II Pornograffitti",
+        "year": 1963
+    },
+    {
+        "id": 280,
+        "artist": 66,
+        "name": "If You Want Blood You've Got It",
+        "year": 2009
+    },
+    {
+        "id": 281,
+        "artist": 84,
+        "name": "1984",
+        "year": 2014
+    },
+    {
+        "id": 282,
+        "artist": 157,
+        "name": "Second Coming",
+        "year": 1952
+    },
+    {
+        "id": 283,
+        "artist": 52,
+        "name": "Afterswish",
+        "year": 1973
+    },
+    {
+        "id": 284,
+        "artist": 17,
+        "name": "Growers of Mushrooms",
+        "year": 1975
+    },
+    {
+        "id": 285,
+        "artist": 108,
+        "name": "The Good The Bad and The Ugly",
+        "year": 1955
+    },
+    {
+        "id": 286,
+        "artist": 58,
+        "name": "Share The Land",
+        "year": 1986
+    },
+    {
+        "id": 287,
+        "artist": 140,
+        "name": "Over-nite Sensation",
+        "year": 2003
+    },
+    {
+        "id": 288,
+        "artist": 130,
+        "name": "A Saucerful Of Secrets",
+        "year": 1964
+    },
+    {
+        "id": 289,
+        "artist": 201,
+        "name": "Push The Button",
+        "year": 1951
+    },
+    {
+        "id": 290,
+        "artist": 143,
+        "name": "Bat Out Of Hell",
+        "year": 1981
+    },
+    {
+        "id": 291,
+        "artist": 168,
+        "name": "Aria",
+        "year": 1952
+    },
+    {
+        "id": 292,
+        "artist": 26,
+        "name": "Gold",
+        "year": 2016
+    },
+    {
+        "id": 293,
+        "artist": 94,
+        "name": "Hype",
+        "year": 2016
+    },
+    {
+        "id": 294,
+        "artist": 16,
+        "name": "The Crest",
+        "year": 2000
+    },
+    {
+        "id": 295,
+        "artist": 105,
+        "name": "Changesbowie",
+        "year": 1983
+    },
+    {
+        "id": 296,
+        "artist": 36,
+        "name": "Seventh Star",
+        "year": 1995
+    },
+    {
+        "id": 297,
+        "artist": 36,
+        "name": "Cross Purposes",
+        "year": 1972
+    },
+    {
+        "id": 298,
+        "artist": 13,
+        "name": "Champions Of Rock",
+        "year": 2009
+    },
+    {
+        "id": 299,
+        "artist": 107,
+        "name": "Showbiz Kids",
+        "year": 2002
+    },
+    {
+        "id": 300,
+        "artist": 82,
+        "name": "Uriah Heep Live",
+        "year": 2001
+    },
+    {
+        "id": 301,
+        "artist": 23,
+        "name": "Mescalero",
+        "year": 2000
+    },
+    {
+        "id": 302,
+        "artist": 114,
+        "name": "Mirrors",
+        "year": 1952
+    },
+    {
+        "id": 303,
+        "artist": 19,
+        "name": "Commitments",
+        "year": 2004
+    },
+    {
+        "id": 304,
+        "artist": 165,
+        "name": "RXRA",
+        "year": 1966
+    },
+    {
+        "id": 305,
+        "artist": 40,
+        "name": "Grand Slam",
+        "year": 1993
+    },
+    {
+        "id": 306,
+        "artist": 13,
+        "name": "The singles collection",
+        "year": 1964
+    },
+    {
+        "id": 307,
+        "artist": 43,
+        "name": "Albedo 0.39",
+        "year": 1976
+    },
+    {
+        "id": 308,
+        "artist": 39,
+        "name": "Dog & Butterfly",
+        "year": 2017
+    },
+    {
+        "id": 309,
+        "artist": 23,
+        "name": "Tres Hombres",
+        "year": 1989
+    },
+    {
+        "id": 310,
+        "artist": 15,
+        "name": "Ride 'Til I Die",
+        "year": 2014
+    },
+    {
+        "id": 311,
+        "artist": 68,
+        "name": "Rhinos Winos and Lunatics",
+        "year": 2002
+    },
+    {
+        "id": 312,
+        "artist": 130,
+        "name": "Wish You Were Here",
+        "year": 1985
+    },
+    {
+        "id": 313,
+        "artist": 100,
+        "name": "New Worlds Fayre",
+        "year": 2018
+    },
+    {
+        "id": 314,
+        "artist": 128,
+        "name": "Peer Gynt Suite",
+        "year": 2012
+    },
+    {
+        "id": 315,
+        "artist": 119,
+        "name": "The Collection Vol 2 (Riding High)",
+        "year": 2008
+    },
+    {
+        "id": 316,
+        "artist": 16,
+        "name": "Nasty Reputation",
+        "year": 2017
+    },
+    {
+        "id": 317,
+        "artist": 192,
+        "name": "Master Of Puppets",
+        "year": 1975
+    },
+    {
+        "id": 318,
+        "artist": 29,
+        "name": "Hello!",
+        "year": 1980
+    },
+    {
+        "id": 319,
+        "artist": 13,
+        "name": "Hair of the Dog",
+        "year": 2006
+    },
+    {
+        "id": 320,
+        "artist": 86,
+        "name": "The Best Of The Early Years",
+        "year": 2018
+    },
+    {
+        "id": 321,
+        "artist": 134,
+        "name": "Dire Straits",
+        "year": 1962
+    },
+    {
+        "id": 322,
+        "artist": 114,
+        "name": "Spectres",
+        "year": 2010
+    },
+    {
+        "id": 323,
+        "artist": 119,
+        "name": "The Very Best Of The Early Years 1968-74",
+        "year": 1976
+    },
+    {
+        "id": 324,
+        "artist": 92,
+        "name": "The Best of",
+        "year": 1989
+    },
+    {
+        "id": 325,
+        "artist": 72,
+        "name": "heavens to betsy",
+        "year": 1992
+    },
+    {
+        "id": 326,
+        "artist": 106,
+        "name": "Stained Class",
+        "year": 1978
+    },
+    {
+        "id": 327,
+        "artist": 12,
+        "name": "Keeper Of The Light [Live In Chicago]",
+        "year": 1987
+    },
+    {
+        "id": 328,
+        "artist": 148,
+        "name": "The Very Best of the Yardbirds",
+        "year": 2015
+    },
+    {
+        "id": 329,
+        "artist": 178,
+        "name": "Welcome To My Nightmare",
+        "year": 1999
+    },
+    {
+        "id": 330,
+        "artist": 18,
+        "name": "Budgie",
+        "year": 1968
+    },
+    {
+        "id": 331,
+        "artist": 130,
+        "name": "Meddle",
+        "year": 1950
+    },
+    {
+        "id": 332,
+        "artist": 196,
+        "name": "Come Taste The Band",
+        "year": 1970
+    },
+    {
+        "id": 333,
+        "artist": 29,
+        "name": "Matchstickmen - The Pschedelic Years",
+        "year": 1983
+    },
+    {
+        "id": 334,
+        "artist": 28,
+        "name": "P.X.R.5",
+        "year": 2007
+    },
+    {
+        "id": 335,
+        "artist": 185,
+        "name": "The Devil You Know",
+        "year": 1957
+    },
+    {
+        "id": 336,
+        "artist": 194,
+        "name": "Beautiful Garbage",
+        "year": 2006
+    },
+    {
+        "id": 337,
+        "artist": 91,
+        "name": "Never for Ever",
+        "year": 2000
+    },
+    {
+        "id": 338,
+        "artist": 22,
+        "name": "Surfer Rosa",
+        "year": 1993
+    },
+    {
+        "id": 339,
+        "artist": 32,
+        "name": "Live Scenes From New York",
+        "year": 1994
+    },
+    {
+        "id": 340,
+        "artist": 105,
+        "name": "Aladdin Sane",
+        "year": 1983
+    },
+    {
+        "id": 341,
+        "artist": 91,
+        "name": "Lionheart",
+        "year": 1957
+    },
+    {
+        "id": 342,
+        "artist": 28,
+        "name": "Silver Machine",
+        "year": 1977
+    },
+    {
+        "id": 343,
+        "artist": 64,
+        "name": "BBC Sessions",
+        "year": 1987
+    },
+    {
+        "id": 344,
+        "artist": 64,
+        "name": "Coda",
+        "year": 1952
+    },
+    {
+        "id": 345,
+        "artist": 188,
+        "name": "Greatest Hits Vol. III",
+        "year": 1992
+    },
+    {
+        "id": 346,
+        "artist": 118,
+        "name": "TYPE adamski",
+        "year": 1972
+    },
+    {
+        "id": 347,
+        "artist": 29,
+        "name": "XS All Areas",
+        "year": 1987
+    },
+    {
+        "id": 348,
+        "artist": 64,
+        "name": "Going To California",
+        "year": 1984
+    },
+    {
+        "id": 349,
+        "artist": 62,
+        "name": "Those Whom",
+        "year": 1964
+    },
+    {
+        "id": 350,
+        "artist": 87,
+        "name": "Chocolat",
+        "year": 1969
+    },
+    {
+        "id": 351,
+        "artist": 130,
+        "name": "Dark Side Of The Moon",
+        "year": 1956
+    },
+    {
+        "id": 352,
+        "artist": 192,
+        "name": "Metallica",
+        "year": 2002
+    },
+    {
+        "id": 353,
+        "artist": 114,
+        "name": "Secret Treaties",
+        "year": 1983
+    },
+    {
+        "id": 354,
+        "artist": 139,
+        "name": "I'm A Man",
+        "year": 2019
+    },
+    {
+        "id": 355,
+        "artist": 76,
+        "name": "Ozzmosis",
+        "year": 2007
+    },
+    {
+        "id": 356,
+        "artist": 136,
+        "name": "Libertad",
+        "year": 1961
+    },
+    {
+        "id": 357,
+        "artist": 82,
+        "name": "The Magician's Birthday",
+        "year": 1972
+    },
+    {
+        "id": 358,
+        "artist": 36,
+        "name": "The Eternal Idol",
+        "year": 1980
+    },
+    {
+        "id": 359,
+        "artist": 16,
+        "name": "The Ballads IV",
+        "year": 1968
+    },
+    {
+        "id": 360,
+        "artist": 18,
+        "name": "If I Were Brittannia I'd Waive The Rules",
+        "year": 1990
+    },
+    {
+        "id": 361,
+        "artist": 110,
+        "name": "Un-led-ed",
+        "year": 2020
+    },
+    {
+        "id": 362,
+        "artist": 94,
+        "name": "Captain Lockheed And The Starfighters",
+        "year": 1962
+    },
+    {
+        "id": 363,
+        "artist": 91,
+        "name": "Hounds of Love",
+        "year": 2009
+    },
+    {
+        "id": 364,
+        "artist": 187,
+        "name": "Zooma",
+        "year": 2007
+    },
+    {
+        "id": 365,
+        "artist": 36,
+        "name": "Sabotage",
+        "year": 1984
+    },
+    {
+        "id": 366,
+        "artist": 117,
+        "name": "Mama Said",
+        "year": 1978
+    },
+    {
+        "id": 367,
+        "artist": 152,
+        "name": "Permanent Vacation",
+        "year": 1982
+    },
+    {
+        "id": 368,
+        "artist": 196,
+        "name": "The Book Of Taliesyn",
+        "year": 1954
+    },
+    {
+        "id": 369,
+        "artist": 114,
+        "name": "Tyranny And Mutation [2001 Remaster]",
+        "year": 1959
+    },
+    {
+        "id": 370,
+        "artist": 47,
+        "name": "The Very Best Of",
+        "year": 2018
+    },
+    {
+        "id": 371,
+        "artist": 78,
+        "name": "Bartered Bride Overture",
+        "year": 1997
+    },
+    {
+        "id": 372,
+        "artist": 28,
+        "name": "25 Years On",
+        "year": 1968
+    },
+    {
+        "id": 373,
+        "artist": 200,
+        "name": "Collections",
+        "year": 1990
+    },
+    {
+        "id": 374,
+        "artist": 130,
+        "name": "Relics",
+        "year": 1989
+    },
+    {
+        "id": 375,
+        "artist": 64,
+        "name": "Houses of the Holy",
+        "year": 1995
+    },
+    {
+        "id": 376,
+        "artist": 50,
+        "name": "Gunslinger",
+        "year": 1967
+    },
+    {
+        "id": 377,
+        "artist": 105,
+        "name": "Diamond Dogs",
+        "year": 2003
+    },
+    {
+        "id": 378,
+        "artist": 184,
+        "name": "Still Got The Blues",
+        "year": 1951
+    },
+    {
+        "id": 379,
+        "artist": 64,
+        "name": "Remasters",
+        "year": 1998
+    },
+    {
+        "id": 380,
+        "artist": 31,
+        "name": "From Dusk Till Dawn",
+        "year": 2016
+    },
+    {
+        "id": 381,
+        "artist": 88,
+        "name": "Visions",
+        "year": 2018
+    },
+    {
+        "id": 382,
+        "artist": 152,
+        "name": "Pump",
+        "year": 2008
+    },
+    {
+        "id": 383,
+        "artist": 107,
+        "name": "Countdown to ecstasy",
+        "year": 1978
+    },
+    {
+        "id": 384,
+        "artist": 105,
+        "name": "The Man Who Sold The World",
+        "year": 1962
+    },
+    {
+        "id": 385,
+        "artist": 89,
+        "name": "Rearviewmirror",
+        "year": 1976
+    },
+    {
+        "id": 386,
+        "artist": 63,
+        "name": "Running With The Dogs",
+        "year": 2008
+    },
+    {
+        "id": 387,
+        "artist": 132,
+        "name": "Sloe Gin",
+        "year": 1965
+    },
+    {
+        "id": 388,
+        "artist": 51,
+        "name": "Sunburst Finish",
+        "year": 1971
+    },
+    {
+        "id": 389,
+        "artist": 107,
+        "name": "Katy Lied",
+        "year": 1965
+    },
+    {
+        "id": 390,
+        "artist": 97,
+        "name": "Camel",
+        "year": 1966
+    },
+    {
+        "id": 391,
+        "artist": 152,
+        "name": "Aerosmith",
+        "year": 1961
+    },
+    {
+        "id": 392,
+        "artist": 23,
+        "name": "Deg\u00fcello",
+        "year": 2002
+    },
+    {
+        "id": 393,
+        "artist": 96,
+        "name": "Night Riding",
+        "year": 2003
+    },
+    {
+        "id": 394,
+        "artist": 29,
+        "name": "Under The Influence",
+        "year": 2009
+    },
+    {
+        "id": 395,
+        "artist": 113,
+        "name": "The Man Who Built America",
+        "year": 1967
+    },
+    {
+        "id": 396,
+        "artist": 64,
+        "name": "In Through The Out Door",
+        "year": 1952
+    },
+    {
+        "id": 397,
+        "artist": 64,
+        "name": "How the West Was Won",
+        "year": 1986
+    },
+    {
+        "id": 398,
+        "artist": 140,
+        "name": "Zappa In New York",
+        "year": 1987
+    },
+    {
+        "id": 399,
+        "artist": 176,
+        "name": "Greatest Hits",
+        "year": 1982
+    },
+    {
+        "id": 400,
+        "artist": 98,
+        "name": "Trailer Park",
+        "year": 1991
+    },
+    {
+        "id": 401,
+        "artist": 152,
+        "name": "Live! Bootleg",
+        "year": 1966
+    },
+    {
+        "id": 402,
+        "artist": 18,
+        "name": "Squawk",
+        "year": 1981
+    },
+    {
+        "id": 403,
+        "artist": 166,
+        "name": "Backtrackin'",
+        "year": 1952
+    },
+    {
+        "id": 404,
+        "artist": 197,
+        "name": "The Very Best Of Marc Bolan And T. Rex",
+        "year": 1979
+    },
+    {
+        "id": 405,
+        "artist": 133,
+        "name": "Brothers",
+        "year": 1957
+    },
+    {
+        "id": 406,
+        "artist": 152,
+        "name": "Big Ones",
+        "year": 1964
+    },
+    {
+        "id": 407,
+        "artist": 36,
+        "name": "Technical Ecstasy",
+        "year": 1970
+    },
+    {
+        "id": 408,
+        "artist": 75,
+        "name": "Snake Eyes",
+        "year": 2001
+    },
+    {
+        "id": 409,
+        "artist": 64,
+        "name": "Presence",
+        "year": 1964
+    },
+    {
+        "id": 410,
+        "artist": 135,
+        "name": "Demolition Ball",
+        "year": 2019
+    },
+    {
+        "id": 411,
+        "artist": 152,
+        "name": "Get Your Wings",
+        "year": 1955
+    },
+    {
+        "id": 412,
+        "artist": 8,
+        "name": "Powerslave",
+        "year": 2017
+    },
+    {
+        "id": 413,
+        "artist": 4,
+        "name": "Cheaper Thrills",
+        "year": 1976
+    },
+    {
+        "id": 414,
+        "artist": 12,
+        "name": "Wishbone Four",
+        "year": 1959
+    },
+    {
+        "id": 415,
+        "artist": 38,
+        "name": "Tapestry",
+        "year": 1977
+    },
+    {
+        "id": 416,
+        "artist": 92,
+        "name": "Rumours",
+        "year": 1954
+    },
+    {
+        "id": 417,
+        "artist": 125,
+        "name": "Fallen",
+        "year": 1998
+    },
+    {
+        "id": 418,
+        "artist": 169,
+        "name": "Chinese Democracy",
+        "year": 1991
+    },
+    {
+        "id": 419,
+        "artist": 36,
+        "name": "Headless Cross",
+        "year": 1971
+    },
+    {
+        "id": 420,
+        "artist": 8,
+        "name": "Seventh Son Of A Seventh Son",
+        "year": 1987
+    },
+    {
+        "id": 421,
+        "artist": 196,
+        "name": "Burn",
+        "year": 1956
+    },
+    {
+        "id": 422,
+        "artist": 153,
+        "name": "Greatest Hits",
+        "year": 1988
+    },
+    {
+        "id": 423,
+        "artist": 151,
+        "name": "Troubadour",
+        "year": 1992
+    },
+    {
+        "id": 424,
+        "artist": 130,
+        "name": "Atom Heart Mother",
+        "year": 1969
+    },
+    {
+        "id": 425,
+        "artist": 78,
+        "name": "Ma Vlast",
+        "year": 2014
+    },
+    {
+        "id": 426,
+        "artist": 99,
+        "name": "Tom Lehrer In Concert",
+        "year": 1956
+    },
+    {
+        "id": 427,
+        "artist": 37,
+        "name": "Malpractice",
+        "year": 2020
+    },
+    {
+        "id": 428,
+        "artist": 44,
+        "name": "High On The Hog",
+        "year": 2006
+    },
+    {
+        "id": 429,
+        "artist": 60,
+        "name": "Bongo Fury",
+        "year": 1995
+    },
+    {
+        "id": 430,
+        "artist": 72,
+        "name": "whip Jamboree",
+        "year": 1999
+    },
+    {
+        "id": 431,
+        "artist": 45,
+        "name": "Transformer",
+        "year": 1959
+    },
+    {
+        "id": 432,
+        "artist": 64,
+        "name": "Physical Graffiti",
+        "year": 1982
+    },
+    {
+        "id": 433,
+        "artist": 113,
+        "name": "The Tain",
+        "year": 1996
+    },
+    {
+        "id": 434,
+        "artist": 16,
+        "name": "Wild Obsession",
+        "year": 1968
+    },
+    {
+        "id": 435,
+        "artist": 179,
+        "name": "Rising Force",
+        "year": 2007
+    },
+    {
+        "id": 436,
+        "artist": 175,
+        "name": "Man From Another Time",
+        "year": 1974
+    },
+    {
+        "id": 437,
+        "artist": 54,
+        "name": "Cross Road - The Best Of",
+        "year": 2019
+    },
+    {
+        "id": 438,
+        "artist": 130,
+        "name": "The Division Bell",
+        "year": 1988
+    },
+    {
+        "id": 439,
+        "artist": 133,
+        "name": "Attack & Release",
+        "year": 2004
+    }
+]
