@@ -527,7 +527,7 @@ class App {
         }
          var allArtistsPaths = FileSystem.getDirFiles(database.getDbName() +"/artists");
         var artistArray = new ArrayList<Artist>();
-        for(File file : allArtistsPaths){
+        for(File file : Objects.requireNonNull(allArtistsPaths)){
             artistArray.add(new Artist(database.deserializeData(FileSystem.readFile(file.getPath()))));
         }
 
@@ -536,11 +536,14 @@ class App {
             albumStr = albums.length + " Album(s) ";
             System.out.printf("-- Albums (%d) --\n", albums.length);
             for (int i = 0; i < albums.length; i++, index++) {
-
                 int finalI = i;
-                var artistFiltered =  artistArray.stream().filter(a -> a.getId() == albums[finalI].getArtistId()).findFirst().get();
 
-                if (printIndexed) System.out.printf("[%d] %s - %s\n", index + 1, albums[i].getNameColored(), artistFiltered.getNameColored());
+                var artistName = "Unknown Artist";
+                var artistObject = artistArray.stream().filter(a -> a.getId() == albums[finalI].getArtistId()).findFirst();
+                if (artistObject.isPresent())
+                    artistName = artistObject.get().getName();
+
+                if (printIndexed) System.out.printf("[%d] %s - %s\n", index + 1, albums[i].getNameColored(), artistName);
                 else System.out.println(albums[i].getNameColored());
             }
         }
@@ -550,8 +553,13 @@ class App {
             System.out.printf("-- Songs (%d) --\n", songs.length);
             for (int i = 0; i < songs.length; i++, index++) {
                 int finalI = i;
-                var artistFiltered =  artistArray.stream().filter(a -> a.getId() == songs[finalI].getArtistId()).findFirst().get();
-                if (printIndexed) System.out.printf("[%d] %s - %s\n", index + 1, songs[i].getNameColored(),artistFiltered.getNameColored());
+
+                var artistName = "Unknown Artist";
+                var artistObject = artistArray.stream().filter(a -> a.getId() == songs[finalI].getArtistId()).findFirst();
+                if (artistObject.isPresent())
+                    artistName = artistObject.get().getName();
+
+                if (printIndexed) System.out.printf("[%d] %s - %s\n", index + 1, songs[i].getNameColored(), artistName);
                 else System.out.println(songs[i].getNameColored());
             }
         }
