@@ -1,22 +1,41 @@
 package org.app;
 
 import org.app.menu.Menu;
-import org.fsdb.Util;
 
 public class Main {
     public static void main(String[] args) {
         Menu testMenu = new Menu();
 
-        testMenu.setMenuTitle("Menu title");
-        testMenu.addMenuItem("Option sssssssssssssssssssssssssssssssss 1");
-        testMenu.addMenuItem("Option asda asdsa 2");
-        testMenu.addMenuItem("Option  asdasdadadadad 3");
+        testMenu.setMenuTitle("Music Library");
+        testMenu.addMenuItem("Search", "s");
+        testMenu.addMenuItem("Add", "a");
+        testMenu.addMenuItem("Remove", "r");
+        testMenu.addMenuItem("Edit", "e");
+        testMenu.addMenuItem("Quit", "q");
 
         testMenu.show();
         var choice = testMenu.prompt("Enter option> ");
 
-        Util.clearScreen();
-        System.out.println("You chose option " + choice);
+        switch (choice.key) {
+            case "s":
+                System.out.println("Selected search");
+                break;
+            case "a":
+                System.out.println("Selected add");
+                break;
+            case "r":
+                System.out.println("Selected remove");
+                break;
+            case "e":
+                System.out.println("Selected edit");
+                break;
+            case "q":
+                System.out.println("Goodbye :)");
+                break;
+            default:
+                System.out.println("Unknown menu choice!");
+                break;
+        }
 
 //        String dbName = System.getenv("APP_DB");
 //        var app = new App(dbName);

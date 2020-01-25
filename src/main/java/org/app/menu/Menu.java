@@ -8,7 +8,7 @@ public class Menu {
     private StringBuilder menuOutput;
 
     private String menuTitle;
-    private ArrayList<String> menuItems;
+    private ArrayList<MenuChoice> menuItems;
 
     private int leftPadding = 4;
     private int rightPadding = 4;
@@ -48,12 +48,16 @@ public class Menu {
         this.menuTitle = title;
     }
 
-    public void addMenuItem(String name) {
-        menuItems.add(name);
+    public void addMenuItem(String name, String key) {
+        menuItems.add(new MenuChoice(name, menuItems.size() + 1, key));
         if (name.length() > maxItemLength) {
             maxItemLength = name.length();
             topBorderLength = maxItemLength + String.valueOf(menuItems.size()).length() + rightPadding + leftPadding + 5;
         }
+    }
+
+    public void addMenuItem(String name) {
+        addMenuItem(name, name.toLowerCase().charAt(0) + String.valueOf(menuItems.size() + 1));
     }
 
     public void show() {
@@ -67,7 +71,7 @@ public class Menu {
         addVerticalPadding(topPadding);
 
         for (int i = 0; i < menuItems.size(); i++)
-            menuOutput.append(addLeftBorder(String.format("[%d] %s", i + 1, addRightBorder(menuItems.get(i))))).append("\n");
+            menuOutput.append(addLeftBorder(String.format("[%d] %s", i + 1, addRightBorder(menuItems.get(i).text)))).append("\n");
 
         addVerticalPadding(bottomPadding);
 
@@ -75,15 +79,15 @@ public class Menu {
         System.out.print(menuOutput.toString());
     }
 
-    public int prompt(String promptMessage) {
+    public MenuChoice prompt(String promptMessage) {
         try {
             System.out.print(promptMessage);
             var index = Input.getInt();
             if (index < 1 || index > menuItems.size()) {
                 System.out.printf("Invalid index, try 1-%d\n", menuItems.size());
-                index = prompt(promptMessage);
+                index = prompt(promptMessage).index;
             }
-            return index;
+            return menuItems.get(index - 1);
         } catch (Exception e) {
             System.out.printf("Invalid input type, try 1-%d\n", menuItems.size());
             return prompt(promptMessage);
