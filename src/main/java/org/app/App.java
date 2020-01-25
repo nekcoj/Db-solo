@@ -51,7 +51,7 @@ class App {
         if (!choice.key.equals("q")) show();
     }
 
-    private ArrayList<MusicObject> getDataList(String subPath, String search) {
+    public ArrayList<MusicObject> getDataList(String subPath, String search) {
         ArrayList<MusicObject> results = new ArrayList<>();
 
         String path = database.getDbName() + "/" + subPath;
@@ -119,20 +119,6 @@ class App {
     private void userChosenAction(int userChoice) {
         switch (userChoice) {
             case 1:
-                var choice = handleSubMenu();
-                var results = sortResults(getSearchResults(choice));
-                printResults(results, true, true);
-
-                // if the search was artists we ask if they want to print the songs for that artist
-                if (choice.first > choice.second.size() - 1) break;
-                else if (choice.second.get(choice.first).equals("artists")) {
-                    System.out.println("Enter 0 to return to menu");
-                    System.out.print("or enter index to list songs> ");
-                    var index = Input.getInt();
-                    if (index == 0) break;
-                    printArtistSongs(results.get(index - 1).getResolvedName());
-                }
-
                 break;
             case 2:
                 System.out.println("Add\n----------");
@@ -143,8 +129,6 @@ class App {
                 removeObject();
                 break;
             case 4:
-                printEditMenu();
-                editMenuChoice(userChoice());
                 break;
             case 5:
                 System.out.println("Goodbye :(");
@@ -155,73 +139,13 @@ class App {
         }
     }
 
-    private Tuple<Integer, List<String>> handleSubMenu() {
-
-        var typeFolders = getTypeFolders();
-
-        var subMenu = new Menu()
-                .setMenuTitle("Search");
-
-        for (String typeFolder : typeFolders)
-            subMenu.addMenuItem(Util.capitalize(typeFolder));
-
-        int menuSize = typeFolders.size();
-
-      subMenu
-              .addMenuItem("Search all")
-              .addMenuItem("Go to main menu")
-              .show();
-
-        int choice = userChoice() - 1;
-        if (choice >= menuSize + 2 || choice < 0) return new Tuple<>(-1, typeFolders);
-
-        return new Tuple<>(choice, typeFolders);
-    }
-
-    private List<String> getTypeFolders() {
+    public List<String> getClassFolders() {
         File[] subFolders = FileSystem.getSubFolders(database.getDbName());
         return Arrays.stream(subFolders).map(File::getName).collect(Collectors.toList());
     }
 
-    private void printEditMenu() {
-        new Menu()
-                .setMenuTitle("Edit Menu")
-                .addMenuItem("Edit song")
-                .addMenuItem("Edit album")
-                .addMenuItem("Edit artist")
-                .addMenuItem("Edit genre")
-                .addMenuItem("Back to main menu")
-                .show();
-
-        System.out.print("Enter option> ");
-    }
-
-    private void editMenuChoice(int userChoice) {
-        switch (userChoice) {
-            case 1:
-                System.out.println("Edit song\n----------");
-                editSong();
-                break;
-            case 2:
-                System.out.println("Edit album\n----------");
-                editAlbum();
-                break;
-            case 3:
-                System.out.println("Edit artist\n----------");
-                editArtist();
-                break;
-            case 4:
-                System.out.println("Edit genre\n----------");
-                editGenre();
-                break;
-            case 5:
-                System.out.println("Returning to main menu\n----------");
-                break;
-        }
-    }
-
     private void removeObject() {
-        Tuple<Integer, List<String>> choice = handleSubMenu();
+        Tuple<Integer, List<String>> choice = new Tuple<>(1, List.of());
         var results = sortResults(getSearchResults(choice));
 
         printResults(results, true, true);
@@ -247,26 +171,20 @@ class App {
             System.out.println("Deep removing artist");
             deepRemoveArtist(results.get(index - 1).getId());
         } else {
+            // FIX: Has an index bug
             String searchId = String.valueOf((results.get(index - 1)).getId());
             var deleteResult = database.executeQuery(new Query().from(typeName).where("id", searchId).delete());
 
             if (deleteResult.success) {
                 if (typeName.equals("songs"))
-                    System.out.printf("Successfully removed %s\n", deleteResult.data.get("title"));
-                else System.out.printf("Successfully removed %s\n", deleteResult.data.get("name"));
-            }
-            if (deleteResult.success) {
-                if (typeName.equals("songs"))
                     System.out.printf("Successfully removed %s\n", Color.printSongColor(deleteResult.data.get("title")));
-                else if (typeName.equals("albums")) {
-                    System.out.printf("Successfully removed %s\n", Color.printAlbumColor(deleteResult.data.get("name")));
-                } else
+                else
                     System.out.printf("Successfully removed %s\n", Color.printArtistColor(deleteResult.data.get("name")));
             }
         }
     }
 
-    private void deepRemoveArtist(Integer artistId) {
+    public void deepRemoveArtist(Integer artistId) {
         String albumPath = database.getDbName() + "/albums";
         File[] albums = FileSystem.getDirFiles(albumPath);
 
@@ -274,7 +192,6 @@ class App {
             var data = database.deserializeData(FileSystem.readFile(albumFile.getPath()));
             if (data.get("artist").equals(artistId.toString())) {
                 FileSystem.delete(albumPath + "/" + data.get("id"));
-                System.out.printf("[ALBUM] removed album with name %s\n", data.get("name"));
             }
         }
 
@@ -284,11 +201,10 @@ class App {
         var artist = new Artist(deleteArtist.data);
         for (var songId : artist.getRefSongIds()) {
             FileSystem.delete(database.getDbName() + "/songs/" + songId);
-            System.out.printf("[SONG] removed song with id %d\n", songId);
         }
     }
 
-    private void deepRemoveAlbum(Integer albumId) {
+    public void deepRemoveAlbum(Integer albumId) {
         FileSystem.delete(database.getDbName() + "/albums/" + albumId);
         String songsPath = database.getDbName() + "/songs";
         File[] songs = FileSystem.getDirFiles(songsPath);
@@ -297,7 +213,6 @@ class App {
             var data = database.deserializeData(FileSystem.readFile(songFile.getPath()));
             if (data.get("album").equals(albumId.toString())) {
                 FileSystem.delete(songsPath + "/" + data.get("id"));
-                System.out.printf("Removed song %s\n", data.get("title"));
             }
         }
     }
@@ -500,7 +415,7 @@ class App {
         return newId + 1;
     }
 
-    private ArrayList<MusicObject> getSearchResults(Tuple<Integer, List<String>> input) {
+    public ArrayList<MusicObject> getSearchResults(Tuple<Integer, List<String>> input) {
         if (input.first == EXIT || input.first == INVALID_CHOICE) return new ArrayList<>();
 
         String typeStr = input.first == 3 ? "all" : input.second.get(input.first);
@@ -514,12 +429,12 @@ class App {
         return results;
     }
 
-    private ArrayList<MusicObject> sortResults(ArrayList<MusicObject> results) {
+    public ArrayList<MusicObject> sortResults(ArrayList<MusicObject> results) {
         results.sort(Comparator.naturalOrder());
         return results;
     }
 
-    private void printResults(ArrayList<MusicObject> results, boolean printIndexed, boolean printResult) {
+    public void printResults(ArrayList<MusicObject> results, boolean printIndexed, boolean printResult) {
         int index = 0;
         String artistStr = "", albumStr = "", songStr = "";
 
@@ -532,9 +447,9 @@ class App {
                 else System.out.println(artists[i].getNameColored());
             }
         }
-         var allArtistsPaths = FileSystem.getDirFiles(database.getDbName() +"/artists");
+        var allArtistsPaths = FileSystem.getDirFiles(database.getDbName() + "/artists");
         var artistArray = new ArrayList<Artist>();
-        for(File file : Objects.requireNonNull(allArtistsPaths)){
+        for (File file : Objects.requireNonNull(allArtistsPaths)) {
             artistArray.add(new Artist(database.deserializeData(FileSystem.readFile(file.getPath()))));
         }
 
@@ -550,7 +465,8 @@ class App {
                 if (artistObject.isPresent())
                     artistName = artistObject.get().getNameColored();
 
-                if (printIndexed) System.out.printf("[%d] %s - %s\n", index + 1, albums[i].getNameColored(), artistName);
+                if (printIndexed)
+                    System.out.printf("[%d] %s - %s\n", index + 1, albums[i].getNameColored(), artistName);
                 else System.out.println(albums[i].getNameColored());
             }
         }
@@ -601,7 +517,7 @@ class App {
         ));
     }
 
-    private ArrayList<MusicObject> globalSearch(ArrayList<String> menuChoice, String search) {
+    public ArrayList<MusicObject> globalSearch(ArrayList<String> menuChoice, String search) {
         var totalResults = new ArrayList<MusicObject>();
         for (String choice : menuChoice) {
             totalResults.addAll(getDataList(choice, search));

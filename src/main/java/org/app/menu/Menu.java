@@ -37,6 +37,10 @@ public class Menu {
             menuOutput.append(String.format("|%s|\n", " ".repeat(topBorderLength - 2)));
     }
 
+    public ArrayList<MenuChoice> getMenuItems() {
+        return menuItems;
+    }
+
     public Menu setPaddings(int rightPad, int leftPad, int topPad, int bottomPad) {
         leftPadding = leftPad;
         rightPadding = rightPad;
