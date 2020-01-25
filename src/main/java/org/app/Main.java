@@ -4,17 +4,15 @@ import org.app.menu.Menu;
 
 public class Main {
     public static void main(String[] args) {
-        Menu testMenu = new Menu();
-
-        testMenu.setMenuTitle("Music Library");
-        testMenu.addMenuItem("Search", "s");
-        testMenu.addMenuItem("Add", "a");
-        testMenu.addMenuItem("Remove", "r");
-        testMenu.addMenuItem("Edit", "e");
-        testMenu.addMenuItem("Quit", "q");
-
-        testMenu.show();
-        var choice = testMenu.prompt("Enter option> ");
+        var choice = new Menu()
+                .setMenuTitle("Music Library")
+                .addMenuItem("Search", "s")
+                .addMenuItem("Add", "a")
+                .addMenuItem("Remove", "r")
+                .addMenuItem("Edit", "e")
+                .addMenuItem("Quit", "q")
+                .show()
+                .prompt("Enter option> ");
 
         switch (choice.key) {
             case "s":

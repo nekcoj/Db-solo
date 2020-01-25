@@ -37,30 +37,34 @@ public class Menu {
             menuOutput.append(String.format("|%s|\n", " ".repeat(topBorderLength - 2)));
     }
 
-    public void setPaddings(int rightPad, int leftPad, int topPad, int bottomPad) {
+    public Menu setPaddings(int rightPad, int leftPad, int topPad, int bottomPad) {
         leftPadding = leftPad;
         rightPadding = rightPad;
         topPadding = topPad;
         bottomPadding = bottomPad;
+        return this;
     }
 
-    public void setMenuTitle(String title) {
+    public Menu setMenuTitle(String title) {
         this.menuTitle = title;
+        return this;
     }
 
-    public void addMenuItem(String name, String key) {
+    public Menu addMenuItem(String name, String key) {
         menuItems.add(new MenuChoice(name, menuItems.size() + 1, key));
         if (name.length() > maxItemLength) {
             maxItemLength = name.length();
             topBorderLength = maxItemLength + String.valueOf(menuItems.size()).length() + rightPadding + leftPadding + 5;
         }
+        return this;
     }
 
-    public void addMenuItem(String name) {
+    public Menu addMenuItem(String name) {
         addMenuItem(name, name.toLowerCase().charAt(0) + String.valueOf(menuItems.size() + 1));
+        return this;
     }
 
-    public void show() {
+    public Menu show() {
         menuOutput.append("-".repeat(topBorderLength)).append("\n");
         int titleHalfLen = menuTitle.length() / 2;
         int titleRightPad = (topBorderLength / 2) - titleHalfLen - 1;
@@ -77,6 +81,8 @@ public class Menu {
 
         menuOutput.append("-".repeat(topBorderLength)).append("\n");
         System.out.print(menuOutput.toString());
+
+        return this;
     }
 
     public MenuChoice prompt(String promptMessage) {
