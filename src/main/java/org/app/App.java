@@ -1,5 +1,6 @@
 package org.app;
 
+import org.app.menu.Menu;
 import org.fsdb.FileSystem;
 import org.fsdb.Database;
 import org.app.pojo.Album;
@@ -36,19 +37,18 @@ class App {
     }
 
     void show() {
-        int menuSelection;
-        do {
-            System.out.print("Menu\n----------\n" +
-                    "1) Search\n" +
-                    "2) Add\n" +
-                    "3) Remove\n" +
-                    "4) Edit\n" +
-                    "5) Quit\n" +
-                    "> "
-            );
-            menuSelection = userChoice();
-            userChosenAction(menuSelection);
-        } while (menuSelection != 5);
+        var choice = new Menu()
+                .setMenuTitle("Music Library")
+                .addMenuItem("Search")
+                .addMenuItem("Add")
+                .addMenuItem("Remove")
+                .addMenuItem("Edit")
+                .addMenuItem("Quit", "q")
+                .show()
+                .prompt("Enter option> ");
+
+        userChosenAction(choice.index);
+        if (!choice.key.equals("q")) show();
     }
 
     private ArrayList<MusicObject> getDataList(String subPath, String search) {
@@ -119,7 +119,6 @@ class App {
     private void userChosenAction(int userChoice) {
         switch (userChoice) {
             case 1:
-                System.out.println("Search\n----------");
                 var choice = handleSubMenu();
                 var results = sortResults(getSearchResults(choice));
                 printResults(results, true, true);
@@ -144,7 +143,6 @@ class App {
                 removeObject();
                 break;
             case 4:
-                System.out.println("Edit\n----------");
                 printEditMenu();
                 editMenuChoice(userChoice());
                 break;
@@ -161,11 +159,18 @@ class App {
 
         var typeFolders = getTypeFolders();
 
-        for (int i = 0; i < typeFolders.size(); i++)
-            System.out.println((i + 1) + ". " + Util.capitalize(typeFolders.get(i)));
+        var subMenu = new Menu()
+                .setMenuTitle("Search");
+
+        for (String typeFolder : typeFolders)
+            subMenu.addMenuItem(Util.capitalize(typeFolder));
 
         int menuSize = typeFolders.size();
-        System.out.printf("%d. Search all\n%d. Exit to main menu\n> ", menuSize + 1, menuSize + 2);
+
+      subMenu
+              .addMenuItem("Search all")
+              .addMenuItem("Go to main menu")
+              .show();
 
         int choice = userChoice() - 1;
         if (choice >= menuSize + 2 || choice < 0) return new Tuple<>(-1, typeFolders);
@@ -179,13 +184,16 @@ class App {
     }
 
     private void printEditMenu() {
-        System.out.print("Menu\n----------\n" +
-                "1) Edit song\n" +
-                "2) Edit album\n" +
-                "3) Edit artist\n" +
-                "4) Edit genre\n" +
-                "5) Back to main menu\n" +
-                "> ");
+        new Menu()
+                .setMenuTitle("Edit Menu")
+                .addMenuItem("Edit song")
+                .addMenuItem("Edit album")
+                .addMenuItem("Edit artist")
+                .addMenuItem("Edit genre")
+                .addMenuItem("Back to main menu")
+                .show();
+
+        System.out.print("Enter option> ");
     }
 
     private void editMenuChoice(int userChoice) {
@@ -563,10 +571,14 @@ class App {
             }
         }
 
-        System.out.printf("\nFound %s%s%s\n"
-                , Color.printArtistColor(artistStr)
-                , Color.printAlbumColor(albumStr)
-                , Color.printSongColor(songStr));
+        if (index > 0) {
+            System.out.printf("\nFound %s%s%s\n"
+                    , Color.printArtistColor(artistStr)
+                    , Color.printAlbumColor(albumStr)
+                    , Color.printSongColor(songStr));
+        } else {
+            System.out.println("No results found!");
+        }
     }
 
     private void printArtistSongs(String artistName) {
