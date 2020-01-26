@@ -23,7 +23,7 @@ public class App {
     private static final int GLOBAL_SEARCH = 3;
     private static final int EXIT = 4;
 
-    private Database database;
+    public Database database;
 
     App(String dbName) {
         database = new Database();
@@ -73,7 +73,7 @@ public class App {
         else return -1;
     }
 
-    private String getClassName(MusicObject musicObject) {
+    public String getClassName(MusicObject musicObject) {
         if (musicObject.getClass().equals(Artist.class)) return "artists";
         else if (musicObject.getClass().equals(Album.class)) return "albums";
         else if (musicObject.getClass().equals(Song.class)) return "songs";
@@ -105,7 +105,7 @@ public class App {
         return Arrays.stream(subFolders).map(File::getName).collect(Collectors.toList());
     }
 
-    private void removeObject() {
+    public void removeObject() {
         Tuple<Integer, List<String>> choice = new Tuple<>(1, List.of());
         var results = sortResults(getSearchResults(choice));
 
