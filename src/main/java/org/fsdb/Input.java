@@ -7,6 +7,14 @@ import java.io.InputStreamReader;
 public class Input {
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
+    public static String getLine(boolean allowBlank) {
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Error with Input.getLine");
+        }
+    }
+
     public static String getLine() {
         try {
             String in = "";

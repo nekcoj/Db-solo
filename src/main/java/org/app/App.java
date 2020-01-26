@@ -8,7 +8,6 @@ import org.app.pojo.Artist;
 import org.app.pojo.MusicObject;
 import org.app.pojo.Song;
 import org.fsdb.Input;
-import org.fsdb.Util;
 import org.fsdb.classes.Tuple;
 import org.fsdb.query.Query;
 
@@ -16,7 +15,7 @@ import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-class App {
+public class App {
     private static final int INVALID_CHOICE = -1;
     private static final int ARTIST = 0;
     private static final int ALBUM = 1;
@@ -106,35 +105,27 @@ class App {
         }
     }
 
-    private int userChoice() {
+    public int getIntInput() {
         // prompt again on if Integer.parseInt throws NumberFormatException inside getInt()
         try {
             return Input.getInt();
         } catch (Exception e) {
             System.out.println("Invalid menu choice, try again!");
-            return userChoice();
+            return getIntInput();
         }
     }
 
     private void userChosenAction(int userChoice) {
         switch (userChoice) {
-            case 1:
-                break;
-            case 2:
-                System.out.println("Add\n----------");
-                addSong();
-                break;
             case 3:
                 System.out.println("Remove\n----------");
                 removeObject();
-                break;
-            case 4:
                 break;
             case 5:
                 System.out.println("Goodbye :(");
                 break;
             default:
-                userChosenAction(userChoice());
+                userChosenAction(getIntInput());
                 break;
         }
     }
@@ -148,7 +139,7 @@ class App {
         Tuple<Integer, List<String>> choice = new Tuple<>(1, List.of());
         var results = sortResults(getSearchResults(choice));
 
-        printResults(results, true, true);
+        printResults(results, true);
 
         if (results.size() == 0) {
             System.out.println("No results found.");
@@ -221,7 +212,7 @@ class App {
         System.out.print("Search for song to edit>  ");
 
         var songs = sortResults(getDataList("songs", Input.getLine()));
-        printResults(songs, true, true);
+        printResults(songs, true);
 
         if (songs.size() == 0) {
             System.out.println("No results found.");
@@ -243,7 +234,7 @@ class App {
     private void editGenre() {
         System.out.print("Search for song to edit genre of>  ");
         var songs = sortResults(getDataList("songs", Input.getLine()));
-        printResults(songs, true, true);
+        printResults(songs, true);
 
         if (songs.size() == 0) {
             System.out.println("No results found.");
@@ -266,7 +257,7 @@ class App {
     private void editAlbum() {
         System.out.print("Search for album to edit>  ");
         var albums = sortResults(getDataList("albums", Input.getLine()));
-        printResults(albums, true, true);
+        printResults(albums, true);
 
         if (albums.size() == 0) {
             System.out.println("No results found.");
@@ -289,7 +280,7 @@ class App {
         System.out.print("Search for artist to edit>  ");
 
         var artists = sortResults(getDataList("artists", Input.getLine()));
-        printResults(artists, true, true);
+        printResults(artists, true);
 
         if (artists.size() == 0) {
             System.out.println("No results found.");
@@ -309,104 +300,22 @@ class App {
         else System.out.println("Could not edit artist.");
     }
 
-    private void addSong() {
-        System.out.print("Write song name to add> ");
-        String songName = Input.getLine();
-
-        String path = "songs";
-        getDataList(path, songName);
-        int songId = generateID(path);
-        Artist artist = addArtist(songId);
-        Album album = addAlbum(artist.getId());
-        Song song = new Song(songId, album.getId(), songName, -1, "Metal", artist.getId());
-        HashMap<String, String> mapSong = song.mapObject();
-        database.executeQuery(new Query().from(path).create(mapSong));
-
-        System.out.printf("%s %s has been created, with the artist: %s associated with the album %s!\n", Util.capitalize(path.substring(0, path.length() - 1)),
-                Color.printSongColor(songName),
-                Color.printArtistColor(artist.getName()),
-                Color.printAlbumColor(album.getName()));
+    public void addSong(Song song) {
+        var songMap = song.mapObject();
+        database.executeQuery(new Query().from("songs").create(songMap));
     }
 
-    private Artist addArtist(int songId) {
-        var path = "artists";
-        System.out.print("Who's the artist?>  ");
-        String artistInput = Input.getLine();
-        var artists = sortResults(getDataList(path, artistInput));
-
-        if (artists.size() > 0) {
-            printResults(artists, true, true);
-            System.out.println("Are any of these the requested artist?> ");
-            System.out.println("If yes, enter index to select> ");
-            System.out.println("Else, press 0 to create new " + Color.printArtistColor("artist"));
-        } else {
-            System.out.println("No results found.");
-            System.out.println("Press 0 to create new " + Color.printArtistColor("artist"));
-        }
-
-        int index = Input.getInt();
-        Artist artist;
-        if (index == 0) {
-            System.out.print("Write new Artist >");
-            artistInput = Input.getLine();
-            ArrayList<Integer> newArrayList = new ArrayList<>();
-            newArrayList.add(songId);
-            artist = new Artist(generateID(path), artistInput, newArrayList);
-        } else {
-            artist = (Artist) artists.get(index - 1);
-        }
-        database.executeQuery(new Query().from(path).create(artist.mapObject()));
-        return artist;
+    public void addArtist(Artist artist) {
+        var artistMap = artist.mapObject();
+        database.executeQuery(new Query().from("artists").create(artistMap));
     }
 
-    private Album addAlbum(int artistId) {
-        Album album;
-        var path = "albums";
-        var albums = sortResults(getAlbumList(artistId));
-        if (albums.size() > 0) {
-            printResults(albums, true, true);
-            System.out.println("Are any of these the requested albums?> ");
-            System.out.println("If yes, enter index to select> ");
-            System.out.println("Else, press 0 to create a new album.");
-        } else {
-            System.out.println("Press 0 to create a new album.");
-        }
-        int index = Input.getInt();
-
-        if (index == 0) {
-            System.out.println("What is the name of the album?");
-            String albumName = Input.getLine();
-            System.out.println("What year was the album released?");
-            int year = Input.getInt();
-            album = new Album(generateID(path), artistId, albumName, year);
-        } else {
-            album = (Album) albums.get(index - 1);
-        }
-        database.executeQuery(new Query().from(path).create(album.mapObject()));
-        return album;
+    public void addAlbum(Album album) {
+        var albumMap = album.mapObject();
+        database.executeQuery(new Query().from("albums").create(albumMap));
     }
 
-    private ArrayList<MusicObject> getAlbumList(int artistId) {
-        ArrayList<MusicObject> results = new ArrayList<>();
-        String albumUrl = "albums";
-        String path = database.getDbName() + "/" + albumUrl;
-        File[] fileArr = FileSystem.getDirFiles(path);
-        for (File file : Objects.requireNonNull(fileArr)) {
-            String url = file.toString();
-            String data = FileSystem.readFile(url);
-
-            HashMap<String, String> dataMap = database.deserializeData(data);
-            MusicObject result = getNameOfData(albumUrl, dataMap);
-            Album album = (Album) result;
-            if (artistId == album.getArtist()) {
-                results.add(result);
-            }
-
-        }
-        return results;
-    }
-
-    private int generateID(String type) {
+    public int generateId(String type) {
         int newId = -1;
         ArrayList<MusicObject> list = getDataList(type, "");
         for (MusicObject musicObject : list) {
@@ -434,7 +343,7 @@ class App {
         return results;
     }
 
-    public void printResults(ArrayList<MusicObject> results, boolean printIndexed, boolean printResult) {
+    public void printResults(ArrayList<MusicObject> results, boolean printIndexed) {
         int index = 0;
         String artistStr = "", albumStr = "", songStr = "";
 
@@ -497,7 +406,7 @@ class App {
         }
     }
 
-    private void printArtistSongs(String artistName) {
+    public void printArtistSongs(String artistName) {
         var fetchResult = database.executeQuery(new Query().from("artists").where("name", artistName).fetch());
         if (!fetchResult.success) System.out.println("Could not find artist!");
 
