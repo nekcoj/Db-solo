@@ -29,4 +29,25 @@ public class Util {
     public static String capitalize(String input) {
         return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
+
+    public static void clearConsole()
+    {
+        try
+        {
+            final String os = System.getProperty("os.name");
+
+            if (os.contains("Windows"))
+            {
+                Runtime.getRuntime().exec("cls");
+            }
+            else
+            {
+                Runtime.getRuntime().exec("clear");
+            }
+        }
+        catch (final Exception e)
+        {
+            //  Handle any exceptions.
+        }
+    }
 }
