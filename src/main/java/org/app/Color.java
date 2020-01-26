@@ -91,13 +91,13 @@ public class Color {
     }
 
 
-    public static String printArtistColor(String artist){
+    public static String setArtistColor(String artist){
        return Color.ARTIST_COLOR + artist + Color.ANSI_RESET;
     }
-    public static String printAlbumColor(String album){
+    public static String setAlbumColor(String album){
         return Color.ALBUM_COLOR + album + Color.ANSI_RESET;
     }
-    public static String printSongColor(String song){
+    public static String setSongColor(String song){
         return Color.SONG_COLOR + song + Color.ANSI_RESET;
     }
 

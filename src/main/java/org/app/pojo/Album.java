@@ -2,10 +2,7 @@ package org.app.pojo;
 
 import org.app.Color;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Album implements MusicObject {
     private int id;
@@ -47,7 +44,7 @@ public class Album implements MusicObject {
 
     @Override
     public String getNameColored() {
-        return  Color.printAlbumColor(name);
+        return  Color.setAlbumColor(name);
     }
 
     @Override

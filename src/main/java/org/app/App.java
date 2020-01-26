@@ -252,9 +252,9 @@ public class App {
 
         if (index > 0) {
             System.out.printf("\nFound %s%s%s\n"
-                    , Color.printArtistColor(artistStr)
-                    , Color.printAlbumColor(albumStr)
-                    , Color.printSongColor(songStr));
+                    , Color.setArtistColor(artistStr)
+                    , Color.setAlbumColor(albumStr)
+                    , Color.setSongColor(songStr));
         } else {
             System.out.println("No results found!");
         }
@@ -276,7 +276,7 @@ public class App {
 
         System.out.printf("\n----- Song(s) by %s -----\n", artist.getName());
         songs.forEach(s -> System.out.printf("%s - %s\n",
-                Color.printSongColor(s), Color.printArtistColor(artist.getName())
+                Color.setSongColor(s), Color.setArtistColor(artist.getName())
         ));
     }
 }

@@ -52,7 +52,7 @@ public class Song implements MusicObject {
 
     @Override
     public String getNameColored() {
-      return  Color.printSongColor(title);
+      return  Color.setSongColor(title);
     }
 
     @Override

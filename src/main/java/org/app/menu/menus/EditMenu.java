@@ -47,9 +47,9 @@ public class EditMenu extends AppMenu {
         if (wasUpdated) {
             var coloredName = newName;
 
-            if (typeName.equals("artists")) coloredName = Color.printArtistColor(newName);
-            else if (typeName.equals("albums")) coloredName = Color.printAlbumColor(newName);
-            else coloredName = Color.printSongColor(newName);
+            if (typeName.equals("artists")) coloredName = Color.setArtistColor(newName);
+            else if (typeName.equals("albums")) coloredName = Color.setAlbumColor(newName);
+            else coloredName = Color.setSongColor(newName);
 
             System.out.printf("Update %s %s to %s\n", singularName, object.getNameColored(), coloredName);
         } else
