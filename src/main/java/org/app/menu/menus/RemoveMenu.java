@@ -33,13 +33,14 @@ public class RemoveMenu extends AppMenu {
         results = app.getDataList(choice.key, searchTerm);
 
         app.printResults(app.sortResults(results), true);
+        if (results.size() == 0) return;
 
         System.out.print("Enter [index] to remove or press [0] to return to main menu> ");
+
         var userInput = Input.getInt();
         if(userInput == 0) return;
         else if(userInput > results.size()) return;
         else {
-
             var typeName = app.getClassName(results.get(userInput - 1));
             if (typeName == null) {
                 System.out.println("Could not remove.");
@@ -64,6 +65,5 @@ public class RemoveMenu extends AppMenu {
                 }
             }
         }
-
     }
 }
