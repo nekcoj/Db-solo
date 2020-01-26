@@ -35,21 +35,6 @@ public class App {
         database.loadJsonFiles(jsonFiles);
     }
 
-    void show() {
-        var choice = new Menu()
-                .setMenuTitle("Music Library")
-                .addMenuItem("Search")
-                .addMenuItem("Add")
-                .addMenuItem("Remove")
-                .addMenuItem("Edit")
-                .addMenuItem("Quit", "q")
-                .show()
-                .prompt("Enter option> ");
-
-        userChosenAction(choice.index);
-        if (!choice.key.equals("q")) show();
-    }
-
     public ArrayList<MusicObject> getDataList(String subPath, String search) {
         ArrayList<MusicObject> results = new ArrayList<>();
 
@@ -112,21 +97,6 @@ public class App {
         } catch (Exception e) {
             System.out.println("Invalid menu choice, try again!");
             return getIntInput();
-        }
-    }
-
-    private void userChosenAction(int userChoice) {
-        switch (userChoice) {
-            case 3:
-                System.out.println("Remove\n----------");
-                removeObject();
-                break;
-            case 5:
-                System.out.println("Goodbye :(");
-                break;
-            default:
-                userChosenAction(getIntInput());
-                break;
         }
     }
 

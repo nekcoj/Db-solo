@@ -7,12 +7,16 @@ import org.app.menu.Menu;
 public class MainMenu extends AppMenu {
     private SearchMenu searchMenu;
     private AddMenu addMenu;
+    private EditMenu editMenu;
+    private RemoveMenu removeMenu;
 
     public MainMenu(App app) {
         super(app);
 
         searchMenu = new SearchMenu(app);
         addMenu = new AddMenu(app);
+        editMenu = new EditMenu(app);
+        removeMenu = new RemoveMenu(app);
     }
 
     @Override
@@ -33,6 +37,12 @@ public class MainMenu extends AppMenu {
                 break;
             case "add":
                 addMenu.handle();
+                break;
+            case "remove":
+                removeMenu.handle();
+                break;
+            case "edit":
+                editMenu.handle();
                 break;
             case "quit":
                 System.out.println("Goodbye :(");
