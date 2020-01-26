@@ -25,7 +25,7 @@ public class RemoveMenu extends AppMenu {
         var searchTerm = Input.getLine();
 
         ArrayList<MusicObject> results;
-        results = app.getDataList(choice.key, searchTerm);
+        results = app.search(choice.key, searchTerm);
 
         app.printResults(app.sortResults(results), true);
         if (results.size() == 0) return;
@@ -34,7 +34,7 @@ public class RemoveMenu extends AppMenu {
 
         var removeIndex = app.getIntInput();
 
-        var typeName = app.getClassName(results.get(removeIndex - 1));
+        var typeName = app.getType(results.get(removeIndex - 1)).second;
         var removeId = results.get(removeIndex - 1).getId();
 
         if (typeName == null) {

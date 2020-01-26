@@ -33,7 +33,7 @@ public class SearchMenu extends AppMenu {
         if (choice.key.equals("all"))
             results = app.globalSearch(classFolders, searchTerm);
         else
-            results = app.getDataList(choice.key, searchTerm);
+            results = app.search(choice.key, searchTerm);
 
         // print found results
         app.printResults(app.sortResults(results), true);

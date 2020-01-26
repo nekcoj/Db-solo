@@ -37,11 +37,11 @@ public class AddMenu extends AppMenu {
 
         song = new Song(songId, album == null ? -1 : album.getId(), songName, -1, "Unknown genre", artist.getId());
 
-        app.addSong(song);
-        app.addArtist(artist);
+        app.addObject(song);
+        app.addObject(artist);
 
         if (album != null)
-            app.addAlbum(album);
+            app.addObject(album);
 
         System.out.printf("Added song %s by %s on album %s\n",
                 Color.printSongColor(songName),
@@ -60,7 +60,7 @@ public class AddMenu extends AppMenu {
         var artistName = Input.getLine();
 
         // check for existing artist
-        var artists = app.sortResults(app.getDataList("artists", artistName));
+        var artists = app.sortResults(app.search("artists", artistName));
         if (artists.size() > 0) {
             app.printResults(artists, true);
             System.out.println("Does one of these match your artist?");
