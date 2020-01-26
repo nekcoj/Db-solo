@@ -41,13 +41,6 @@ public class Menu {
         return menuItems;
     }
 
-    public Menu setPaddings(int rightPad, int leftPad, int topPad, int bottomPad) {
-        leftPadding = leftPad;
-        rightPadding = rightPad;
-        topPadding = topPad;
-        bottomPadding = bottomPad;
-        return this;
-    }
 
     public Menu setMenuTitle(String title) {
         this.menuTitle = title;
