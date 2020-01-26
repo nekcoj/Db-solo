@@ -44,7 +44,7 @@ public class SearchMenu extends AppMenu {
             System.out.print("Enter 0 to return or an index to list songs> ");
 
             var index = app.getIntInput();
-            if (index == 0) return;
+            if (index == 0 || index > results.size()) return;
             app.printArtistSongs((results.get(index - 1).getResolvedName()));
         }
     }

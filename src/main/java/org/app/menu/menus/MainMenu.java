@@ -5,10 +5,10 @@ import org.app.menu.AppMenu;
 import org.app.menu.Menu;
 
 public class MainMenu extends AppMenu {
-    private SearchMenu searchMenu;
-    private AddMenu addMenu;
-    private EditMenu editMenu;
-    private RemoveMenu removeMenu;
+    private final SearchMenu searchMenu;
+    private final AddMenu addMenu;
+    private final EditMenu editMenu;
+    private final RemoveMenu removeMenu;
 
     public MainMenu(App app) {
         super(app);

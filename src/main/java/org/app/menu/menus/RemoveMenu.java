@@ -32,7 +32,11 @@ public class RemoveMenu extends AppMenu {
 
         System.out.print("Enter [index] to remove or press [0] to return to main menu> ");
 
-        var removeIndex = app.getIntInput();
+        int removeIndex;
+
+        do removeIndex = app.getIntInput();
+        while (removeIndex < 0 || removeIndex > results.size());
+        if(removeIndex == 0) return;
 
         var typeName = app.getType(results.get(removeIndex - 1)).second;
         var removeId = results.get(removeIndex - 1).getId();

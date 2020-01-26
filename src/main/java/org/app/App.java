@@ -19,7 +19,7 @@ public class App {
     private static final int ALBUM = 1;
     private static final int SONG = 2;
 
-    public Database database;
+    public final Database database;
 
     App(String dbName) {
         database = new Database();

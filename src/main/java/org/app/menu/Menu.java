@@ -5,10 +5,10 @@ import org.fsdb.Input;
 import java.util.ArrayList;
 
 public class Menu {
-    private StringBuilder menuOutput;
+    private final StringBuilder menuOutput;
 
     private String menuTitle;
-    private ArrayList<MenuChoice> menuItems;
+    private final ArrayList<MenuChoice> menuItems;
 
     private int leftPadding = 4;
     private int rightPadding = 4;
@@ -41,13 +41,6 @@ public class Menu {
         return menuItems;
     }
 
-    public Menu setPaddings(int rightPad, int leftPad, int topPad, int bottomPad) {
-        leftPadding = leftPad;
-        rightPadding = rightPad;
-        topPadding = topPad;
-        bottomPadding = bottomPad;
-        return this;
-    }
 
     public Menu setMenuTitle(String title) {
         this.menuTitle = title;

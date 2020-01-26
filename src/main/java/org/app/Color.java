@@ -1,5 +1,6 @@
 package org.app;
 
+@SuppressWarnings("unused")
 public class Color {
 
     public static final String ARTIST_COLOR = Color.GREEN_BOLD_BRIGHT;

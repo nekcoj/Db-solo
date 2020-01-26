@@ -5,7 +5,7 @@ import org.fsdb.Input;
 import org.fsdb.Util;
 
 public abstract class AppMenu {
-    protected App app;
+    protected final App app;
 
     public AppMenu(App app) {
         this.app = app;

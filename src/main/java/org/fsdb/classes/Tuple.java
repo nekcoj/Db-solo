@@ -1,8 +1,8 @@
 package org.fsdb.classes;
 
 public class Tuple<A, B> {
-    public A first;
-    public B second;
+    public final A first;
+    public final B second;
 
     public Tuple(A valA, B valB) {
         first = valA;

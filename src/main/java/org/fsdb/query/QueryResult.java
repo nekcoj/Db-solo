@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class QueryResult {
-    public boolean success;
-    public QueryAction action;
+    public final boolean success;
+    public final QueryAction action;
     public HashMap<String, String> data;
     public ArrayList<HashMap<String, String>> dataArray;
 

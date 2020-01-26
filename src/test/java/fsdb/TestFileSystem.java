@@ -12,9 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class TestFileSystem {
-    String testFile = "test.txt";
+    final String testFile = "test.txt";
 
-    String outputText = "testing\n12345\ncontent";
+    final String outputText = "testing\n12345\ncontent";
 
     @Test
     public void readWrite() {
