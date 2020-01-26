@@ -44,9 +44,9 @@ public class AddMenu extends AppMenu {
             app.addObject(album);
 
         System.out.printf("Added song %s by %s on album %s\n",
-                Color.printSongColor(songName),
-                Color.printArtistColor(artist.getName()),
-                Color.printAlbumColor(album == null ? "Unknown album" : album.getName()));
+                Color.setSongColor(songName),
+                Color.setArtistColor(artist.getName()),
+                Color.setAlbumColor(album == null ? "Unknown album" : album.getName()));
     }
 
     private void reset() {

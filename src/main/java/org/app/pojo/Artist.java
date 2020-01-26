@@ -50,7 +50,7 @@ public class Artist implements MusicObject {
 
     @Override
     public String getNameColored() {
-        return  Color.printArtistColor(name);
+        return  Color.setArtistColor(name);
     }
 
     @Override
