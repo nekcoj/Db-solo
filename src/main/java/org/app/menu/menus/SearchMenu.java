@@ -39,7 +39,7 @@ public class SearchMenu extends AppMenu {
         app.printResults(app.sortResults(results), true);
 
         // ask if they want to print songs for this artist
-        if (choice.key.equals("artists")) {
+        if (results.size() > 0 && choice.key.equals("artists")) {
             System.out.println("Do you want to print songs made by an artist?");
             System.out.print("Enter 0 to return or an index to list songs> ");
 

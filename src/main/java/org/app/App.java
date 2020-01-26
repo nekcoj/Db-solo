@@ -105,47 +105,7 @@ public class App {
         return Arrays.stream(subFolders).map(File::getName).collect(Collectors.toList());
     }
 
-    public void removeObject() {
-        Tuple<Integer, List<String>> choice = new Tuple<>(1, List.of());
-        var results = sortResults(getSearchResults(choice));
-
-        printResults(results, true);
-
-        if (results.size() == 0) {
-            System.out.println("No results found.");
-            return;
-        }
-
-        System.out.print("Enter index to remove> ");
-        int index = Input.getInt();
-
-        var typeName = getClassName(results.get(index - 1));
-        if (typeName == null) {
-            System.out.println("Could not remove.");
-            return;
-        }
-
-        if (typeName.equals("albums")) {
-            System.out.println("Deep removing album");
-            deepRemoveAlbum(results.get(index - 1).getId());
-        } else if (typeName.equals("artists")) {
-            System.out.println("Deep removing artist");
-            deepRemoveArtist(results.get(index - 1).getId());
-        } else {
-            // FIX: Has an index bug
-            String searchId = String.valueOf((results.get(index - 1)).getId());
-            var deleteResult = database.executeQuery(new Query().from(typeName).where("id", searchId).delete());
-
-            if (deleteResult.success) {
-                if (typeName.equals("songs"))
-                    System.out.printf("Successfully removed %s\n", Color.printSongColor(deleteResult.data.get("title")));
-                else
-                    System.out.printf("Successfully removed %s\n", Color.printArtistColor(deleteResult.data.get("name")));
-            }
-        }
-    }
-
-    public void deepRemoveArtist(Integer artistId) {
+    public Artist deepRemoveArtist(Integer artistId) {
         String albumPath = database.getDbName() + "/albums";
         File[] albums = FileSystem.getDirFiles(albumPath);
 
@@ -163,12 +123,16 @@ public class App {
         for (var songId : artist.getRefSongIds()) {
             FileSystem.delete(database.getDbName() + "/songs/" + songId);
         }
+
+        return new Artist(deleteArtist.data);
     }
 
-    public void deepRemoveAlbum(Integer albumId) {
-        FileSystem.delete(database.getDbName() + "/albums/" + albumId);
+    public Album deepRemoveAlbum(Integer albumId) {
         String songsPath = database.getDbName() + "/songs";
         File[] songs = FileSystem.getDirFiles(songsPath);
+
+        var deleteAlbum = database.executeQuery(new Query()
+                .from("albums").where("id", albumId.toString()).delete());
 
         for (var songFile : Objects.requireNonNull(songs)) {
             var data = database.deserializeData(FileSystem.readFile(songFile.getPath()));
@@ -176,6 +140,13 @@ public class App {
                 FileSystem.delete(songsPath + "/" + data.get("id"));
             }
         }
+
+        return new Album(deleteAlbum.data);
+    }
+
+    public Song removeSong(Integer songId) {
+        var deleteSong = database.executeQuery(new Query().from("songs").where("id", songId.toString()).delete());
+        return new Song(deleteSong.data);
     }
 
     private void editSong() {
@@ -285,6 +256,27 @@ public class App {
         database.executeQuery(new Query().from("albums").create(albumMap));
     }
 
+    public ArrayList<MusicObject> getAlbumList(int artistId) {
+        ArrayList<MusicObject> results = new ArrayList<>();
+
+        String albumUrl = "albums";
+        String path = database.getDbName() + "/" + albumUrl;
+        File[] fileArr = FileSystem.getDirFiles(path);
+
+        for (File file : Objects.requireNonNull(fileArr)) {
+            String url = file.toString();
+            String data = FileSystem.readFile(url);
+
+            HashMap<String, String> dataMap = database.deserializeData(data);
+            MusicObject result = getNameOfData(albumUrl, dataMap);
+            Album album = (Album) result;
+
+            if (artistId == album.getArtist())
+                results.add(result);
+        }
+        return results;
+    }
+
     public int generateId(String type) {
         int newId = -1;
         ArrayList<MusicObject> list = getDataList(type, "");
@@ -292,20 +284,6 @@ public class App {
             if (musicObject.getId() > newId) newId = musicObject.getId();
         }
         return newId + 1;
-    }
-
-    public ArrayList<MusicObject> getSearchResults(Tuple<Integer, List<String>> input) {
-        if (input.first == EXIT || input.first == INVALID_CHOICE) return new ArrayList<>();
-
-        String typeStr = input.first == 3 ? "all" : input.second.get(input.first);
-        System.out.printf("Search %s> ", typeStr);
-        var search = Input.getLine();
-
-        ArrayList<MusicObject> results;
-        if (input.first == GLOBAL_SEARCH) results = globalSearch((ArrayList<String>) input.second, search);
-        else results = getDataList(input.second.get(input.first), search);
-
-        return results;
     }
 
     public ArrayList<MusicObject> sortResults(ArrayList<MusicObject> results) {

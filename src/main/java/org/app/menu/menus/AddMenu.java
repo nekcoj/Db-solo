@@ -28,6 +28,11 @@ public class AddMenu extends AppMenu {
         var songId = app.generateId("songs");
 
         setArtist(songId);
+        // if no artist was create / found we abort
+        if (artist == null) {
+            System.out.println("Aborted, nothing was changed.");
+            return;
+        }
         setAlbum(artist.getId());
 
         song = new Song(songId, album == null ? -1 : album.getId(), songName, -1, "Unknown genre", artist.getId());
@@ -67,6 +72,10 @@ public class AddMenu extends AppMenu {
             while (artistIndex < 0 || artistIndex > artists.size());
 
             if (artistIndex > 0) artist = (Artist) artists.get(artistIndex - 1);
+        } else {
+            System.out.println("Could not find any matching artists.");
+            var createNewArtist = promptYesNo("Do you want to create this artist?");
+            if (!createNewArtist) return;
         }
 
         if (artist == null) {
@@ -83,11 +92,7 @@ public class AddMenu extends AppMenu {
         var addToAlbum = promptYesNo("Do you want to add this song to an album?");
         if (!addToAlbum) return;
 
-        System.out.print("Album name> ");
-        var albumName = Input.getLine();
-
-        // check for existing album
-        var albums = app.sortResults(app.getDataList("albums", albumName));
+        var albums = app.sortResults(app.getAlbumList(artistId));
         if (albums.size() > 0) {
             app.printResults(albums, true);
             System.out.println("Does one of these match your album?");
@@ -101,10 +106,9 @@ public class AddMenu extends AppMenu {
             if (albumIndex > 0) album = (Album) albums.get(albumIndex - 1);
         }
 
-        if (artist == null) {
-            System.out.printf("Is %s the correct name? (blank to keep): ", albumName);
-            var input = Input.getLine(true);
-            if (!input.isBlank()) albumName = input.strip();
+        if (album == null) {
+            System.out.print("Enter album name to create> ");
+            var albumName = Input.getLine();
 
             System.out.print("Album release year> ");
             var albumYear = app.getIntInput();
