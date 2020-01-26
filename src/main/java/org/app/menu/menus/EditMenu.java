@@ -38,6 +38,11 @@ public class EditMenu extends AppMenu {
         System.out.print("Enter index to edit> ");
         var index = app.getIntInput();
 
+        if(index < 0 || index > objects.size()){
+            System.out.println("Invalid choice!");
+            return;
+        }
+
         System.out.printf("New %s name> ", singularName);
         var newName = Input.getLine();
 
