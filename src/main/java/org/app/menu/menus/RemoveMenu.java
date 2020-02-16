@@ -12,7 +12,7 @@ public class RemoveMenu extends AppMenu {
     }
 
     @Override
-    public void handle() {
+    public void handle() throws IllegalAccessException {
         var choice = getClassMenu("Remove Menu")
                 .addMenuItem("Return to main menu", "return")
                 .show()

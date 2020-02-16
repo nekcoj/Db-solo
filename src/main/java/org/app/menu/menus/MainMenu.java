@@ -20,7 +20,7 @@ public class MainMenu extends AppMenu {
     }
 
     @Override
-    public void handle() {
+    public void handle() throws IllegalAccessException {
         var choice = new Menu()
                 .setMenuTitle("Music Library")
                 .addMenuItem("Search", "search")

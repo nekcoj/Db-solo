@@ -21,7 +21,7 @@ public class AddMenu extends AppMenu {
     }
 
     @Override
-    public void handle() {
+    public void handle() throws IllegalAccessException {
         reset();
         System.out.print("Song name> ");
         var songName = Input.getLine();

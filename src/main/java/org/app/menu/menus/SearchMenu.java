@@ -13,7 +13,7 @@ public class SearchMenu extends AppMenu {
     }
 
     @Override
-    public void handle() {
+    public void handle() throws IllegalAccessException {
         var choice = getClassMenu("Search Menu")
                 .addMenuItem("Search all", "all")
                 .addMenuItem("Return to main menu", "return")
