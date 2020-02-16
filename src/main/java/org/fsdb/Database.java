@@ -5,30 +5,36 @@ import org.fsdb.classes.Tuple;
 import org.fsdb.query.Query;
 import org.fsdb.query.QueryResult;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
-
-import java.io.File;
 
 public class Database {
     private String dbName;
+    private static final Database INSTANCE = new Database();
 
-    public boolean create(String name) {
-        dbName = name;
-        return FileSystem.createDir(name);
+    public static Database getInstance() {
+        return Database.INSTANCE;
     }
 
-    public void loadJsonFile(String filePath) {
+    public void create(String dbName) throws IllegalAccessException {
+        this.dbName = dbName;
+        createDir(dbName);
+    }
+
+    public void loadJsonFile(String filePath) throws IllegalAccessException {
         createSubdirsFromJSON(List.of(filePath), dbName);
     }
 
-    public void loadJsonFiles(List<String> filePaths) {
+    public void loadJsonFiles(List<String> filePaths) throws IllegalAccessException {
         createSubdirsFromJSON(filePaths, dbName);
     }
 
 
-    public QueryResult executeQuery(Query query) {
+    public QueryResult executeQuery(Query query) throws IllegalAccessException {
         QueryResult result;
         String rootDir = dbName + "/" + query.rootName;
 
@@ -47,17 +53,17 @@ public class Database {
             }
             case DELETE: {
                 var found = findWith(rootDir, query.predicateField, query.predicateValue);
-                boolean wasDeleted = FileSystem.delete(found.first);
+                boolean wasDeleted = delete(found.first);
                 result = new QueryResult(wasDeleted, query.action, found.second);
                 break;
             }
             case CREATE: {
                 String fileName = rootDir + "/" + query.values.get("id");
                 String data = serializeData(query.values);
-                if (!FileSystem.exists(fileName)) {
-                    FileSystem.createDir(rootDir);
+                if (exists(fileName)) {
+                    createDir(rootDir);
                 }
-                FileSystem.writeFile(fileName, data);
+                createFile(fileName, data);
                 result = new QueryResult(true, query.action, query.values);
                 break;
             }
@@ -70,7 +76,7 @@ public class Database {
                         found.second.put(entry.getKey(), entry.getValue());
                     }
                 }
-                FileSystem.writeFile(found.first, serializeData(found.second));
+                createFile(found.first, serializeData(found.second));
                 result = new QueryResult(true, query.action, query.values);
                 break;
             }
@@ -106,13 +112,13 @@ public class Database {
     }
 
     private Tuple<String, HashMap<String, String>> findWith(String root, String field, String value) {
-        File[] dirFiles = FileSystem.getDirFiles(root);
+        File[] dirFiles = getDirFiles(root);
 
         String fileName = null;
         HashMap<String, String> result = null;
 
         for (File file : Objects.requireNonNull(dirFiles)) {
-            String content = FileSystem.readFile(file.getPath());
+            String content = readFile(file.getPath());
             fileName = file.getPath();
             var data = deserializeData(content);
             if (data.get(field).equals(value)) {
@@ -124,13 +130,13 @@ public class Database {
     }
 
     private Tuple<String, ArrayList<HashMap<String, String>>> findAllWith(String root, String field, String value) {
-        File[] dirFiles = FileSystem.getDirFiles(root);
+        File[] dirFiles = getDirFiles(root);
 
         String fileName = null;
         var resultArray = new ArrayList<HashMap<String, String>>();
 
         for (File file : Objects.requireNonNull(dirFiles)) {
-            String content = FileSystem.readFile(file.getPath());
+            String content = readFile(file.getPath());
             fileName = file.getPath();
             var data = deserializeData(content);
             if (data.get(field).equals(value)) {
@@ -140,9 +146,9 @@ public class Database {
         return new Tuple<>(fileName, resultArray);
     }
 
-    private void createSubdirsFromJSON(List<String> pathNames, String dbDir) {
+    private void createSubdirsFromJSON(List<String> pathNames, String dbDir) throws IllegalAccessException {
         for (String path : pathNames) {
-            if (!FileSystem.exists(path)) continue;
+            if (!exists(path)) continue;
             String[] split = path.split("\\.");
 
             List<String> pathList;
@@ -153,8 +159,8 @@ public class Database {
             List<String> getFilePath = Arrays.asList(dbPathSplit);
             String filePath = dbDir + "/" + getFilePath.get(getFilePath.size() - 1);
 
-            if (!FileSystem.exists(filePath)) {
-                FileSystem.createDir(filePath);
+            if (!exists(filePath)) {
+                createDir(filePath);
                 createFileFromJSON(path, filePath);
                 System.out.printf("Loaded data from JSON file '%s'\n", path);
             }
@@ -167,18 +173,92 @@ public class Database {
 
             for (Object ob : ja) {
                 JsonObject temp = (JsonObject) ob;
-                String fileName = temp.get("id").toString();
+                String fileName = dirPath + "/" + temp.get("id").toString();
 
                 StringBuilder sb = new StringBuilder();
                 for (var entry : temp.entrySet())
                     sb.append(String.format("%s=%s\n", entry.getKey(), entry.getValue()));
 
-                FileSystem.writeFile(dirPath + "/" + fileName, sb.toString());
+                createFile(fileName, sb.toString());
             }
-
-        } catch (IOException | JsonException e) {
+        } catch (IOException | JsonException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public void createFile(String dirPath, String data) throws IllegalAccessException{
+        try{
+            Method method = FileSystem.class.getDeclaredMethod("writeFile", String.class, String.class);
+            method.setAccessible(true);
+            method.invoke(null, dirPath, data);
+        } catch (NoSuchMethodException | SecurityException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createDir(String dirPath) throws IllegalAccessException{
+        try{
+            Method method = FileSystem.class.getDeclaredMethod("createDir", String.class);
+            method.setAccessible(true);
+            method.invoke(null, dirPath);
+        } catch (NoSuchMethodException | SecurityException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean exists(String filePath){
+        try{
+            Method method = FileSystem.class.getDeclaredMethod("exists", String.class);
+            method.setAccessible(true);
+            return (Boolean) method.invoke(null, filePath);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean delete (String filePath){
+        try{
+            Method method = FileSystem.class.getDeclaredMethod("delete", String.class);
+            method.setAccessible(true);
+            return (Boolean) method.invoke(null, filePath);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public String readFile(String filePath){
+        try{
+            Method method = FileSystem.class.getDeclaredMethod("readFile", String.class);
+            method.setAccessible(true);
+            return (String) method.invoke(null, filePath);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public File[] getDirFiles(String dirName){
+        try{
+            Method method = FileSystem.class.getDeclaredMethod("getDirFiles", String.class);
+            method.setAccessible(true);
+            return (File[]) method.invoke(null, dirName);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public File[] getSubFolders(String databasePath){
+        try{
+            Method method = FileSystem.class.getDeclaredMethod("getSubFolders", String.class);
+            method.setAccessible(true);
+            return (File[]) method.invoke(null, databasePath);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getDbName() {

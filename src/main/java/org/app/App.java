@@ -1,11 +1,12 @@
 package org.app;
 
-import org.fsdb.FileSystem;
+import org.app.menu.menus.MainMenu;
 import org.fsdb.Database;
 import org.app.pojo.Album;
 import org.app.pojo.Artist;
 import org.app.pojo.MusicObject;
 import org.app.pojo.Song;
+import org.fsdb.FileSystem;
 import org.fsdb.Input;
 import org.fsdb.classes.Tuple;
 import org.fsdb.query.Query;
@@ -19,29 +20,23 @@ public class App {
     private static final int ALBUM = 1;
     private static final int SONG = 2;
 
-    public final Database database;
-
-    App(String dbName) {
-        database = new Database();
-        database.create(dbName);
-    }
-
-    void init() {
+    App(String dbName) throws IllegalAccessException {
+        Database.getInstance().create(dbName);
         List<String> jsonFiles = List.of("assets/artists.json", "assets/albums.json", "assets/songs.json");
-        database.loadJsonFiles(jsonFiles);
+        Database.getInstance().loadJsonFiles(jsonFiles);
     }
 
     public ArrayList<MusicObject> search(String subPath, String search) {
         ArrayList<MusicObject> results = new ArrayList<>();
 
-        String path = database.getDbName() + "/" + subPath;
-        File[] fileArr = FileSystem.getDirFiles(path);
+        String path = Database.getInstance().getDbName() + "/" + subPath;
+        File[] fileArr = Database.getInstance().getDirFiles(path);
 
         for (File file : Objects.requireNonNull(fileArr)) {
             String url = file.toString();
-            String data = FileSystem.readFile(url);
+            String data = Database.getInstance().readFile(url);
 
-            HashMap<String, String> dataMap = database.deserializeData(data);
+            HashMap<String, String> dataMap = Database.getInstance().deserializeData(data);
             MusicObject result = getNameOfData(subPath, dataMap);
 
             String searchString = "";
@@ -98,57 +93,57 @@ public class App {
     }
 
     public List<String> getClassFolders() {
-        File[] subFolders = FileSystem.getSubFolders(database.getDbName());
+        File[] subFolders = Database.getInstance().getSubFolders(Database.getInstance().getDbName());
         return Arrays.stream(subFolders).map(File::getName).collect(Collectors.toList());
     }
 
-    public Artist deepRemoveArtist(Integer artistId) {
-        String albumPath = database.getDbName() + "/albums";
-        File[] albums = FileSystem.getDirFiles(albumPath);
+    public Artist deepRemoveArtist(Integer artistId) throws IllegalAccessException {
+        String albumPath = Database.getInstance().getDbName() + "/albums";
+        File[] albums = Database.getInstance().getDirFiles(albumPath);
 
         for (var albumFile : Objects.requireNonNull(albums)) {
-            var data = database.deserializeData(FileSystem.readFile(albumFile.getPath()));
+            var data = Database.getInstance().deserializeData(Database.getInstance().readFile(albumFile.getPath()));
             if (data.get("artist").equals(artistId.toString())) {
-                FileSystem.delete(albumPath + "/" + data.get("id"));
+                Database.getInstance().delete(albumPath + "/" + data.get("id"));
             }
         }
 
-        var deleteArtist = database.executeQuery(new Query()
+        var deleteArtist = Database.getInstance().executeQuery(new Query()
                 .from("artists").where("id", artistId.toString()).delete());
 
         var artist = new Artist(deleteArtist.data);
         for (var songId : artist.getRefSongIds()) {
-            FileSystem.delete(database.getDbName() + "/songs/" + songId);
+            Database.getInstance().delete(Database.getInstance().getDbName() + "/songs/" + songId);
         }
 
         return new Artist(deleteArtist.data);
     }
 
-    public Album deepRemoveAlbum(Integer albumId) {
-        String songsPath = database.getDbName() + "/songs";
-        File[] songs = FileSystem.getDirFiles(songsPath);
+    public Album deepRemoveAlbum(Integer albumId) throws IllegalAccessException {
+        String songsPath = Database.getInstance().getDbName() + "/songs";
+        File[] songs = Database.getInstance().getDirFiles(songsPath);
 
-        var deleteAlbum = database.executeQuery(new Query()
+        var deleteAlbum = Database.getInstance().executeQuery(new Query()
                 .from("albums").where("id", albumId.toString()).delete());
 
         for (var songFile : Objects.requireNonNull(songs)) {
-            var data = database.deserializeData(FileSystem.readFile(songFile.getPath()));
+            var data = Database.getInstance().deserializeData(Database.getInstance().readFile(songFile.getPath()));
             if (data.get("album").equals(albumId.toString())) {
-                FileSystem.delete(songsPath + "/" + data.get("id"));
+                Database.getInstance().delete(songsPath + "/" + data.get("id"));
             }
         }
 
         return new Album(deleteAlbum.data);
     }
 
-    public Song removeSong(Integer songId) {
-        var deleteSong = database.executeQuery(new Query().from("songs").where("id", songId.toString()).delete());
+    public Song removeSong(Integer songId) throws IllegalAccessException {
+        var deleteSong = Database.getInstance().executeQuery(new Query().from("songs").where("id", songId.toString()).delete());
         return new Song(deleteSong.data);
     }
 
-    public boolean editObjectProp(MusicObject object, String propName, String newValue) {
+    public boolean editObjectProp(MusicObject object, String propName, String newValue) throws IllegalAccessException {
         var typeName = getType(object).second;
-        var editResult = database.executeQuery(new Query()
+        var editResult = Database.getInstance().executeQuery(new Query()
                 .from(typeName)
                 .where("id", String.valueOf(object.getId()))
                 .update(propName, newValue));
@@ -156,23 +151,23 @@ public class App {
         return editResult.success;
     }
 
-    public void addObject(MusicObject object) {
+    public void addObject(MusicObject object) throws IllegalAccessException {
         var typeName = getType(object).second;
-        database.executeQuery(new Query().from(typeName).create(object.mapObject()));
+        Database.getInstance().executeQuery(new Query().from(typeName).create(object.mapObject()));
     }
 
     public ArrayList<MusicObject> getAlbumList(int artistId) {
         ArrayList<MusicObject> results = new ArrayList<>();
 
         String albumUrl = "albums";
-        String path = database.getDbName() + "/" + albumUrl;
-        File[] fileArr = FileSystem.getDirFiles(path);
+        String path = Database.getInstance().getDbName() + "/" + albumUrl;
+        File[] fileArr = Database.getInstance().getDirFiles(path);
 
         for (File file : Objects.requireNonNull(fileArr)) {
             String url = file.toString();
-            String data = FileSystem.readFile(url);
+            String data = Database.getInstance().readFile(url);
 
-            HashMap<String, String> dataMap = database.deserializeData(data);
+            HashMap<String, String> dataMap = Database.getInstance().deserializeData(data);
             MusicObject result = getNameOfData(albumUrl, dataMap);
             Album album = (Album) result;
 
@@ -209,10 +204,10 @@ public class App {
                 else System.out.println(artists[i].getNameColored());
             }
         }
-        var allArtistsPaths = FileSystem.getDirFiles(database.getDbName() + "/artists");
+        var allArtistsPaths = Database.getInstance().getDirFiles(Database.getInstance().getDbName() + "/artists");
         var artistArray = new ArrayList<Artist>();
         for (File file : Objects.requireNonNull(allArtistsPaths)) {
-            artistArray.add(new Artist(database.deserializeData(FileSystem.readFile(file.getPath()))));
+            artistArray.add(new Artist(Database.getInstance().deserializeData(Database.getInstance().readFile(file.getPath()))));
         }
 
         var albums = (Album[]) results.stream().filter(a -> getType(a).first == ALBUM).toArray(Album[]::new);
@@ -260,12 +255,12 @@ public class App {
         }
     }
 
-    public void printArtistSongs(String artistName) {
-        var fetchResult = database.executeQuery(new Query().from("artists").where("name", artistName).fetch());
+    public void printArtistSongs(String artistName) throws IllegalAccessException {
+        var fetchResult = Database.getInstance().executeQuery(new Query().from("artists").where("name", artistName).fetch());
         if (!fetchResult.success) System.out.println("Could not find artist!");
 
         var artist = new Artist(fetchResult.data);
-        var songsResult = database.executeQuery(new Query()
+        var songsResult = Database.getInstance().executeQuery(new Query()
                 .from("songs").where("artistId", String.valueOf(artist.getId()))
                 .fetchAll());
 

@@ -3,6 +3,7 @@
 
 # Example database
 app-db
+MusicDB
 
 # Maven
 target/
