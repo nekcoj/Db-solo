@@ -13,7 +13,7 @@ public class FileSystem {
      * @param fileName Path of the file to read from.
      * @return Returns string with the data read, or null if something went wrong.
      */
-    public static String readFile(String fileName) {
+    private static String readFile(String fileName) {
         try {
             return new String(Files.readAllBytes(Paths.get(fileName)));
         } catch (IOException e) {
@@ -28,7 +28,7 @@ public class FileSystem {
      * @param fileName Path of the file to write to.
      * @param data     The data to be written into the file.
      */
-    public static void writeFile(String fileName, String data) {
+    private static void writeFile(String fileName, String data) {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName));
             bufferedWriter.write(data);
@@ -44,7 +44,7 @@ public class FileSystem {
      * @param filePath Path to check.
      * @return Returns true if the path exists, else returns false.
      */
-    public static boolean exists(String filePath) {
+    private static boolean exists(String filePath) {
         return Files.exists(Paths.get(filePath));
     }
 
@@ -54,7 +54,7 @@ public class FileSystem {
      * @param filePath Path to remove.
      * @return Returns true if the file/directory was removed, else returns false.
      */
-    public static boolean delete(String filePath) {
+    private static boolean delete(String filePath) {
         try {
             return Files.deleteIfExists(Paths.get(filePath));
         } catch (IOException e) {
