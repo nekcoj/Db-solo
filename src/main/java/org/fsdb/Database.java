@@ -5,13 +5,12 @@ import org.fsdb.classes.Tuple;
 import org.fsdb.query.Query;
 import org.fsdb.query.QueryResult;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-
-import java.io.File;
 
 public class Database {
     private String dbName;
