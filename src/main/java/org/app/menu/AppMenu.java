@@ -11,7 +11,7 @@ public abstract class AppMenu {
         this.app = app;
     }
 
-    public abstract void handle() throws IllegalAccessException;
+    public abstract void handle();
 
     protected Menu getClassMenu(String title) {
         var classFolders = app.getClassFolders();

@@ -69,7 +69,7 @@ public class FileSystem {
      * @param dirName Path of the directory to create.
      * @return Returns true if the directory was created.
      */
-    private static boolean createDir(String dirName) {
+    public static boolean createDir(String dirName) {
         return new File(dirName).mkdir();
     }
 
@@ -80,7 +80,7 @@ public class FileSystem {
      * @param createNested If all missing directories should be created as well.
      * @return Returns true if the directory was created.
      */
-    private static boolean createDir(String dirName, boolean createNested) {
+    public static boolean createDir(String dirName, boolean createNested) {
         return new File(dirName).mkdirs();
     }
 
@@ -90,7 +90,7 @@ public class FileSystem {
      * @param dirName Path of the directory to get files from.
      * @return Returns array of files found or null if something went wrong.
      */
-    private static File[] getDirFiles(String dirName) {
+    public static File[] getDirFiles(String dirName) {
         try (Stream<Path> paths = Files.walk(Paths.get(dirName))) {
             return paths
                     .filter(Files::isRegularFile)
@@ -102,7 +102,7 @@ public class FileSystem {
         }
     }
 
-    private static File[] getSubFolders(String databasePath){
+    public static File[] getSubFolders(String databasePath){
         return new File(databasePath).listFiles(File::isDirectory);
     }
 }

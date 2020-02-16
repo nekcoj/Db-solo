@@ -11,7 +11,7 @@ public class EditMenu extends AppMenu {
     }
 
     @Override
-    public void handle() throws IllegalAccessException {
+    public void handle() {
         var choice = getClassMenu("Edit Menu")
                 .addMenuItem("Return to main menu", "return")
                 .show()
@@ -21,7 +21,7 @@ public class EditMenu extends AppMenu {
         editMenu(choice.key);
     }
 
-    private void editMenu(String typeName) throws IllegalAccessException {
+    private void editMenu(String typeName) {
         var singularName = typeName.substring(0, typeName.length() - 1);
 
         System.out.printf("Search for %s to edit> ", singularName);

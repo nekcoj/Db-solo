@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="RunTests" type="JUnit" factoryName="JUnit">
+    <module name="fsdb" />
+    <option name="PACKAGE_NAME" value="fsdb" />
+    <option name="MAIN_CLASS_NAME" value="fsdb.TestAll" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test/java" />
+    <envs>
+      <env name="TEST_DB" value="test-db" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
