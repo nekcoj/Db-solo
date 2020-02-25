@@ -28,4 +28,14 @@ public class Input {
     public static int getInt() {
         return Integer.parseInt(getLine().split("\\s+")[0]);
     }
+
+    public static int getIntInput() {
+        // prompt again on if Integer.parseInt throws NumberFormatException inside getInt()
+        try {
+            return Input.getInt();
+        } catch (Exception e) {
+            System.out.println("Invalid menu choice, try again!");
+            return getIntInput();
+        }
+    }
 }

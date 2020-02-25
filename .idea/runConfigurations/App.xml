@@ -1,10 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="App" type="Application" factoryName="Application">
-    <envs>
-      <env name="APP_DB" value="app-db" />
-    </envs>
     <option name="MAIN_CLASS_NAME" value="org.app.Main" />
-    <module name="fsdb" />
+    <module name="Db-solo" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="main.org.example.*" />

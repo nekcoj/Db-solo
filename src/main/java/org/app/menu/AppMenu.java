@@ -1,6 +1,7 @@
 package org.app.menu;
 
 import org.app.App;
+import org.fsdb.Database;
 import org.fsdb.Input;
 import org.fsdb.Util;
 
@@ -14,7 +15,7 @@ public abstract class AppMenu {
     public abstract void handle() throws IllegalAccessException;
 
     protected Menu getClassMenu(String title) {
-        var classFolders = app.getClassFolders();
+        var classFolders = Database.getInstance().getClassFolders();
 
         var menu = new Menu().setMenuTitle(title);
         for (String classFolder : classFolders)

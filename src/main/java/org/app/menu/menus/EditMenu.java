@@ -3,7 +3,9 @@ package org.app.menu.menus;
 import org.app.App;
 import org.app.Color;
 import org.app.menu.AppMenu;
+import org.fsdb.Database;
 import org.fsdb.Input;
+import org.fsdb.Printer;
 
 public class EditMenu extends AppMenu {
     public EditMenu(App app) {
@@ -11,7 +13,7 @@ public class EditMenu extends AppMenu {
     }
 
     @Override
-    public void handle() throws IllegalAccessException {
+    public void handle() {
         var choice = getClassMenu("Edit Menu")
                 .addMenuItem("Return to main menu", "return")
                 .show()
@@ -21,25 +23,25 @@ public class EditMenu extends AppMenu {
         editMenu(choice.key);
     }
 
-    private void editMenu(String typeName) throws IllegalAccessException {
+    private void editMenu(String typeName) {
         var singularName = typeName.substring(0, typeName.length() - 1);
 
         System.out.printf("Search for %s to edit> ", singularName);
         var objectName = Input.getLine();
 
-        var objects = app.sortResults(app.search(typeName, objectName));
+        var objects = Printer.sortResults(Database.getInstance().search(typeName, objectName));
 
         if (objects.size() == 0) {
             System.out.println("No results found.");
             return;
         }
 
-        app.printResults(objects, true);
+        Printer.printResults(objects, true);
         System.out.print("Enter [index] to edit or [0] to  return to main menu> ");
 
         int index;
 
-        do index = app.getIntInput();
+        do index = Input.getIntInput();
         while (index < 0 || index > objects.size());
         if(index == 0) return;
 
@@ -47,7 +49,7 @@ public class EditMenu extends AppMenu {
         var newName = Input.getLine();
 
         var object = objects.get(index - 1);
-        var wasUpdated = app.editObjectProp(object, typeName.equals("songs") ? "title" : "name", newName);
+        var wasUpdated = Database.getInstance().editObjectProp(object, typeName.equals("songs") ? "title" : "name", newName);
 
         if (wasUpdated) {
             var coloredName = newName;

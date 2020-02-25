@@ -13,7 +13,7 @@ public class FileSystem {
      * @param fileName Path of the file to read from.
      * @return Returns string with the data read, or null if something went wrong.
      */
-    private static String readFile(String fileName) {
+    public static String readFile(String fileName) {
         try {
             return new String(Files.readAllBytes(Paths.get(fileName)));
         } catch (IOException e) {
@@ -28,7 +28,7 @@ public class FileSystem {
      * @param fileName Path of the file to write to.
      * @param data     The data to be written into the file.
      */
-    private static void writeFile(String fileName, String data) {
+    public static void writeFile(String fileName, String data) {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName));
             bufferedWriter.write(data);
@@ -44,7 +44,7 @@ public class FileSystem {
      * @param filePath Path to check.
      * @return Returns true if the path exists, else returns false.
      */
-    private static boolean exists(String filePath) {
+    static boolean exists(String filePath) {
         return Files.exists(Paths.get(filePath));
     }
 
@@ -54,7 +54,7 @@ public class FileSystem {
      * @param filePath Path to remove.
      * @return Returns true if the file/directory was removed, else returns false.
      */
-    private static boolean delete(String filePath) {
+    public static boolean delete(String filePath) {
         try {
             return Files.deleteIfExists(Paths.get(filePath));
         } catch (IOException e) {
@@ -69,7 +69,7 @@ public class FileSystem {
      * @param dirName Path of the directory to create.
      * @return Returns true if the directory was created.
      */
-    private static boolean createDir(String dirName) {
+    static boolean createDir(String dirName) {
         return new File(dirName).mkdir();
     }
 
@@ -90,7 +90,7 @@ public class FileSystem {
      * @param dirName Path of the directory to get files from.
      * @return Returns array of files found or null if something went wrong.
      */
-    private static File[] getDirFiles(String dirName) {
+    public static File[] getDirFiles(String dirName) {
         try (Stream<Path> paths = Files.walk(Paths.get(dirName))) {
             return paths
                     .filter(Files::isRegularFile)
@@ -102,7 +102,7 @@ public class FileSystem {
         }
     }
 
-    private static File[] getSubFolders(String databasePath){
+    public static File[] getSubFolders(String databasePath){
         return new File(databasePath).listFiles(File::isDirectory);
     }
 }

@@ -2,8 +2,14 @@ package org.app.menu.menus;
 
 import org.app.App;
 import org.app.menu.AppMenu;
+import org.app.pojo.Album;
+import org.app.pojo.Artist;
 import org.app.pojo.MusicObject;
+import org.app.pojo.Song;
+import org.fsdb.Database;
 import org.fsdb.Input;
+import org.fsdb.Printer;
+
 import java.util.ArrayList;
 
 public class RemoveMenu extends AppMenu {
@@ -12,7 +18,7 @@ public class RemoveMenu extends AppMenu {
     }
 
     @Override
-    public void handle() throws IllegalAccessException {
+    public void handle() {
         var choice = getClassMenu("Remove Menu")
                 .addMenuItem("Return to main menu", "return")
                 .show()
@@ -25,20 +31,20 @@ public class RemoveMenu extends AppMenu {
         var searchTerm = Input.getLine();
 
         ArrayList<MusicObject> results;
-        results = app.search(choice.key, searchTerm);
+        results = Database.getInstance().search(choice.key, searchTerm);
 
-        app.printResults(app.sortResults(results), true);
+        Printer.printResults(Printer.sortResults(results), true);
         if (results.size() == 0) return;
 
         System.out.print("Enter [index] to remove or press [0] to return to main menu> ");
 
         int removeIndex;
 
-        do removeIndex = app.getIntInput();
+        do removeIndex = Input.getIntInput();
         while (removeIndex < 0 || removeIndex > results.size());
         if(removeIndex == 0) return;
 
-        var typeName = app.getType(results.get(removeIndex - 1)).second;
+        var typeName = Database.getInstance().getType(results.get(removeIndex - 1)).second;
         var removeId = results.get(removeIndex - 1).getId();
 
         if (typeName == null) {

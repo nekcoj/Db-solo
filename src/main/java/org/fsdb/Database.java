@@ -1,6 +1,10 @@
 package org.fsdb;
 
 import com.github.cliftonlabs.json_simple.*;
+import org.app.pojo.Album;
+import org.app.pojo.Artist;
+import org.app.pojo.MusicObject;
+import org.app.pojo.Song;
 import org.fsdb.classes.Tuple;
 import org.fsdb.query.Query;
 import org.fsdb.query.QueryResult;
@@ -8,9 +12,10 @@ import org.fsdb.query.QueryResult;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.fsdb.MusicClassEnum.*;
 
 public class Database {
     private String dbName;
@@ -20,21 +25,21 @@ public class Database {
         return Database.INSTANCE;
     }
 
-    public void create(String dbName) throws IllegalAccessException {
+    public void create(String dbName) {
         this.dbName = dbName;
-        createDir(dbName);
+        FileSystem.createDir(dbName);
     }
 
-    public void loadJsonFile(String filePath) throws IllegalAccessException {
+    public void loadJsonFile(String filePath) {
         createSubdirsFromJSON(List.of(filePath), dbName);
     }
 
-    public void loadJsonFiles(List<String> filePaths) throws IllegalAccessException {
+    public void loadJsonFiles(List<String> filePaths) {
         createSubdirsFromJSON(filePaths, dbName);
     }
 
 
-    public QueryResult executeQuery(Query query) throws IllegalAccessException {
+    public QueryResult executeQuery(Query query) {
         QueryResult result;
         String rootDir = dbName + "/" + query.rootName;
 
@@ -53,17 +58,17 @@ public class Database {
             }
             case DELETE: {
                 var found = findWith(rootDir, query.predicateField, query.predicateValue);
-                boolean wasDeleted = delete(found.first);
+                boolean wasDeleted = FileSystem.delete(found.first);
                 result = new QueryResult(wasDeleted, query.action, found.second);
                 break;
             }
             case CREATE: {
                 String fileName = rootDir + "/" + query.values.get("id");
                 String data = serializeData(query.values);
-                if (exists(fileName)) {
-                    createDir(rootDir);
+                if (FileSystem.exists(fileName)) {
+                    FileSystem.createDir(rootDir);
                 }
-                createFile(fileName, data);
+                FileSystem.writeFile(fileName, data);
                 result = new QueryResult(true, query.action, query.values);
                 break;
             }
@@ -76,7 +81,7 @@ public class Database {
                         found.second.put(entry.getKey(), entry.getValue());
                     }
                 }
-                createFile(found.first, serializeData(found.second));
+                FileSystem.writeFile(found.first, serializeData(found.second));
                 result = new QueryResult(true, query.action, query.values);
                 break;
             }
@@ -112,13 +117,13 @@ public class Database {
     }
 
     private Tuple<String, HashMap<String, String>> findWith(String root, String field, String value) {
-        File[] dirFiles = getDirFiles(root);
+        File[] dirFiles = FileSystem.getDirFiles(root);
 
         String fileName = null;
         HashMap<String, String> result = null;
 
         for (File file : Objects.requireNonNull(dirFiles)) {
-            String content = readFile(file.getPath());
+            String content = FileSystem.readFile(file.getPath());
             fileName = file.getPath();
             var data = deserializeData(content);
             if (data.get(field).equals(value)) {
@@ -130,13 +135,13 @@ public class Database {
     }
 
     private Tuple<String, ArrayList<HashMap<String, String>>> findAllWith(String root, String field, String value) {
-        File[] dirFiles = getDirFiles(root);
+        File[] dirFiles = FileSystem.getDirFiles(root);
 
         String fileName = null;
         var resultArray = new ArrayList<HashMap<String, String>>();
 
         for (File file : Objects.requireNonNull(dirFiles)) {
-            String content = readFile(file.getPath());
+            String content = FileSystem.readFile(file.getPath());
             fileName = file.getPath();
             var data = deserializeData(content);
             if (data.get(field).equals(value)) {
@@ -146,9 +151,9 @@ public class Database {
         return new Tuple<>(fileName, resultArray);
     }
 
-    private void createSubdirsFromJSON(List<String> pathNames, String dbDir) throws IllegalAccessException {
+    private void createSubdirsFromJSON(List<String> pathNames, String dbDir) {
         for (String path : pathNames) {
-            if (!exists(path)) continue;
+            if (!FileSystem.exists(path)) continue;
             String[] split = path.split("\\.");
 
             List<String> pathList;
@@ -159,8 +164,8 @@ public class Database {
             List<String> getFilePath = Arrays.asList(dbPathSplit);
             String filePath = dbDir + "/" + getFilePath.get(getFilePath.size() - 1);
 
-            if (!exists(filePath)) {
-                createDir(filePath);
+            if (!FileSystem.exists(filePath)) {
+                FileSystem.createDir(filePath);
                 createFileFromJSON(path, filePath);
                 System.out.printf("Loaded data from JSON file '%s'\n", path);
             }
@@ -179,86 +184,100 @@ public class Database {
                 for (var entry : temp.entrySet())
                     sb.append(String.format("%s=%s\n", entry.getKey(), entry.getValue()));
 
-                createFile(fileName, sb.toString());
+                FileSystem.writeFile(fileName, sb.toString());
             }
-        } catch (IOException | JsonException | IllegalAccessException e) {
+        } catch (IOException | JsonException e) {
             e.printStackTrace();
         }
     }
 
-    public void createFile(String dirPath, String data) throws IllegalAccessException{
-        try{
-            Method method = FileSystem.class.getDeclaredMethod("writeFile", String.class, String.class);
-            method.setAccessible(true);
-            method.invoke(null, dirPath, data);
-        } catch (NoSuchMethodException | SecurityException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+    public List<String> getClassFolders() {
+        File[] subFolders = FileSystem.getSubFolders(Database.getInstance().getDbName());
+        return Arrays.stream(subFolders).map(File::getName).collect(Collectors.toList());
     }
 
-    public void createDir(String dirPath) throws IllegalAccessException{
-        try{
-            Method method = FileSystem.class.getDeclaredMethod("createDir", String.class);
-            method.setAccessible(true);
-            method.invoke(null, dirPath);
-        } catch (NoSuchMethodException | SecurityException | InvocationTargetException e) {
-            e.printStackTrace();
+    public ArrayList<MusicObject> search(String subPath, String search) {
+        ArrayList<MusicObject> results = new ArrayList<>();
+
+        String path = getDbName() + "/" + subPath;
+        File[] fileArr = FileSystem.getDirFiles(path);
+
+        for (File file : Objects.requireNonNull(fileArr)) {
+            String url = file.toString();
+            String data = FileSystem.readFile(url);
+
+            HashMap<String, String> dataMap = deserializeData(data);
+            MusicObject result = Converter.getObjectFromHashMap(subPath, dataMap);
+
+            String searchString = "";
+            if (getType(result).first == ARTIST.ordinal()) {
+                Artist obj = (Artist) result;
+                searchString = obj.getName();
+            } else if (getType(result).first == ALBUM.ordinal()) {
+                Album obj = (Album) result;
+                searchString = obj.getName();
+            } else if (getType(result).first == SONG.ordinal()) {
+                Song obj = (Song) result;
+                searchString = obj.getTitle();
+            }
+
+            if (searchString.toLowerCase().contains(search.toLowerCase()))
+                results.add(result);
         }
+        return results;
     }
 
-    public boolean exists(String filePath){
-        try{
-            Method method = FileSystem.class.getDeclaredMethod("exists", String.class);
-            method.setAccessible(true);
-            return (Boolean) method.invoke(null, filePath);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public Tuple<Integer, String> getType(MusicObject musicObject) {
+        if (musicObject.getClass().equals(Artist.class)) return new Tuple<>(ARTIST.ordinal(), "artists");
+        else if (musicObject.getClass().equals(Album.class)) return new Tuple<>(ALBUM.ordinal(), "albums");
+        else if (musicObject.getClass().equals(Song.class)) return new Tuple<>(SONG.ordinal(), "songs");
+        else return new Tuple<>(-1, "");
     }
 
-    public boolean delete (String filePath){
-        try{
-            Method method = FileSystem.class.getDeclaredMethod("delete", String.class);
-            method.setAccessible(true);
-            return (Boolean) method.invoke(null, filePath);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+
+    public ArrayList<MusicObject> globalSearch(ArrayList<String> menuChoice, String search) {
+        var totalResults = new ArrayList<MusicObject>();
+        for (String choice : menuChoice) {
+            totalResults.addAll(Database.getInstance().search(choice, search));
         }
-        return false;
+        return totalResults;
     }
 
-    public String readFile(String filePath){
-        try{
-            Method method = FileSystem.class.getDeclaredMethod("readFile", String.class);
-            method.setAccessible(true);
-            return (String) method.invoke(null, filePath);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public boolean editObjectProp(MusicObject object, String propName, String newValue) {
+        var typeName = getType(object).second;
+        var editResult = Database.getInstance().executeQuery(new Query()
+                .from(typeName)
+                .where("id", String.valueOf(object.getId()))
+                .update(propName, newValue));
+
+        return editResult.success;
     }
 
-    public File[] getDirFiles(String dirName){
-        try{
-            Method method = FileSystem.class.getDeclaredMethod("getDirFiles", String.class);
-            method.setAccessible(true);
-            return (File[]) method.invoke(null, dirName);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+    public ArrayList<MusicObject> getAlbumList(int artistId) {
+        ArrayList<MusicObject> results = new ArrayList<>();
+
+        String albumUrl = "albums";
+        String path = Database.getInstance().getDbName() + "/" + albumUrl;
+        File[] fileArr = FileSystem.getDirFiles(path);
+
+        for (File file : Objects.requireNonNull(fileArr)) {
+            String url = file.toString();
+            String data = FileSystem.readFile(url);
+
+            HashMap<String, String> dataMap = Database.getInstance().deserializeData(data);
+            MusicObject result;
+            result = Converter.getObjectFromHashMap(albumUrl, dataMap);
+            Album album = (Album) result;
+
+            if (artistId == album.getArtist())
+                results.add(result);
         }
-        return null;
+        return results;
     }
 
-    public File[] getSubFolders(String databasePath){
-        try{
-            Method method = FileSystem.class.getDeclaredMethod("getSubFolders", String.class);
-            method.setAccessible(true);
-            return (File[]) method.invoke(null, databasePath);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public void addObject(MusicObject object) {
+        var typeName = getType(object).second;
+        Database.getInstance().executeQuery(new Query().from(typeName).create(Converter.getHashMapFromObject(object)));
     }
 
     public String getDbName() {

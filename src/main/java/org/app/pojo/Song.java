@@ -2,17 +2,17 @@ package org.app.pojo;
 
 import org.app.Color;
 
-import java.util.HashMap;
-
 public class Song implements MusicObject {
     private int id;
-    private int album;
+//    private int album;
+    @ConvertFromId
+    private Album album;
     private String title;
     private int track;
     private String genre;
     private int artistId;
 
-    public Song(int id, int album, String title, int track, String genre, int artistId) {
+    public Song(int id, Album album, String title, int track, String genre, int artistId) {
         this.id = id;
         this.album = album;
         this.title = title;
@@ -21,25 +21,6 @@ public class Song implements MusicObject {
         this.artistId = artistId;
     }
 
-    public Song(HashMap<String, String> queryResult) {
-        this.id = Integer.parseInt(queryResult.get("id"));
-        this.album = Integer.parseInt(queryResult.get("album"));
-        this.title = queryResult.get("title");
-        this.track = Integer.parseInt(queryResult.get("track"));
-        this.genre = queryResult.get("genre");
-        this.artistId = Integer.parseInt(queryResult.get("artistId"));
-    }
-
-    public HashMap<String, String> mapObject() {
-        var convertedSong = new HashMap<String, String>();
-        convertedSong.put("id", String.valueOf(this.id));
-        convertedSong.put("album", String.valueOf(this.album));
-        convertedSong.put("title", this.title);
-        convertedSong.put("track", String.valueOf(this.track));
-        convertedSong.put("genre", this.genre);
-        convertedSong.put("artistId", String.valueOf(this.artistId));
-        return convertedSong;
-    }
 
     public int getId() {
         return id;
@@ -64,11 +45,12 @@ public class Song implements MusicObject {
         this.id = id;
     }
 
-    public int getAlbum() {
+    @ConvertFromId
+    public Album getAlbum() {
         return album;
     }
 
-    public void setAlbum(int album) {
+    public void setAlbum(Album album) {
         this.album = album;
     }
 

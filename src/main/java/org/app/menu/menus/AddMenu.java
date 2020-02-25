@@ -5,9 +5,11 @@ import org.app.Color;
 import org.app.menu.AppMenu;
 import org.app.pojo.Album;
 import org.app.pojo.Artist;
+import org.app.pojo.MusicObject;
 import org.app.pojo.Song;
-import org.fsdb.Input;
+import org.fsdb.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +23,12 @@ public class AddMenu extends AppMenu {
     }
 
     @Override
-    public void handle() throws IllegalAccessException {
+    public void handle() {
         reset();
         System.out.print("Song name> ");
         var songName = Input.getLine();
-        var songId = app.generateId("songs");
+        int songId;
+        songId = app.generateId("songs");
 
         setArtist(songId);
         // if no artist was create / found we abort
@@ -34,14 +37,19 @@ public class AddMenu extends AppMenu {
             return;
         }
         setAlbum(artist.getId());
+        if(album != null){
+            Database.getInstance().addObject(album);
+        }
 
-        song = new Song(songId, album == null ? -1 : album.getId(), songName, -1, "Unknown genre", artist.getId());
+        try {
+            assert album != null;
+            song = new Song(songId, (Album) Converter.getObjectFromId("albums", album.getId())/*album == null ? -1 : album.getId()*/, songName, -1, "Unknown genre", artist.getId());
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            e.printStackTrace();
+        }
 
-        app.addObject(song);
-        app.addObject(artist);
-
-        if (album != null)
-            app.addObject(album);
+        Database.getInstance().addObject(song);
+        Database.getInstance().addObject(artist);
 
         System.out.printf("Added song %s by %s on album %s\n",
                 Color.setSongColor(songName),
@@ -60,15 +68,17 @@ public class AddMenu extends AppMenu {
         var artistName = Input.getLine();
 
         // check for existing artist
-        var artists = app.sortResults(app.search("artists", artistName));
+        ArrayList<MusicObject> artists;
+            artists = Printer.sortResults(Database.getInstance().search("artists", artistName));
+
         if (artists.size() > 0) {
-            app.printResults(artists, true);
+            Printer.printResults(artists, true);
             System.out.println("Does one of these match your artist?");
             System.out.print("If yes enter the index, otherwise press 0 to create> ");
 
             int artistIndex;
 
-            do artistIndex = app.getIntInput();
+            do artistIndex = Input.getIntInput();
             while (artistIndex < 0 || artistIndex > artists.size());
 
             if (artistIndex > 0) artist = (Artist) artists.get(artistIndex - 1);
@@ -92,15 +102,17 @@ public class AddMenu extends AppMenu {
         var addToAlbum = promptYesNo("Do you want to add this song to an album?");
         if (!addToAlbum) return;
 
-        var albums = app.sortResults(app.getAlbumList(artistId));
+        ArrayList<MusicObject> albums;
+        albums = Printer.sortResults(Database.getInstance().getAlbumList(artistId));
+
         if (albums.size() > 0) {
-            app.printResults(albums, true);
+            Printer.printResults(albums, true);
             System.out.println("Does one of these match your album?");
             System.out.print("If yes enter the index, otherwise press 0 to create> ");
 
             int albumIndex;
 
-            do albumIndex = app.getIntInput();
+            do albumIndex = Input.getIntInput();
             while (albumIndex < 0 || albumIndex > albums.size());
 
             if (albumIndex > 0) album = (Album) albums.get(albumIndex - 1);
@@ -111,7 +123,7 @@ public class AddMenu extends AppMenu {
             var albumName = Input.getLine();
 
             System.out.print("Album release year> ");
-            var albumYear = app.getIntInput();
+            var albumYear = Input.getIntInput();
 
             // create the new album
             album = new Album(app.generateId("albums"), artistId, albumName, albumYear);

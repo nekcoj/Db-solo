@@ -3,7 +3,6 @@ package org.app.pojo;
 import org.app.Color;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,18 +17,10 @@ public class Artist implements MusicObject {
         this.refSongIds = refSongIds;
     }
 
-    public HashMap<String, String> mapObject() {
-        var convertedArtist = new HashMap<String, String>();
-        convertedArtist.put("id", String.valueOf(this.id));
-        convertedArtist.put("name", this.name);
-        convertedArtist.put("refSongIds", this.refSongIds.toString().replaceAll("\\s+", ""));
-        return convertedArtist;
-    }
-
-    public Artist(HashMap<String, String> queryResult) {
-        this.id = Integer.parseInt(queryResult.get("id"));
-        this.name = queryResult.get("name");
-        this.refSongIds = parseToList(queryResult.get("refSongIds"));
+    public Artist(int id, String name, String refSongIds) {
+        this.id = id;
+        this.name = name;
+        this.refSongIds = parseToList(refSongIds);
     }
 
     private static ArrayList<Integer> parseToList(String songIds) {

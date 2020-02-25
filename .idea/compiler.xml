@@ -7,9 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="fsdb" />
+        <module name="Db-solo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Db-solo" target="13" />
       <module name="fsdb" target="13" />
     </bytecodeTargetLevel>
   </component>

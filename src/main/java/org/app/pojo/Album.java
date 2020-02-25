@@ -2,8 +2,6 @@ package org.app.pojo;
 
 import org.app.Color;
 
-import java.util.HashMap;
-
 public class Album implements MusicObject {
     private int id;
     private int artist;
@@ -17,22 +15,7 @@ public class Album implements MusicObject {
         this.year = year;
     }
 
-    public Album(HashMap<String, String> queryResult) {
-        this.id = Integer.parseInt(queryResult.get("id"));
-        this.artist = Integer.parseInt(queryResult.get("artist"));
-        this.name = queryResult.get("name");
-        this.year = Integer.parseInt(queryResult.get("year"));
-    }
-
-    public HashMap<String, String> mapObject() {
-        var convertedAlbum = new HashMap<String, String>();
-        convertedAlbum.put("id", String.valueOf(this.id));
-        convertedAlbum.put("artist", String.valueOf(this.artist));
-        convertedAlbum.put("name", this.name);
-        convertedAlbum.put("year", String.valueOf(this.year));
-        return convertedAlbum;
-    }
-
+    @ConvertFromId
     public int getId() {
         return id;
     }
